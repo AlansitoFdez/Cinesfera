@@ -5,12 +5,13 @@ const config = require('./config/config.js');
 const express = require('express');
 const cors = require('cors')
 const { logMensaje } = require('./utils/logger.js')
+const { verifyToken } = require('./middlewares/auth.js')
 
 
 // ============================================================================
 // VARIABLES DE RUTAS DE LA API
 // ============================================================================
-const userRoutes = require("./routes/userRoutes")
+const authRoutes = require("./routes/authRoutes")
 
 
 // ============================================================================
@@ -35,7 +36,7 @@ app.use(cors());
 // ============================================================================
 // RUTAS - API REST
 // ============================================================================
-app.use("/api/user", userRoutes)
+app.use("/api/auth", authRoutes)
 
 
 // ============================================================================

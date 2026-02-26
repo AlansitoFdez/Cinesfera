@@ -1,11 +1,12 @@
 const initModels = require("../models/init-models").initModels
 const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken")
 const sequelize = require("../config/sequelize")
 const models = initModels(sequelize)
 
 const User = models.users
 
-class UserService {
+class AuthService {
   async login(email, password) {
     const user = await User.findOne({ where: { email } });
     if (!user) {
@@ -17,8 +18,20 @@ class UserService {
       throw { status: 401, message: "Contraseña incorrecta" };
     }
 
+    const token = jwt.sign({
+      sub: user.id,
+      username: user.username,
+      email: user.email,
+      role: user.role
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "1h"
+    }
+  )
+
     delete user.dataValues.password;
-    return user;
+    return { user, token };
   }
 
   async signup(username, email, password, biography) {
@@ -38,4 +51,4 @@ class UserService {
   }
 }
 
-module.exports = new UserService()
+module.exports = new AuthService()
