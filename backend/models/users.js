@@ -13,15 +13,17 @@ module.exports = function(sequelize, DataTypes) {
     },
     email: {
       type: DataTypes.STRING(150),
-      allowNull: false
+      allowNull: false,
+      unique: "user_email_UK"
     },
     password: {
       type: DataTypes.STRING(255),
       allowNull: false
     },
     biography: {
-      type: DataTypes.TEXT,
-      allowNull: false
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      defaultValue: "Escribe algo sobre ti ..."
     },
     role: {
       type: DataTypes.ENUM('USER','ADMIN'),
@@ -32,6 +34,11 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(255),
       allowNull: false,
       defaultValue: "default_avatar.png"
+    },
+    banned: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: 0
     },
     created_at: {
       type: DataTypes.DATE,
@@ -54,6 +61,14 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "id" },
+        ]
+      },
+      {
+        name: "user_email_UK",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "email" },
         ]
       },
     ]
