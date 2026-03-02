@@ -1,7 +1,11 @@
 import { useState } from "react";
 import axios from "axios";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+  const { login } = useAuth();
+  const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const [form, setForm] = useState({
     username: "",
@@ -40,7 +44,20 @@ export default function Login() {
         },
       );
 
-      alert(data.mensaje);
+      if (!data.ok) {
+        setError(data.mensaje);
+        return;
+      }
+
+      // Guardar el usuario en el contexto
+      login(data.datos);
+
+      // Redirigir según el rol
+      if (data.datos.role === "ADMIN") {
+        navigate("/admin");
+      } else {
+        navigate("/home");
+      }
     } catch (err) {
       setError(
         err.response?.data?.mensaje || "Error de conexión con el servidor",
