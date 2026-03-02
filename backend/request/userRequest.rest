@@ -1,0 +1,3 @@
+### Get All Users
+GET http://localhost:3000/api/user
+Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiQWxhbl9DaW5lc2ZlcmEiLCJlbWFpbCI6ImFsYW5AY2luZXNmZXJhLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3MjQ0MTE2NiwiZXhwIjoxNzcyNDQ0NzY2fQ.72KX4CplThfQAQdxzf6BkPQkmt9QQYFLGPuIcdSj5e4

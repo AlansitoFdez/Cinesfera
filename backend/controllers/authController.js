@@ -32,6 +32,15 @@ class AuthController {
       return res.status(error.status || 500).json(Respuesta.error(null, error.message || "Error al registrar usuario"));
     }
   }
+
+  async logout(req, res) {
+    res.clearCookie('token', {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict"
+    });
+    return res.status(200).json(Respuesta.exito(null, "Cierre de sesión exitoso"));
+  }
 }
 
 module.exports = new AuthController()

@@ -12,7 +12,8 @@ const config = {
         password: process.env.DB_PASSWORD,
         name: process.env.DB_NAME,
         port: process.env.DB_PORT,
-    }
+    },
+    secretKey: process.env.SECRET_KEY,
 }
 
 module.exports = config

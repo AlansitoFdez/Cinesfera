@@ -12,6 +12,8 @@ const { verifyToken } = require('./middlewares/auth.js')
 // VARIABLES DE RUTAS DE LA API
 // ============================================================================
 const authRoutes = require("./routes/authRoutes")
+const userRoutes = require("./routes/userRoutes");
+const cookieParser = require('cookie-parser');
 
 
 // ============================================================================
@@ -25,6 +27,7 @@ const port = config.port;
 // MIDDLEWARE - PARSEO
 // ============================================================================
 app.use(express.json());
+app.use(cookieParser())
 
 
 // ============================================================================
@@ -37,6 +40,7 @@ app.use(cors());
 // RUTAS - API REST
 // ============================================================================
 app.use("/api/auth", authRoutes)
+app.use("/api/user", verifyToken, userRoutes)
 
 
 // ============================================================================

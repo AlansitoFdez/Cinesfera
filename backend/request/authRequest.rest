@@ -18,3 +18,7 @@ Content-Type: application/json
     "biography": "Alan"
 }
 
+### Logout
+POST http://localhost:3000/api/auth/logout
+Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiQWxhbl9DaW5lc2ZlcmEiLCJlbWFpbCI6ImFsYW5AY2luZXNmZXJhLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3MjQ0MTM2NCwiZXhwIjoxNzcyNDQ0OTY0fQ.1do1PRHT0BmPstCXGbm1xMhvDtP3yNPicUNDUH-hQ3E
+
