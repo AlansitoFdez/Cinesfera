@@ -10,7 +10,7 @@ class AuthController {
 
       res.cookie("token", token, {
         httpOnly: true,
-        secure: true,
+        secure: process.env.NODE_ENV === "production", // ← CAMBIADO
         sameSite: "strict",
         maxAge: 3600000
       })
@@ -36,11 +36,24 @@ class AuthController {
   async logout(req, res) {
     res.clearCookie('token', {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "strict"
     });
     return res.status(200).json(Respuesta.exito(null, "Cierre de sesión exitoso"));
   }
+
+  // ── NUEVO ──────────────────────────────────────────────────────────────────
+  async me(req, res) {
+    try {
+      const token = req.cookies.token;
+      const decoded = await authService.me(token);
+      return res.status(200).json(Respuesta.exito(decoded, "Sesión activa"));
+    } catch (error) {
+      logMensaje(error);
+      return res.status(error.status || 500).json(Respuesta.error(null, error.message));
+    }
+  }
+  // ── FIN NUEVO ──────────────────────────────────────────────────────────────
 }
 
 module.exports = new AuthController()

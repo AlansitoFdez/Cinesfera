@@ -1,36 +1,16 @@
-import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom"
-import Login from "./components/Login"
-import ProtectedRoute from "./components/ProtectedRoute"
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Navigate to="/login" replace />
-  },
-  {
-    path: "/login",
-    element: <Login />
-  },
-  {
-    path: "/home",
-    element: (
-      <ProtectedRoute>
-        <h1 style={{ color: "red" }}>Home USER</h1>
-      </ProtectedRoute>
-    )
-  },
-  {
-    path: "/admin",
-    element: (
-      <ProtectedRoute role="ADMIN">
-        <h1 style={{ color: "red" }}>Home ADMIN</h1>
-      </ProtectedRoute>
-    )
-  }
-])
+import { RouterProvider } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
+import { DevModeProvider } from "./context/DevModeContext";
+import { router } from "./router";
 
 function App() {
-  return <RouterProvider router={router} />
+  return (
+    <AuthProvider>
+      <DevModeProvider>
+        <RouterProvider router={router} />
+      </DevModeProvider>
+    </AuthProvider>
+  );
 }
 
-export default App
+export default App;

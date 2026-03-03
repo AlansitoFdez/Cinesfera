@@ -49,6 +49,20 @@ class AuthService {
     delete newUser.dataValues.password;
     return newUser;
   }
+
+  // ── NUEVO ──────────────────────────────────────────────────────────────────
+  async me(token) {
+    if (!token) {
+      throw { status: 401, message: "No hay sesión activa" };
+    }
+    try {
+      const decoded = jwt.verify(token, process.env.SECRET_KEY);
+      return decoded;
+    } catch (err) {
+      throw { status: 401, message: "Sesión expirada o inválida" };
+    }
+  }
+  // ── FIN NUEVO ──────────────────────────────────────────────────────────────
 }
 
 module.exports = new AuthService()
