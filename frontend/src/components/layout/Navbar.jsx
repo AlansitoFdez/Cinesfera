@@ -41,7 +41,7 @@ export default function Navbar() {
             tracking-widest → letras muy separadas entre sí
             uppercase → todo en mayúsculas                                    */}
         <Link to="/home" className="pr-4 text-xl font-black tracking-widest uppercase text-white no-underline">
-          Cine<span className="text-purple-500">sfera</span>
+          Cin<span className="text-purple-500">esfera</span>
         </Link>
 
         {/* ── DIVISOR IZQUIERDO ─────────────────────────────────────────────
