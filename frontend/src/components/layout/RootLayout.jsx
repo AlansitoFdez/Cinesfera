@@ -8,17 +8,22 @@ export default function RootLayout() {
   const { user } = useAuth();
   const { devMode } = useDevMode();
 
-  // Si el usuario es ADMIN y el modo dev está ON → navbar de admin
-  // En cualquier otro caso → navbar de usuario normal
   const isAdminMode = user?.role === "ADMIN" && devMode;
-  // El "?" después de user se llama optional chaining. Significa:
-  // "si user existe, accede a .role; si user es null, devuelve undefined"
-  // sin esto, si user es null, user.role lanzaría un error.
 
   return (
-    <>
-      {isAdminMode ? <NavbarAdmin /> : <NavbarUser />}
+    // relative es obligatorio para que el navbar absolute
+    // se posicione relativo a este contenedor y no a la ventana
+    <div className="relative">
+      {/* absolute hace que el navbar flote encima del contenido
+          sin empujarlo hacia abajo
+          left-0 right-0 → ocupa todo el ancho
+          z-50 → flota por encima de todo el contenido de la página */}
+      <div className="absolute top-0 left-0 right-0 z-50">
+        {isAdminMode ? <NavbarAdmin /> : <NavbarUser />}
+      </div>
+
+      {/* El contenido empieza desde top: 0, el navbar flota encima */}
       <Outlet />
-    </>
+    </div>
   );
 }

@@ -1,6 +1,25 @@
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useLayoutEffect, useRef, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { gsap } from "gsap";
+import { GoArrowUpRight } from "react-icons/go";
+import { User } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { useDevMode } from "../../context/DevModeContext";
+
+const NAV_CARDS = [
+  {
+    label: "Usuarios",
+    description: "Gestiona cuentas, roles y permisos de la plataforma.",
+    bgColor: "#0d0d12",
+    to: "/admin/users",
+  },
+  {
+    label: "Próximamente",
+    description: "Nuevas herramientas de administración en camino.",
+    bgColor: "#0f0e15",
+    to: null, // null indica que esta card no navega a ningún sitio todavía
+  },
+];
 
 export default function NavbarAdmin() {
   const { user, logout } = useAuth();
@@ -8,82 +27,274 @@ export default function NavbarAdmin() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const navRef = useRef(null);
+  const cardsRef = useRef([]);
+  const tlRef = useRef(null);
+
   const handleLogout = () => {
     logout();
     navigate("/login");
   };
 
-  // Al desactivar el modo dev, apagamos el switch Y redirigimos al home
   const handleDeactivateDevMode = () => {
     toggleDevMode();
     navigate("/home");
   };
 
+  const calculateHeight = () => {
+    const navEl = navRef.current;
+    if (!navEl) return 220;
+
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    if (isMobile) {
+      const contentEl = navEl.querySelector(".card-nav-content");
+      if (contentEl) {
+        const prev = {
+          visibility: contentEl.style.visibility,
+          pointerEvents: contentEl.style.pointerEvents,
+          position: contentEl.style.position,
+          height: contentEl.style.height,
+        };
+        contentEl.style.visibility = "visible";
+        contentEl.style.pointerEvents = "auto";
+        contentEl.style.position = "static";
+        contentEl.style.height = "auto";
+        contentEl.offsetHeight;
+        const total = 60 + contentEl.scrollHeight + 16;
+        Object.assign(contentEl.style, prev);
+        return total;
+      }
+    }
+    return 220;
+  };
+
+  const createTimeline = () => {
+    const navEl = navRef.current;
+    if (!navEl) return null;
+
+    gsap.set(navEl, { height: 60, overflow: "hidden" });
+    gsap.set(cardsRef.current, { y: 40, opacity: 0 });
+
+    const tl = gsap.timeline({ paused: true });
+    tl.to(navEl, { height: calculateHeight, duration: 0.4, ease: "power3.out" });
+    tl.to(
+      cardsRef.current,
+      { y: 0, opacity: 1, duration: 0.35, ease: "power3.out", stagger: 0.07 },
+      "-=0.1"
+    );
+
+    return tl;
+  };
+
+  useLayoutEffect(() => {
+    const tl = createTimeline();
+    tlRef.current = tl;
+    return () => { tl?.kill(); tlRef.current = null; };
+  }, []);
+
+  useLayoutEffect(() => {
+    const handleResize = () => {
+      if (!tlRef.current) return;
+      if (isExpanded) {
+        gsap.set(navRef.current, { height: calculateHeight() });
+        tlRef.current.kill();
+        const newTl = createTimeline();
+        if (newTl) { newTl.progress(1); tlRef.current = newTl; }
+      } else {
+        tlRef.current.kill();
+        const newTl = createTimeline();
+        if (newTl) tlRef.current = newTl;
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [isExpanded]);
+
+  const toggleMenu = () => {
+    const tl = tlRef.current;
+    if (!tl) return;
+    if (!isExpanded) {
+      setIsHamburgerOpen(true);
+      setIsExpanded(true);
+      tl.play(0);
+    } else {
+      setIsHamburgerOpen(false);
+      tl.eventCallback("onReverseComplete", () => setIsExpanded(false));
+      tl.reverse();
+    }
+  };
+
+  const handleCardMouseEnter = (el, isPlaceholder) => {
+    // La card placeholder tiene un hover más sutil para comunicar que no es clickable
+    gsap.to(el, {
+      backgroundColor: isPlaceholder ? "rgba(255,255,255,0.02)" : "rgba(124,58,237,0.2)",
+      duration: 0.25,
+      ease: "power2.out",
+    });
+  };
+
+  const handleCardMouseLeave = (el, originalColor) => {
+    gsap.to(el, { backgroundColor: originalColor, duration: 0.25, ease: "power2.out" });
+  };
+
+  const setCardRef = (i) => (el) => { if (el) cardsRef.current[i] = el; };
+
   if (!user || location.pathname === "/login") return null;
 
   return (
     <div className="w-full flex justify-center py-4">
-      {/* Borde morado más intenso para distinguirlo visualmente del navbar normal */}
-      <nav className="inline-flex items-center gap-2 bg-[#0f0f14] rounded-full px-4 py-2 border border-purple-500/40">
-        {/* ── LOGO con etiqueta ADMIN ────────────────────────────────────────
-            Añadimos una pequeña etiqueta junto al logo para dejar
-            claro que estamos en modo administración                      */}
-        <Link to="/admin" className="pr-4 flex items-center gap-2 no-underline">
-          <span className="text-xl font-black tracking-widest uppercase text-white">
-            Cine<span className="text-purple-500">sfera</span>
-          </span>
-          {/* Etiqueta pequeña que identifica el modo actual */}
-          <span className="text-[9px] uppercase tracking-widest text-purple-400 border border-purple-500/40 rounded-full px-2 py-0.5">
-            Admin
-          </span>
-        </Link>
+      <div className="relative w-[90%] max-w-[800px]">
+        <nav
+          ref={navRef}
+          className="block h-[60px] p-0 rounded-xl relative overflow-hidden will-change-[height]"
+          style={{
+            background: "rgba(15,15,20,0.95)",
+            // Borde morado más intenso que el user para distinguirlo visualmente
+            border: "1px solid rgba(168,85,247,0.3)",
+            boxShadow: "0 0 40px rgba(124,58,237,0.15), 0 8px 32px rgba(0,0,0,0.6)",
+          }}
+        >
+          {/* ── BARRA SUPERIOR ── */}
+          <div className="absolute inset-x-0 top-0 h-[60px] flex items-center justify-between px-4 z-[2]">
 
-        {/* ── DIVISOR ── */}
-        <div className="w-px h-5 bg-white/10" />
-
-        {/* ── LINKS DE ADMINISTRACIÓN ──
-            En morado para distinguirlos visualmente de los links normales */}
-        <div className="flex items-center gap-1">
-          {[
-            { label: "Usuarios", to: "/admin/users" },
-            // Aquí irás añadiendo más links según los vayas necesitando
-          ].map(({ label, to }) => (
-            <Link
-              key={to}
-              to={to}
-              className="px-3 py-1.5 rounded-full text-sm text-purple-400 hover:text-purple-300 hover:bg-purple-500/10 transition-colors"
+            {/* Hamburger */}
+            <div
+              className="group flex flex-col justify-center gap-[6px] cursor-pointer order-2 md:order-none h-full"
+              onClick={toggleMenu}
+              role="button"
+              aria-label={isExpanded ? "Cerrar menú" : "Abrir menú"}
+              tabIndex={0}
             >
-              {label}
-            </Link>
-          ))}
-        </div>
+              <div className={`w-[22px] h-[2px] bg-gray-400 transition-all duration-300 origin-center group-hover:bg-white ${isHamburgerOpen ? "translate-y-[4px] rotate-45" : ""}`} />
+              <div className={`w-[22px] h-[2px] bg-gray-400 transition-all duration-300 origin-center group-hover:bg-white ${isHamburgerOpen ? "-translate-y-[4px] -rotate-45" : ""}`} />
+            </div>
 
-        {/* ── DIVISOR ── */}
-        <div className="w-px h-5 bg-white/10" />
+            {/* Logo + badge Admin */}
+            <div className="md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 order-1 md:order-none flex items-center gap-2">
+              <span
+                onClick={() => navigate("/admin")}
+                className="cursor-pointer"
+                style={{
+                  fontFamily: "'Georgia', serif",
+                  fontWeight: 900,
+                  fontSize: "1.2rem",
+                  letterSpacing: "0.25em",
+                  textTransform: "uppercase",
+                  color: "white",
+                }}
+              >
+                Cine<span style={{ color: "#a855f7" }}>sfera</span>
+              </span>
+              {/* Badge — igual que en el NavbarAdmin anterior */}
+              <span style={{
+                fontSize: "0.55rem",
+                textTransform: "uppercase",
+                letterSpacing: "0.2em",
+                color: "#a855f7",
+                border: "1px solid rgba(168,85,247,0.3)",
+                borderRadius: "9999px",
+                padding: "0.15rem 0.5rem",
+                background: "rgba(124,58,237,0.1)",
+              }}>
+                Admin
+              </span>
+            </div>
 
-        {/* ── ACCIONES ── */}
-        <div className="flex items-center gap-2 pl-2">
-          {/* Botón salir del modo admin
-              bg-purple-500/10      → fondo morado muy sutil
-              hover:bg-purple-500/20 → se intensifica al hover
-              border-purple-500/30  → borde morado semitransparente  */}
-          <button
-            onClick={handleDeactivateDevMode}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm text-purple-400 hover:text-purple-300 bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 transition-colors cursor-pointer"
+            {/* Acciones derecha */}
+            <div className="flex items-center gap-2">
+
+              {/* Botón salir del modo admin — mismo gradiente que el botón del login */}
+              <button
+                onClick={handleDeactivateDevMode}
+                className="rounded-full transition-all duration-200"
+                style={{
+                  padding: "0.4rem 1rem",
+                  fontSize: "0.75rem",
+                  fontWeight: 700,
+                  letterSpacing: "0.08em",
+                  color: "white",
+                  border: "none",
+                  cursor: "pointer",
+                  background: "linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)",
+                  boxShadow: "0 4px 15px rgba(124,58,237,0.4), 0 0 0 1px rgba(168,85,247,0.2)",
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 6px 20px rgba(124,58,237,0.6), 0 0 0 1px rgba(168,85,247,0.3)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 4px 15px rgba(124,58,237,0.4), 0 0 0 1px rgba(168,85,247,0.2)"; }}
+              >
+                ← Salir
+              </button>
+
+              {/* Logout */}
+              <button
+                onClick={handleLogout}
+                className="p-2 rounded-full transition-all duration-200"
+                style={{ color: "#6b7280", background: "transparent", border: "none", cursor: "pointer" }}
+                onMouseEnter={(e) => { e.currentTarget.style.color = "white"; e.currentTarget.style.background = "rgba(168,85,247,0.08)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.color = "#6b7280"; e.currentTarget.style.background = "transparent"; }}
+              >
+                <User size={15} />
+              </button>
+            </div>
+          </div>
+
+          {/* ── CARDS ── */}
+          <div
+            className={`card-nav-content absolute left-0 right-0 top-[60px] bottom-0 p-2 flex gap-2 flex-col md:flex-row md:items-stretch ${isExpanded ? "visible pointer-events-auto" : "invisible pointer-events-none"}`}
+            aria-hidden={!isExpanded}
           >
-            {/* Flecha izquierda para reforzar que es una acción de "volver" */}
-            ← Salir del modo admin
-          </button>
+            {NAV_CARDS.map((card, idx) => {
+              const isPlaceholder = card.to === null;
+              return (
+                <div
+                  key={card.label}
+                  ref={setCardRef(idx)}
+                  className="relative flex flex-col p-3 rounded-[calc(0.75rem-0.2rem)] flex-1"
+                  style={{
+                    backgroundColor: card.bgColor,
+                    // La card placeholder tiene borde punteado para comunicar que está vacía
+                    border: isPlaceholder
+                      ? "1px dashed rgba(168,85,247,0.15)"
+                      : "1px solid rgba(168,85,247,0.2)",
+                    minHeight: "60px",
+                    cursor: isPlaceholder ? "default" : "pointer",
+                    // La placeholder aparece un poco desaturada
+                    opacity: isPlaceholder ? 0.6 : 1,
+                  }}
+                  onClick={() => {
+                    if (!isPlaceholder) { navigate(card.to); toggleMenu(); }
+                  }}
+                  onMouseEnter={(e) => handleCardMouseEnter(e.currentTarget, isPlaceholder)}
+                  onMouseLeave={(e) => handleCardMouseLeave(e.currentTarget, card.bgColor)}
+                >
+                  {/* Título */}
+                  <span
+                    className="font-semibold text-white"
+                    style={{ fontSize: "clamp(0.9rem, 1.5vw, 1.1rem)", letterSpacing: "0.02em" }}
+                  >
+                    {card.label}
+                  </span>
 
-          {/* Logout */}
-          <button
-            onClick={handleLogout}
-            className="px-3 py-1.5 rounded-full text-sm text-gray-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer"
-          >
-            Salir
-          </button>
-        </div>
-      </nav>
+                  {/* Descripción */}
+                  <span style={{ fontSize: "0.75rem", color: "#6b7280", lineHeight: "1.4", marginTop: "0.35rem" }}>
+                    {card.description}
+                  </span>
+
+                  {/* Flecha — solo en cards reales, no en placeholder */}
+                  {!isPlaceholder && (
+                    <GoArrowUpRight
+                      className="self-end mt-auto"
+                      style={{ color: "rgba(168,85,247,0.5)", fontSize: "1.2rem" }}
+                    />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </nav>
+      </div>
     </div>
   );
 }

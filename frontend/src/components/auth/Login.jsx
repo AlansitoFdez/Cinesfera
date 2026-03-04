@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import SplitText from "../ui/SplitText";
 
 export default function Login() {
   const { login } = useAuth();
@@ -99,7 +100,24 @@ export default function Login() {
               className="text-4xl font-black text-white uppercase"
               style={{ fontFamily: "'Georgia', serif", letterSpacing: "0.3em" }}
             >
-              Cine<span style={{ color: "#a855f7" }}>sfera</span>
+              {/* "Cine" entra más rápido */}
+              <SplitText
+                text="Cine"
+                delay={0.1} // antes: 0.2 → casi sin espera
+                duration={0.4} // antes: 0.6 → animación más corta
+                stagger={0.03} // antes: 0.06 → menos tiempo entre letras
+                y={10} // antes: 15 → menos recorrido
+              />
+
+              {/* "sfera" entra justo detrás */}
+              <SplitText
+                text="sfera"
+                className="text-purple-500"
+                delay={0.25} // antes: 0.5 → no espera tanto a que "Cine" termine
+                duration={0.4}
+                stagger={0.03}
+                y={10}
+              />
             </h1>
           </div>
           <p
