@@ -10,10 +10,9 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const { data } = await axios.get(
-          "http://localhost:3000/api/auth/me",
-          { withCredentials: true }
-        );
+        const { data } = await axios.get("http://localhost:3000/api/auth/me", {
+          withCredentials: true,
+        });
 
         if (data.ok) {
           setUser(data.datos);
@@ -21,7 +20,9 @@ export function AuthProvider({ children }) {
       } catch (err) {
         // La cookie no existe o expiró, el usuario se queda como null
         // y ProtectedRoute lo mandará al login automáticamente
-        console.error("Sesión no válida:", err);
+        if (err.response?.status !== 401) {
+          console.error("Sesión no válida:", err);
+        }
       } finally {
         setChecking(false);
       }
@@ -31,7 +32,19 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = (userData) => setUser(userData);
-  const logout = () => setUser(null);
+  const logout = async () => {
+    try {
+      await axios.post(
+        "http://localhost:3000/api/auth/logout",
+        {},
+        { withCredentials: true },
+      );
+    } catch (err) {
+      console.error("Error al cerrar sesión:", err);
+    } finally {
+      setUser(null);
+    }
+  };
 
   // Mientras verificamos la cookie no renderizamos nada para evitar
   // que ProtectedRoute redirija al login antes de saber la verdad
