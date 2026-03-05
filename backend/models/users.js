@@ -31,9 +31,8 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: "USER"
     },
     avatar: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-      defaultValue: "default_avatar.png"
+      type: DataTypes.TEXT,
+      allowNull: true
     },
     banned: {
       type: DataTypes.BOOLEAN,

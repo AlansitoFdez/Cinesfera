@@ -4,4 +4,6 @@ const userController = require("../controllers/userController")
 
 router.get("/", userController.getAllUsers)
 
+router.delete("/me", userController.deleteAccount)
+
 module.exports = router

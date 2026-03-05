@@ -1,4 +1,6 @@
 import { useState, useRef } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { Camera, User, Lock, Trash2, Eye, EyeOff, CheckCircle, AlertTriangle } from "lucide-react";
 
@@ -109,28 +111,20 @@ export default function Settings() {
 
 // ─── SECCIÓN: PERFIL ─────────────────────────────────────────────────────────
 function ProfileSection({ user }) {
-  // Estado del formulario: se inicializa con los datos del usuario actual
   const [form, setForm] = useState({
     username: user?.username || "",
     email: user?.email || "",
     biography: user?.biography || "",
   });
 
-  // avatarPreview guarda la URL de previsualización de la imagen elegida
   const [avatarPreview, setAvatarPreview] = useState(null);
-
-  // saved controla si mostramos el mensaje de "Cambios guardados"
   const [saved, setSaved] = useState(false);
-
-  // inputRef nos permite abrir el selector de archivos al hacer clic en el avatar
   const inputRef = useRef(null);
 
-  // Cada vez que el usuario escribe en un input, actualizamos el campo correspondiente
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // Cuando el usuario elige una imagen, creamos una URL temporal para previsualizarla
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -138,7 +132,6 @@ function ProfileSection({ user }) {
     setAvatarPreview(url);
   };
 
-  // Al guardar: simulamos el guardado y mostramos el mensaje de éxito
   const handleSave = () => {
     // Aquí irá la llamada a la API cuando esté lista
     setSaved(true);
@@ -152,7 +145,6 @@ function ProfileSection({ user }) {
       {/* Avatar */}
       <div className="flex items-center gap-5">
         <div className="relative">
-          {/* Círculo del avatar: muestra la previsualización o las iniciales */}
           <div
             className="w-20 h-20 rounded-full flex items-center justify-center overflow-hidden"
             style={{
@@ -164,26 +156,20 @@ function ProfileSection({ user }) {
               <img src={avatarPreview} alt="avatar" className="w-full h-full object-cover" />
             ) : (
               <span className="text-2xl font-black text-purple-400" style={{ fontFamily: "'Georgia', serif" }}>
-                {/* Mostramos la primera letra del username */}
                 {(user?.username || "U")[0].toUpperCase()}
               </span>
             )}
           </div>
 
-          {/* Botón de cámara encima del avatar */}
           <button
             onClick={() => inputRef.current?.click()}
             className="absolute bottom-0 right-0 w-7 h-7 rounded-full flex items-center justify-center transition-all duration-200"
-            style={{
-              background: "#7c3aed",
-              border: "2px solid #0d1117",
-            }}
+            style={{ background: "#7c3aed", border: "2px solid #0d1117" }}
           >
             <Camera size={12} color="white" />
           </button>
         </div>
 
-        {/* Input oculto para seleccionar fichero — el botón de cámara lo activa */}
         <input
           ref={inputRef}
           type="file"
@@ -202,32 +188,11 @@ function ProfileSection({ user }) {
 
       {/* Campos de texto */}
       <div className="flex flex-col gap-4">
-        <Field
-          label="Nombre de usuario"
-          name="username"
-          value={form.username}
-          onChange={handleChange}
-          placeholder="Tu nombre en Cinesfera"
-        />
-        <Field
-          label="Correo electrónico"
-          name="email"
-          type="email"
-          value={form.email}
-          onChange={handleChange}
-          placeholder="tu@email.com"
-        />
-        <Field
-          label="Biografía"
-          name="biography"
-          value={form.biography}
-          onChange={handleChange}
-          placeholder="Cuéntanos algo sobre ti..."
-          multiline
-        />
+        <Field label="Nombre de usuario" name="username" value={form.username} onChange={handleChange} placeholder="Tu nombre en Cinesfera" />
+        <Field label="Correo electrónico" name="email" type="email" value={form.email} onChange={handleChange} placeholder="tu@email.com" />
+        <Field label="Biografía" name="biography" value={form.biography} onChange={handleChange} placeholder="Cuéntanos algo sobre ti..." multiline />
       </div>
 
-      {/* Botón guardar + mensaje de éxito */}
       <div className="flex items-center gap-4 pt-2">
         <SaveButton onClick={handleSave} />
         {saved && (
@@ -250,9 +215,7 @@ function SecuritySection() {
     confirmPassword: "",
   });
 
-  // showX controla si cada contraseña se muestra como texto o como puntos
   const [show, setShow] = useState({ current: false, new: false, confirm: false });
-
   const [error, setError] = useState("");
   const [saved, setSaved] = useState(false);
 
@@ -266,7 +229,6 @@ function SecuritySection() {
   };
 
   const handleSave = () => {
-    // Validación básica antes de llamar a la API
     if (!form.currentPassword || !form.newPassword || !form.confirmPassword) {
       setError("Rellena todos los campos.");
       return;
@@ -290,42 +252,13 @@ function SecuritySection() {
       <SectionHeader title="Cambiar contraseña" subtitle="Usa una contraseña segura que no uses en ningún otro sitio" />
 
       <div className="flex flex-col gap-4">
-        <PasswordField
-          label="Contraseña actual"
-          name="currentPassword"
-          value={form.currentPassword}
-          onChange={handleChange}
-          visible={show.current}
-          onToggle={() => toggleShow("current")}
-        />
-        <PasswordField
-          label="Nueva contraseña"
-          name="newPassword"
-          value={form.newPassword}
-          onChange={handleChange}
-          visible={show.new}
-          onToggle={() => toggleShow("new")}
-        />
-        <PasswordField
-          label="Confirmar nueva contraseña"
-          name="confirmPassword"
-          value={form.confirmPassword}
-          onChange={handleChange}
-          visible={show.confirm}
-          onToggle={() => toggleShow("confirm")}
-        />
+        <PasswordField label="Contraseña actual" name="currentPassword" value={form.currentPassword} onChange={handleChange} visible={show.current} onToggle={() => toggleShow("current")} />
+        <PasswordField label="Nueva contraseña" name="newPassword" value={form.newPassword} onChange={handleChange} visible={show.new} onToggle={() => toggleShow("new")} />
+        <PasswordField label="Confirmar nueva contraseña" name="confirmPassword" value={form.confirmPassword} onChange={handleChange} visible={show.confirm} onToggle={() => toggleShow("confirm")} />
       </div>
 
-      {/* Mensaje de error */}
       {error && (
-        <div
-          className="rounded-xl px-4 py-3 text-sm"
-          style={{
-            background: "rgba(239,68,68,0.1)",
-            border: "1px solid rgba(239,68,68,0.25)",
-            color: "#f87171",
-          }}
-        >
+        <div className="rounded-xl px-4 py-3 text-sm" style={{ background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.25)", color: "#f87171" }}>
           {error}
         </div>
       )}
@@ -346,19 +279,44 @@ function SecuritySection() {
 
 // ─── SECCIÓN: ELIMINAR CUENTA ─────────────────────────────────────────────────
 function DeleteSection({ user }) {
-  // confirmed controla si el usuario ha escrito su nombre para confirmar
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
   const [confirmText, setConfirmText] = useState("");
-
-  // showModal controla la visibilidad del modal de confirmación final
   const [showModal, setShowModal] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  // Solo se puede continuar si el texto coincide exactamente con el username
   const isMatch = confirmText === user?.username;
 
-  const handleDelete = () => {
-    // Aquí irá la llamada a la API cuando esté lista
-    setShowModal(false);
-    alert("Cuenta eliminada (simulación — conectar API)");
+  const handleDelete = async () => {
+    setLoading(true);
+    setError("");
+
+    try {
+      // Llamamos al backend para borrar la cuenta.
+      // withCredentials: true envía la cookie con el token de sesión —
+      // sin esto el backend no sabe quién somos y devuelve 401.
+      await axios.delete("http://localhost:3000/api/user/me", {
+        withCredentials: true,
+      });
+
+      // El backend borró la cuenta correctamente.
+      // Ahora limpiamos el usuario del contexto de React (memoria del frontend).
+      logout();
+
+      // Redirigimos al login — ya no tiene sentido estar en ninguna otra página.
+      navigate("/login");
+
+    } catch (err) {
+      // Si el backend devolvió un mensaje de error lo mostramos,
+      // si no (ej: sin conexión) mostramos un mensaje genérico.
+      setError(err.response?.data?.mensaje || "Error al eliminar la cuenta. Inténtalo de nuevo.");
+      setShowModal(false);
+    } finally {
+      // finally se ejecuta siempre (con éxito o con error) para desactivar el loading
+      setLoading(false);
+    }
   };
 
   return (
@@ -373,10 +331,7 @@ function DeleteSection({ user }) {
         {/* Aviso visual */}
         <div
           className="rounded-xl px-5 py-4 flex gap-3"
-          style={{
-            background: "rgba(239,68,68,0.07)",
-            border: "1px solid rgba(239,68,68,0.2)",
-          }}
+          style={{ background: "rgba(239,68,68,0.07)", border: "1px solid rgba(239,68,68,0.2)" }}
         >
           <AlertTriangle size={18} style={{ color: "#f87171", flexShrink: 0, marginTop: "2px" }} />
           <div className="flex flex-col gap-1">
@@ -391,7 +346,7 @@ function DeleteSection({ user }) {
           </div>
         </div>
 
-        {/* Campo de confirmación: el usuario debe escribir su nombre exacto */}
+        {/* Campo de confirmación */}
         <div className="flex flex-col gap-2">
           <label className="text-xs uppercase tracking-widest" style={{ color: "#9ca3af" }}>
             Escribe <span style={{ color: "#f87171" }}>{user?.username}</span> para confirmar
@@ -404,14 +359,19 @@ function DeleteSection({ user }) {
             className="rounded-xl px-4 py-3 text-sm text-white outline-none"
             style={{
               background: "rgba(255,255,255,0.04)",
-              border: isMatch
-                ? "1px solid rgba(239,68,68,0.5)"
-                : "1px solid rgba(255,255,255,0.08)",
+              border: isMatch ? "1px solid rgba(239,68,68,0.5)" : "1px solid rgba(255,255,255,0.08)",
             }}
           />
         </div>
 
-        {/* Botón de eliminar — solo activo cuando el texto coincide */}
+        {/* Mensaje de error de la API */}
+        {error && (
+          <div className="rounded-xl px-4 py-3 text-sm" style={{ background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.25)", color: "#f87171" }}>
+            {error}
+          </div>
+        )}
+
+        {/* Botón de eliminar */}
         <button
           disabled={!isMatch}
           onClick={() => setShowModal(true)}
@@ -450,27 +410,30 @@ function DeleteSection({ user }) {
             <div className="flex gap-3">
               <button
                 onClick={() => setShowModal(false)}
+                disabled={loading}
                 className="flex-1 py-3 rounded-xl text-sm font-semibold transition-all duration-200"
                 style={{
                   background: "rgba(255,255,255,0.05)",
                   border: "1px solid rgba(255,255,255,0.1)",
                   color: "#9ca3af",
-                  cursor: "pointer",
+                  cursor: loading ? "not-allowed" : "pointer",
                 }}
               >
                 Cancelar
               </button>
               <button
                 onClick={handleDelete}
+                disabled={loading}
                 className="flex-1 py-3 rounded-xl text-sm font-bold tracking-wide transition-all duration-200"
                 style={{
                   background: "rgba(239,68,68,0.2)",
                   border: "1px solid rgba(239,68,68,0.4)",
                   color: "#f87171",
-                  cursor: "pointer",
+                  cursor: loading ? "not-allowed" : "pointer",
+                  opacity: loading ? 0.6 : 1,
                 }}
               >
-                Sí, eliminar
+                {loading ? "Eliminando..." : "Sí, eliminar"}
               </button>
             </div>
           </div>
@@ -483,14 +446,10 @@ function DeleteSection({ user }) {
 
 // ─── COMPONENTES REUTILIZABLES ────────────────────────────────────────────────
 
-// Cabecera de cada sección con título y subtítulo
 function SectionHeader({ title, subtitle, danger }) {
   return (
     <div className="flex flex-col gap-1 pb-5" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-      <h2
-        className="text-lg font-bold text-white tracking-wide"
-        style={{ color: danger ? "#f87171" : "white" }}
-      >
+      <h2 className="text-lg font-bold tracking-wide" style={{ color: danger ? "#f87171" : "white" }}>
         {title}
       </h2>
       <p className="text-xs tracking-wide" style={{ color: "#6b7280" }}>{subtitle}</p>
@@ -498,7 +457,6 @@ function SectionHeader({ title, subtitle, danger }) {
   );
 }
 
-// Campo de texto genérico (input o textarea)
 function Field({ label, name, value, onChange, placeholder, type = "text", multiline = false }) {
   const sharedStyle = {
     background: "rgba(255,255,255,0.04)",
@@ -511,31 +469,14 @@ function Field({ label, name, value, onChange, placeholder, type = "text", multi
         {label}
       </label>
       {multiline ? (
-        <textarea
-          name={name}
-          value={value}
-          onChange={onChange}
-          placeholder={placeholder}
-          rows={3}
-          className="rounded-xl px-4 py-3 text-sm text-white outline-none resize-none"
-          style={sharedStyle}
-        />
+        <textarea name={name} value={value} onChange={onChange} placeholder={placeholder} rows={3} className="rounded-xl px-4 py-3 text-sm text-white outline-none resize-none" style={sharedStyle} />
       ) : (
-        <input
-          type={type}
-          name={name}
-          value={value}
-          onChange={onChange}
-          placeholder={placeholder}
-          className="rounded-xl px-4 py-3 text-sm text-white outline-none"
-          style={sharedStyle}
-        />
+        <input type={type} name={name} value={value} onChange={onChange} placeholder={placeholder} className="rounded-xl px-4 py-3 text-sm text-white outline-none" style={sharedStyle} />
       )}
     </div>
   );
 }
 
-// Campo de contraseña con botón para mostrar/ocultar
 function PasswordField({ label, name, value, onChange, visible, onToggle }) {
   return (
     <div className="flex flex-col gap-1.5">
@@ -550,12 +491,8 @@ function PasswordField({ label, name, value, onChange, visible, onToggle }) {
           onChange={onChange}
           placeholder="••••••••"
           className="w-full rounded-xl px-4 py-3 text-sm text-white outline-none pr-10"
-          style={{
-            background: "rgba(255,255,255,0.04)",
-            border: "1px solid rgba(255,255,255,0.08)",
-          }}
+          style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}
         />
-        {/* Botón ojo — alterna entre mostrar y ocultar la contraseña */}
         <button
           type="button"
           onClick={onToggle}
@@ -569,7 +506,6 @@ function PasswordField({ label, name, value, onChange, visible, onToggle }) {
   );
 }
 
-// Botón de guardar reutilizable con el estilo morado de Cinesfera
 function SaveButton({ onClick, label = "Guardar cambios" }) {
   return (
     <button
@@ -581,12 +517,8 @@ function SaveButton({ onClick, label = "Guardar cambios" }) {
         cursor: "pointer",
         letterSpacing: "0.1em",
       }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.boxShadow = "0 6px 20px rgba(124,58,237,0.6), 0 0 0 1px rgba(168,85,247,0.3)";
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.boxShadow = "0 4px 15px rgba(124,58,237,0.4), 0 0 0 1px rgba(168,85,247,0.2)";
-      }}
+      onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 6px 20px rgba(124,58,237,0.6), 0 0 0 1px rgba(168,85,247,0.3)"; }}
+      onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 4px 15px rgba(124,58,237,0.4), 0 0 0 1px rgba(168,85,247,0.2)"; }}
     >
       {label}
     </button>

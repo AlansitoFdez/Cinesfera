@@ -25,7 +25,15 @@ class AuthController {
   async signup(req, res) {
     const { username, email, password, biography } = req.body;
     try {
-      const newUser = await authService.signup(username, email, password, biography);
+      const { newUser, token } = await authService.signup(username, email, password, biography);
+
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: 3600000
+      })
+
       return res.status(201).json(Respuesta.exito(newUser, "Usuario registrado exitosamente"));
     } catch (error) {
       logMensaje(error);

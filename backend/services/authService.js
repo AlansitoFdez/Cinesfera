@@ -23,12 +23,12 @@ class AuthService {
       username: user.username,
       email: user.email,
       role: user.role
-    },
-    process.env.SECRET_KEY,
-    {
-      expiresIn: "1h"
-    }
-  )
+    },  
+      process.env.SECRET_KEY,
+      {
+        expiresIn: "1h"
+      }
+    )
 
     delete user.dataValues.password;
     return { user, token };
@@ -47,7 +47,19 @@ class AuthService {
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await User.create({ username, email, password: hashedPassword, biography });
     delete newUser.dataValues.password;
-    return newUser;
+
+    const token = jwt.sign({
+      sub: newUser.id,
+      username: newUser.username,
+      email: newUser.email,
+      role: newUser.role
+    },
+      process.env.SECRET_KEY,
+      {
+        expiresIn: "1h"
+      }
+    )
+    return { newUser, token };
   }
 
   // ── NUEVO ──────────────────────────────────────────────────────────────────
