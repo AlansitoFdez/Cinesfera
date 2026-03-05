@@ -1,3 +1,13 @@
 ### Get All Users
 GET http://localhost:3000/api/user
 Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiQWxhbl9DaW5lc2ZlcmEiLCJlbWFpbCI6ImFsYW5AY2luZXNmZXJhLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3MjQ0MTE2NiwiZXhwIjoxNzcyNDQ0NzY2fQ.72KX4CplThfQAQdxzf6BkPQkmt9QQYFLGPuIcdSj5e4
+
+### Change Password
+PUT http://localhost:3000/api/user/me/password
+Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiQWxhbl9DaW5lc2ZlcmEiLCJlbWFpbCI6ImFsYW5AY2luZXNmZXJhLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3MjcyMjM2OCwiZXhwIjoxNzcyNzI1OTY4fQ.Bmy3Al-l6m6inWfebkdRiKaKz3o3-mWBG5edzHDcLw0
+Content-Type: application/json
+
+{
+  "currentPassword": "123456",
+  "newPassword": "alan123"
+}

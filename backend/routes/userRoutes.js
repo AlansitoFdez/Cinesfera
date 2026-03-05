@@ -6,4 +6,6 @@ router.get("/", userController.getAllUsers)
 
 router.delete("/me", userController.deleteAccount)
 
+router.put("/me/password", userController.changePassword)
+
 module.exports = router

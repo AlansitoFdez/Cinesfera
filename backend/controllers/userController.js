@@ -32,6 +32,28 @@ class UserController {
       return res.status(500).json(Respuesta.error("Error al eliminar cuenta"));
     }
   }
+
+  async changePassword(req, res) {
+    try {
+      const userId = req.user.sub
+      const { currentPassword, newPassword } = req.body
+
+      if(!currentPassword || !newPassword) {
+        return res.status(400).json(Respuesta.error("Debes enviar la contraseña actual y la nueva"))
+      }
+
+      await userService.changePassword(userId, currentPassword, newPassword)
+
+      return res.status(200).json(Respuesta.exito(null, "Contraseña cambiada exitosamente"))
+    } catch (error) {
+      logMensaje(error)
+
+      if(error.isControlled) {
+        return res.status(400).json(Respuesta.error(error.message))
+      }
+      return res.status(500).json(Respuesta.error("Error al cambiar la contraseña"))
+    }
+  }
 }
 
 module.exports = new UserController()
