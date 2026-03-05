@@ -102,7 +102,7 @@ export default function Login() {
             >
               {/* "Cine" entra más rápido */}
               <SplitText
-                text="Cine"
+                text="Cin"
                 delay={0.1} // antes: 0.2 → casi sin espera
                 duration={0.4} // antes: 0.6 → animación más corta
                 stagger={0.03} // antes: 0.06 → menos tiempo entre letras
@@ -111,7 +111,7 @@ export default function Login() {
 
               {/* "sfera" entra justo detrás */}
               <SplitText
-                text="sfera"
+                text="esfera"
                 className="text-purple-500"
                 delay={0.25} // antes: 0.5 → no espera tanto a que "Cine" termine
                 duration={0.4}

@@ -1,21 +1,108 @@
 import { useLayoutEffect, useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { gsap } from "gsap";
-import { Search, User, UserCircle, Settings, LogOut } from "lucide-react";
+import { gsap } from "gsap"
+import { Search, User, UserCircle, Settings, LogOut, X } from "lucide-react";
 import { GoArrowUpRight } from "react-icons/go";
 import { useAuth } from "../../context/AuthContext";
 import { useDevMode } from "../../context/DevModeContext";
 
+function SearchModal({ isOpen, onClose }) {
+  const [query, setQuery] = useState("");
+  const inputRef = useRef(null);
+  const overlayRef = useRef(null);
+  const modalRef = useRef(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => inputRef.current?.focus(), 50);
+      gsap.fromTo(overlayRef.current, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power2.out" });
+      gsap.fromTo(modalRef.current, { opacity: 0, y: -16, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.25, ease: "power3.out" });
+    }
+  }, [isOpen]);
+
+  const handleClose = () => {
+    gsap.to(overlayRef.current, { opacity: 0, duration: 0.15, ease: "power2.in" });
+    gsap.to(modalRef.current, { opacity: 0, y: -10, scale: 0.97, duration: 0.15, ease: "power2.in", onComplete: () => { setQuery(""); onClose(); } });
+  };
+
+  const handleKeyDown = (e) => { if (e.key === "Escape") handleClose(); };
+
+  if (!isOpen) return null;
+
+  return (
+    <div
+      ref={overlayRef}
+      className="fixed inset-0 z-[9999] flex items-start justify-center pt-[10vh]"
+      style={{ background: "rgba(0,0,0,0.7)", backdropFilter: "blur(4px)" }}
+      onClick={(e) => { if (e.target === overlayRef.current) handleClose(); }}
+    >
+      <div
+        ref={modalRef}
+        className="w-[90%] max-w-[640px] rounded-2xl overflow-hidden"
+        style={{ background: "rgba(15,15,20,0.98)", border: "1px solid rgba(168,85,247,0.25)", boxShadow: "0 0 60px rgba(124,58,237,0.2), 0 20px 60px rgba(0,0,0,0.8)" }}
+        onKeyDown={handleKeyDown}
+      >
+        <div className="flex items-center gap-3 px-5 py-4" style={{ borderBottom: "1px solid rgba(168,85,247,0.1)" }}>
+          <Search size={18} style={{ color: "rgba(168,85,247,0.7)", flexShrink: 0 }} />
+          <input
+            ref={inputRef}
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Buscar películas y series..."
+            className="flex-1 bg-transparent outline-none"
+            style={{ color: "white", fontSize: "1rem", letterSpacing: "0.01em" }}
+          />
+          <button
+            onClick={handleClose}
+            className="p-1 rounded-full transition-all duration-200"
+            style={{ color: "#6b7280", background: "transparent", border: "none", cursor: "pointer" }}
+            onMouseEnter={(e) => { e.currentTarget.style.color = "white"; e.currentTarget.style.background = "rgba(255,255,255,0.08)"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.color = "#6b7280"; e.currentTarget.style.background = "transparent"; }}
+          >
+            <X size={16} />
+          </button>
+        </div>
+
+        {!query && (
+          <div className="px-5 py-4">
+            <p style={{ fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.15em", color: "#4b5563", marginBottom: "0.75rem" }}>Búsquedas populares</p>
+            <div className="flex flex-wrap gap-2">
+              {["Acción", "Comedia", "Drama", "Sci-Fi", "Terror"].map((tag) => (
+                <button
+                  key={tag}
+                  onClick={() => setQuery(tag)}
+                  className="rounded-full transition-all duration-200"
+                  style={{ padding: "0.35rem 0.9rem", fontSize: "0.8rem", color: "#9ca3af", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(168,85,247,0.15)", cursor: "pointer" }}
+                  onMouseEnter={(e) => { e.currentTarget.style.color = "white"; e.currentTarget.style.background = "rgba(124,58,237,0.15)"; e.currentTarget.style.borderColor = "rgba(168,85,247,0.4)"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = "#9ca3af"; e.currentTarget.style.background = "rgba(255,255,255,0.05)"; e.currentTarget.style.borderColor = "rgba(168,85,247,0.15)"; }}
+                >
+                  {tag}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {query && (
+          <div className="px-5 py-4">
+            <p style={{ fontSize: "0.75rem", color: "#4b5563" }}>Buscando <span style={{ color: "#a855f7" }}>"{query}"</span>...</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 const NAV_CARDS = [
   { label: "Películas", description: "Descubre los últimos estrenos y clásicos del cine.", bgColor: "#0d0d12", to: "/movies" },
   { label: "Series", description: "Sigue tus series favoritas, temporada a temporada.", bgColor: "#0f0e15", to: "/series" },
-  { label: "Mi Lista", description: "Todo lo que quieres ver, en un solo lugar.", bgColor: "#100e16", to: "/list" },
-  { label: "Amigos", description: "Comparte lo que ves y descubre qué ven los demás.", bgColor: "#0e0d13", to: "/friends" },
+  { label: "Mis Listas", description: "Todo lo que quieres ver, en un solo lugar.", bgColor: "#100e16", to: "/list" },
 ];
 
 const USER_CARDS = [
-  { label: "Mi Perfil", description: "Edita tu información y preferencias.", bgColor: "#0d0d12", to: "/profile", icon: UserCircle, isLogout: false },
-  { label: "Configuración", description: "Gestiona tu cuenta y privacidad.", bgColor: "#0f0e15", to: "/settings", icon: Settings, isLogout: false },
+  { label: "Amigos", description: "Comparte lo que ves y descubre qué ven los demás.", bgColor: "#0d0d12", to: "/friends", icon: UserCircle, isLogout: false },
+  { label: "Configuración", description: "Gestiona tu perfil, tus datos y tu privacidad.", bgColor: "#0f0e15", to: "/settings", icon: Settings, isLogout: false },
   { label: "Cerrar Sesión", description: "Hasta la próxima.", bgColor: "#120d0d", to: null, icon: LogOut, isLogout: true },
 ];
 
@@ -28,6 +115,7 @@ export default function NavbarUser() {
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [activeMenu, setActiveMenu] = useState(null);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const navRef = useRef(null);
   const cardsRef = useRef([]);
@@ -149,7 +237,9 @@ export default function NavbarUser() {
   if (!user || location.pathname === "/login") return null;
 
   return (
-    <div className="w-full flex justify-center py-4">
+    <>
+      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+      <div className="w-full flex justify-center py-4">
       <div className="relative w-[90%] max-w-[800px]">
         <nav
           ref={navRef}
@@ -177,6 +267,7 @@ export default function NavbarUser() {
 
             <div className="flex items-center gap-1">
               <button
+                onClick={() => setIsSearchOpen(true)}
                 className="p-2 rounded-full transition-all duration-200"
                 style={{ color: "#6b7280", background: "transparent", border: "none", cursor: "pointer" }}
                 onMouseEnter={(e) => { e.currentTarget.style.color = "white"; e.currentTarget.style.background = "rgba(168,85,247,0.08)"; }}
@@ -237,5 +328,6 @@ export default function NavbarUser() {
         </nav>
       </div>
     </div>
+    </>
   );
 }

@@ -12,8 +12,8 @@ const ADMIN_CARDS = [
 ];
 
 const USER_CARDS = [
-  { label: "Mi Perfil", description: "Edita tu información y preferencias.", bgColor: "#0d0d12", to: "/profile", icon: UserCircle, isLogout: false },
-  { label: "Configuración", description: "Gestiona tu cuenta y privacidad.", bgColor: "#0f0e15", to: "/settings", icon: Settings, isLogout: false },
+  { label: "Amigos", description: "Comparte lo que ves y descubre qué ven los demás.", bgColor: "#0d0d12", to: "/friends", icon: UserCircle, isLogout: false },
+  { label: "Configuración", description: "Gestiona tu perfil, tus datos y tu privacidad.", bgColor: "#0f0e15", to: "/settings", icon: Settings, isLogout: false },
   { label: "Cerrar Sesión", description: "Hasta la próxima.", bgColor: "#120d0d", to: null, icon: LogOut, isLogout: true },
 ];
 
