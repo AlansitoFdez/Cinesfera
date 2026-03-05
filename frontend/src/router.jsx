@@ -3,6 +3,7 @@ import RootLayout from "./components/layout/RootLayout";
 import Login from "./components/auth/Login";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import PlaceholderPage from "./components/ui/PlaceHolderPage";
+import Settings from "./components/ConfigUser/Settings";
 
 export const router = createBrowserRouter([
   {
@@ -50,6 +51,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <PlaceholderPage title="Amigos" />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "settings",
+        element: (
+          <ProtectedRoute>
+            <Settings />
           </ProtectedRoute>
         ),
       },
