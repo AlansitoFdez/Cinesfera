@@ -11,3 +11,14 @@ Content-Type: application/json
   "currentPassword": "123456",
   "newPassword": "alan123"
 }
+
+### Update Profile
+PUT http://localhost:3000/api/user/me
+Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiQWxhbl9DaW5lc2ZlcmEiLCJlbWFpbCI6ImFsYW5AY2luZXNmZXJhLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3MzA1NTg0MiwiZXhwIjoxNzczMDU5NDQyfQ.8WWH8nWegETca6oyEIlxOua1rAE0CfExtRYK8JZyDjc
+Content-Type: application/json
+
+{
+  "username": "Alansito_Admin",
+  "email": "alanfdiosdado@gmail.com",
+  "biography": "Esta es la BIO de un Admin"
+}

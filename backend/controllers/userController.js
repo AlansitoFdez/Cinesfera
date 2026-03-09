@@ -54,6 +54,26 @@ class UserController {
       return res.status(500).json(Respuesta.error("Error al cambiar la contraseña"))
     }
   }
+
+  async updateProfile(req, res) {
+    try {
+      const userId = req.user.sub
+      const { username, email, biography } = req.body
+
+      const avatarFile = req.file
+
+      const updatedUser = await userService.updateProfile(userId, { username, email, biography, avatarFile })
+
+      return res.status(200).json(Respuesta.exito(updatedUser, "Perfil actualizado exitosamente"))
+    } catch (error) {
+      logMensaje(error)
+
+      if(error.isControlled) {
+        return res.status(400).json(Respuesta.error(error.message))
+      }
+      return res.status(500).json(Respuesta.error("Error al actualizar el perfil"))
+    }
+  }
 }
 
 module.exports = new UserController()

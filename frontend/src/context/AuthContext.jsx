@@ -32,6 +32,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = (userData) => setUser(userData);
+
   const logout = async () => {
     try {
       await axios.post(
@@ -46,12 +47,18 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // Mientras verificamos la cookie no renderizamos nada para evitar
-  // que ProtectedRoute redirija al login antes de saber la verdad
+  // Actualiza los datos del usuario en memoria con los datos nuevos que
+  // devuelve el backend. Usamos el operador ... (spread) para combinar
+  // los datos actuales con los nuevos — así si el backend devuelve solo
+  // algunos campos, el resto se mantiene como estaba.
+  const updateUser = (newData) => setUser((prev) => ({ ...prev, ...newData }))
+
   if (checking) return null;
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    // Añadimos updateUser al value para que cualquier componente que use
+    // useAuth() pueda llamarla cuando necesite actualizar el usuario
+    <AuthContext.Provider value={{ user, login, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   );
