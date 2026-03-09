@@ -19,6 +19,6 @@ Content-Type: application/json
 
 {
   "username": "Alansito_Admin",
-  "email": "alanfdiosdado@gmail.com",
+  "email": "prueba@gmail.com",
   "biography": "Esta es la BIO de un Admin"
 }
