@@ -3,8 +3,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { gsap } from "gsap"
 import { Search, User, UserCircle, Settings, LogOut, X } from "lucide-react";
 import { GoArrowUpRight } from "react-icons/go";
-import { useAuth } from "../../context/AuthContext";
-import { useDevMode } from "../../context/DevModeContext";
+import { useAuth } from "../../context/UseAuth";
+import { useDevMode } from "../../context/UseDevMode";
 
 function SearchModal({ isOpen, onClose }) {
   const [query, setQuery] = useState("");

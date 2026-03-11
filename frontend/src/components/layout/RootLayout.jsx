@@ -1,8 +1,8 @@
 import { Outlet } from "react-router-dom";
 import NavbarUser from "./NavbarUser";
 import NavbarAdmin from "./NavbarAdmin";
-import { useAuth } from "../../context/AuthContext";
-import { useDevMode } from "../../context/DevModeContext";
+import { useAuth } from "../../context/UseAuth";
+import { useDevMode } from "../../context/UseDevMode";
 
 export default function RootLayout() {
   const { user } = useAuth();
