@@ -1,4 +1,5 @@
 import useHomeData from '../../hooks/useHomeData'
+import MovieCard from '../ui/MovieCard'
 
 export default function Home() {
     const { trending, loading, error } = useHomeData()
@@ -19,6 +20,11 @@ export default function Home() {
                         <p className='text-lg mt-4 text-gray-300'>{peliHero?.overview?.slice(0, 150) + "..."}</p>
                         <button className='mt-4 px-4 py-2 rounded-lg font-bold text-white' style={{background: "linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)"}}>Ver más</button>
                     </div>
+                </div>
+                <div className='flex gap-4'>
+                    {trending.slice(1).map(movie => (
+                        <MovieCard key={movie.id} movie={movie} />
+                    ))}
                 </div>
             </div>
             </>
