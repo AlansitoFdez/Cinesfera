@@ -37,6 +37,15 @@ class TmdbService {
             throw error
         }
     }
+
+    async getProviders(type, id) {
+        try {
+            const response = await api.get(`/${type}/${id}/watch/providers`, {params: {watch_region: "ES"}})
+            return response
+        } catch (error) {
+            throw error
+        }
+    }
 }
 
 module.exports = new TmdbService()

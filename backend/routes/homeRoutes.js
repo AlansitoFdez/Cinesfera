@@ -6,5 +6,6 @@ router.get("/trending", tmdbController.getTrending)
 router.get("/popular/:type", tmdbController.getPopular)
 router.get("/top_rated/:type", tmdbController.getTopRated)
 router.get("/by_genre/:type/:id", tmdbController.getByGenre)
+router.get("/providers/:type/:id", tmdbController.getProviders)
 
 module.exports = router
