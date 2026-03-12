@@ -1,0 +1,15 @@
+### GET /api/home/trending
+GET http://localhost:3000/api/home/trending
+Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiQWxhbnNpdG8iLCJlbWFpbCI6ImFsYW5AY2luZXNmZXJhLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3MzMwNzQ0MywiZXhwIjoxNzczMzExMDQzfQ.p4BlIVdismSu6P-lyZmCYoJ1PcHYvAx6LdrvFFPwpNw
+
+### GET /api/home/popular
+GET http://localhost:3000/api/home/popular/movie
+Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiQWxhbnNpdG8iLCJlbWFpbCI6ImFsYW5AY2luZXNmZXJhLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3MzMwNzQ0MywiZXhwIjoxNzczMzExMDQzfQ.p4BlIVdismSu6P-lyZmCYoJ1PcHYvAx6LdrvFFPwpNw
+
+### GET /api/home/top-rated
+GET http://localhost:3000/api/home/top_rated/tv
+Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiQWxhbnNpdG8iLCJlbWFpbCI6ImFsYW5AY2luZXNmZXJhLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3MzMwNzQ0MywiZXhwIjoxNzczMzExMDQzfQ.p4BlIVdismSu6P-lyZmCYoJ1PcHYvAx6LdrvFFPwpNw
+
+### GET /api/home/get-by-genre
+GET http://localhost:3000/api/home/by_genre/movie/35
+Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiQWxhbnNpdG8iLCJlbWFpbCI6ImFsYW5AY2luZXNmZXJhLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3MzMwNzQ0MywiZXhwIjoxNzczMzExMDQzfQ.p4BlIVdismSu6P-lyZmCYoJ1PcHYvAx6LdrvFFPwpNw
