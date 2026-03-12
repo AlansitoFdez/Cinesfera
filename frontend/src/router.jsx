@@ -7,6 +7,7 @@ import Login from "./components/auth/Login";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import PlaceholderPage from "./components/ui/PlaceHolderPage";
 import Settings from "./components/setting/Settings";
+import Home from "./components/pages/Home";
 
 /* ==========================================================================
 OBJETO ROUTER CON TODAS LAS RUTAS
@@ -34,7 +35,7 @@ export const router = createBrowserRouter([
         path: "home",
         element: (
           <ProtectedRoute>
-            <PlaceholderPage title="Home" /> {/*Aquí irá el componente Home, todavía por crear*/}
+            <Home />
           </ProtectedRoute>
         ),
       },

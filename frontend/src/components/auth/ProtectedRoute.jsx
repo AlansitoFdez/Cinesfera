@@ -1,4 +1,4 @@
-import { useAuth } from "../../context/UseAuth";
+import { useAuth } from "../../hooks/UseAuth";
 import { Navigate } from "react-router-dom";
 
 //Este componente envuelve un componente que sería la página que queremos proteger y ese sería el prop children

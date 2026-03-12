@@ -3,8 +3,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { gsap } from "gsap";
 import { User, UserCircle, Settings, LogOut } from "lucide-react";
 import { GoArrowUpRight } from "react-icons/go";
-import { useAuth } from "../../context/UseAuth";
-import { useDevMode } from "../../context/UseDevMode";
+import { useAuth } from "../../hooks/UseAuth";
+import { useDevMode } from "../../hooks/UseDevMode";
 
 const ADMIN_CARDS = [
   { label: "Usuarios", description: "Gestiona cuentas, roles y permisos de la plataforma.", bgColor: "#0d0d12", to: "/admin/users" },

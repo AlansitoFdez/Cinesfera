@@ -1,6 +1,6 @@
 import { useState } from "react";
 import api from "../../api.js";
-import { useAuth } from "../../context/UseAuth";
+import { useAuth } from "../../hooks/UseAuth";
 import { useNavigate } from "react-router-dom";
 import SplitText from "../ui/SplitText";
 

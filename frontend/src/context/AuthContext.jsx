@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { AuthContext } from "./UseAuth";
+import { AuthContext } from "../hooks/UseAuth";
 import api from "../api.js";
 
 //Creamos la función AuthProvider que será un envoltorio de componentes

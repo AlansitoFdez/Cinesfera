@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import api from "../../api.js";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/UseAuth";
+import { useAuth } from "../../hooks/UseAuth";
 import { Camera, User, Lock, Trash2, Eye, EyeOff, CheckCircle, AlertTriangle } from "lucide-react";
 
 // ─── COMPONENTE PRINCIPAL ────────────────────────────────────────────────────

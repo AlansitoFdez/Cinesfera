@@ -3,8 +3,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { gsap } from "gsap"
 import { Search, User, UserCircle, Settings, LogOut, X } from "lucide-react";
 import { GoArrowUpRight } from "react-icons/go";
-import { useAuth } from "../../context/UseAuth";
-import { useDevMode } from "../../context/UseDevMode";
+import { useAuth } from "../../hooks/UseAuth";
+import { useDevMode } from "../../hooks/UseDevMode";
 
 function SearchModal({ isOpen, onClose }) {
   const [query, setQuery] = useState("");
@@ -120,6 +120,7 @@ export default function NavbarUser() {
   const navRef = useRef(null);
   const cardsRef = useRef([]);
   const tlRef = useRef(null);
+  const [scrolled, setScrolled] = useState(false)
 
   const handleLogout = () => { logout(); navigate("/login"); };
   const handleActivateDevMode = () => { toggleDevMode(); navigate("/admin"); };
@@ -157,6 +158,14 @@ export default function NavbarUser() {
     tl.to(cardsRef.current, { y: 0, opacity: 1, duration: 0.35, ease: "power3.out", stagger: 0.07 }, "-=0.1");
     return tl;
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Solo inicializa la altura al montar
   useLayoutEffect(() => {
@@ -244,7 +253,7 @@ export default function NavbarUser() {
         <nav
           ref={navRef}
           className="block h-[60px] p-0 rounded-xl relative overflow-hidden will-change-[height]"
-          style={{ background: "rgba(15,15,20,0.95)", border: "1px solid rgba(168,85,247,0.15)", boxShadow: "0 0 40px rgba(124,58,237,0.08), 0 8px 32px rgba(0,0,0,0.6)" }}
+          style={{ background: scrolled ? "rgba(15,15,20,0.95)" : "transparent", border: "1px solid rgba(168,85,247,0.15)", boxShadow: "0 0 40px rgba(124,58,237,0.08), 0 8px 32px rgba(0,0,0,0.6)" }}
         >
           <div className="absolute inset-x-0 top-0 h-[60px] flex items-center justify-between px-4 z-[2]">
 

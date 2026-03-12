@@ -41,7 +41,7 @@ class TmdbService {
     async getProviders(type, id) {
         try {
             const response = await api.get(`/${type}/${id}/watch/providers`, {params: {watch_region: "ES"}})
-            return response
+            return response.results?.ES?.flatrate || []
         } catch (error) {
             throw error
         }
