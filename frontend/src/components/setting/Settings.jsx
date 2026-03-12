@@ -150,6 +150,8 @@ function ProfileSection({ user }) {
           >
             {avatarPreview ? (
               <img src={avatarPreview} alt="avatar" className="w-full h-full object-cover" />
+            ) : user?.avatar ? (
+              <img src={user.avatar} alt="avatar" className="w-full h-full object-cover" />
             ) : (
               <span className="text-2xl font-black text-purple-400" style={{ fontFamily: "'Georgia', serif" }}>
                 {(user?.username || "U")[0].toUpperCase()}
