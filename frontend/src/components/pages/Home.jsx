@@ -31,13 +31,13 @@ export default function Home() {
                     </div>
                 </div>
                 <CarouselSection titulo="Tendencias" peliculas={trending.slice(1)} />
-                <CarouselSection titulo="Películas populares" peliculas={popular_movies} />
-                <CarouselSection titulo="Series populares" peliculas={popular_series} />
-                <CarouselSection titulo="Películas mejor valoradas" peliculas={top_rated_movies} />
-                <CarouselSection titulo="Series mejor valoradas" peliculas={top_rated_series} />
-                <CarouselSection titulo="Series de comedia" peliculas={top_comedy_series} />
-                <CarouselSection titulo="Películas de acción" peliculas={top_action_movies} />
-                <CarouselSection titulo="Películas de terror" peliculas={top_horror_movies} />
+                <CarouselSection titulo="Películas populares" peliculas={popular_movies} mediaType="movie" />
+                <CarouselSection titulo="Series populares" peliculas={popular_series} mediaType="tv" />
+                <CarouselSection titulo="Películas mejor valoradas" peliculas={top_rated_movies} mediaType="movie" />
+                <CarouselSection titulo="Series mejor valoradas" peliculas={top_rated_series} mediaType="tv" />
+                <CarouselSection titulo="Series de comedia" peliculas={top_comedy_series} mediaType="tv" />
+                <CarouselSection titulo="Películas de acción" peliculas={top_action_movies} mediaType="movie" />
+                <CarouselSection titulo="Películas de terror" peliculas={top_horror_movies} mediaType="movie" />
             </div>
             </>
         )
