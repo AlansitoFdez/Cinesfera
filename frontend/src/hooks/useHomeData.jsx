@@ -28,14 +28,14 @@ export default function useHomeData() {
                     api.get('/home/by_genre/movie/27'),
                 ])
 
-                setTrending(resTrending.datos.results.slice(0, 11));
-                setPopularMovies(resPopularMovies.datos.results.slice(0, 10));
-                setPopularSeries(resPopularSeries.datos.results.slice(0, 10));
-                setTopRatedMovies(resTopRatedMovies.datos.results.slice(0, 10));
-                setTopRatedSeries(resTopRatedSeries.datos.results.slice(0, 10));
-                setTopComedySeries(resTopComedySeries.datos.results.slice(0, 10));
-                setTopActionMovies(resTopActionMovies.datos.results.slice(0, 10));
-                setTopHorrorMovies(resTopHorrorMovies.datos.results.slice(0, 10));
+                setTrending(resTrending.datos.results);
+                setPopularMovies(resPopularMovies.datos.results);
+                setPopularSeries(resPopularSeries.datos.results);
+                setTopRatedMovies(resTopRatedMovies.datos.results);
+                setTopRatedSeries(resTopRatedSeries.datos.results);
+                setTopComedySeries(resTopComedySeries.datos.results);
+                setTopActionMovies(resTopActionMovies.datos.results);
+                setTopHorrorMovies(resTopHorrorMovies.datos.results);
             } catch (error) {
                 setError(error);
             } finally {

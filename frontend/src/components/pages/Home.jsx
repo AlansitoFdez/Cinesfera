@@ -1,8 +1,17 @@
 import useHomeData from '../../hooks/useHomeData'
-import MovieCard from '../ui/MovieCard'
+import CarouselSection from '../ui/CarouselHome'
 
 export default function Home() {
-    const { trending, loading, error } = useHomeData()
+    const {        trending,
+        popular_movies,
+        popular_series,
+        top_rated_movies,
+        top_rated_series,
+        top_comedy_series,
+        top_action_movies,
+        top_horror_movies,
+        loading,
+        error} = useHomeData()
     const peliHero = trending[0]
 
     if (loading) {
@@ -21,11 +30,14 @@ export default function Home() {
                         <button className='mt-4 px-4 py-2 rounded-lg font-bold text-white' style={{background: "linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)"}}>Ver más</button>
                     </div>
                 </div>
-                <div className='flex gap-4'>
-                    {trending.slice(1).map(movie => (
-                        <MovieCard key={movie.id} movie={movie} />
-                    ))}
-                </div>
+                <CarouselSection titulo="Tendencias" peliculas={trending.slice(1)} />
+                <CarouselSection titulo="Películas populares" peliculas={popular_movies} />
+                <CarouselSection titulo="Series populares" peliculas={popular_series} />
+                <CarouselSection titulo="Películas mejor valoradas" peliculas={top_rated_movies} />
+                <CarouselSection titulo="Series mejor valoradas" peliculas={top_rated_series} />
+                <CarouselSection titulo="Series de comedia" peliculas={top_comedy_series} />
+                <CarouselSection titulo="Películas de acción" peliculas={top_action_movies} />
+                <CarouselSection titulo="Películas de terror" peliculas={top_horror_movies} />
             </div>
             </>
         )

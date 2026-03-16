@@ -18,7 +18,7 @@ export default function MovieCard({ movie }) {
 
 
   return (
-    <div className="relative overflow-hidden w-40" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+    <div className="relative overflow-hidden w-48" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <img
         src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
         alt={movie.title}
