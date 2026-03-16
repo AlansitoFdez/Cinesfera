@@ -3,6 +3,7 @@ import NavbarUser from "./NavbarUser";
 import NavbarAdmin from "./NavbarAdmin";
 import { useAuth } from "../../hooks/UseAuth";
 import { useDevMode } from "../../hooks/UseDevMode";
+import Footer from "./Footer";
 
 export default function RootLayout() {
   const { user } = useAuth();
@@ -24,6 +25,7 @@ export default function RootLayout() {
 
       {/* El contenido empieza desde top: 0, el navbar flota encima */}
       <Outlet />
+      <Footer />
     </div>
   );
 }
