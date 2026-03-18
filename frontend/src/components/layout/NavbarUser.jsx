@@ -11,6 +11,7 @@ function SearchModal({ isOpen, onClose }) {
   const inputRef = useRef(null);
   const overlayRef = useRef(null);
   const modalRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isOpen) {
@@ -25,7 +26,15 @@ function SearchModal({ isOpen, onClose }) {
     gsap.to(modalRef.current, { opacity: 0, y: -10, scale: 0.97, duration: 0.15, ease: "power2.in", onComplete: () => { setQuery(""); onClose(); } });
   };
 
-  const handleKeyDown = (e) => { if (e.key === "Escape") handleClose(); };
+  const handleKeyDown = (e) => {
+    if (e.key === "Escape") handleClose();
+    if (e.key === "Enter") {
+      if (query.trim() !== "") {
+        navigate(`/search?query=${query}`);
+        handleClose();
+      }
+    }
+  };
 
   if (!isOpen) return null;
 

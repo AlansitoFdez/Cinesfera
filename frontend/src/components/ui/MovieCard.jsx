@@ -6,6 +6,7 @@ export default function MovieCard({ movie, mediaType }) {
   const overlayRef = useRef(null);
   const [providers, setProviders] = useState([]);
   const [loading, setLoading] = useState(false);
+  const type = mediaType || movie.media_type
 
   useLayoutEffect(() => {
     gsap.set(overlayRef.current, { y: 20, opacity: 0 });
@@ -17,7 +18,7 @@ export default function MovieCard({ movie, mediaType }) {
     const fetchProviders = async () => {
       if (providers.length > 0) return;
       setLoading(true);
-      const response = await api.get(`/home/providers/${mediaType}/${movie.id}`);
+      const response = await api.get(`/home/providers/${type}/${movie.id}`);
       setProviders(response.datos);
       setLoading(false);
     };

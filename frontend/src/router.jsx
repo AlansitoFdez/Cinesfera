@@ -8,6 +8,7 @@ import ProtectedRoute from "./components/auth/ProtectedRoute";
 import PlaceholderPage from "./components/ui/PlaceHolderPage";
 import Settings from "./components/setting/Settings";
 import Home from "./components/pages/Home";
+import Search from "./components/pages/Search";
 
 /* ==========================================================================
 OBJETO ROUTER CON TODAS LAS RUTAS
@@ -36,6 +37,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <Home />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "search",
+        element: (
+          <ProtectedRoute>
+            <Search />
           </ProtectedRoute>
         ),
       },
