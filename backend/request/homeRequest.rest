@@ -17,3 +17,7 @@ Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiQ
 ### GET /api/home/providers
 GET http://localhost:3000/api/home/providers/movie/1011985
 Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiQWxhbnNpdG8iLCJlbWFpbCI6ImFsYW5AY2luZXNmZXJhLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3MzM5MTE0NCwiZXhwIjoxNzczMzk0NzQ0fQ.j0K4vhrhVCOyq4Ur-3h6iEl-Z3AKzgygLV5L0y62cOo
+
+### GET /api/home/search
+GET http://localhost:3000/api/home/search?query=batman
+Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiQWxhbnNpdG8iLCJlbWFpbCI6ImFsYW5AY2luZXNmZXJhLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3MzgyNTczMiwiZXhwIjoxNzczODI5MzMyfQ.NuRjLd_imjxjIiPAray6PzxLXojiB2ehXJu9frkL6-o

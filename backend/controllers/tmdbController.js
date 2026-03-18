@@ -56,6 +56,18 @@ class TmdbController {
             return res.status(error.status || 500).json(Respuesta.error(null, error.message || "Error al obtener listado de Proveedores"))
         }
     }
+
+
+    async search(req, res) {
+        const {query} = req.query
+        try {
+            const response = await tmdbService.search(query)
+            return res.status(200).json(Respuesta.exito(response, "Busqueda Exitosa"))
+        } catch (error) {
+            logMensaje(error)
+            return res.status(error.status || 500).json(Respuesta.error(null, error.message || "Error al obtener busqueda"))
+        }
+    }
 }
 
 module.exports = new TmdbController()

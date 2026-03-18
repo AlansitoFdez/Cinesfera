@@ -46,6 +46,16 @@ class TmdbService {
             throw error
         }
     }
+
+    async search(query) {
+        try {
+            const response = await api.get(`/search/multi`, {params: {query, language: "es-ES"}})
+            const datos = response.results
+            return datos.filter(item => item.media_type === "movie" || item.media_type === "tv")
+        } catch (error) {
+            throw error
+        }
+    }
 }
 
 module.exports = new TmdbService()
