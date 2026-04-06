@@ -80,7 +80,7 @@ function SearchModal({ isOpen, onClose }) {
               {["Vengadores", "Batman", "Harry Potter", "Star Wars", "El Señor de los Anillos", "Marvel"].map((tag) => (
                 <button
                   key={tag}
-                  onClick={() => setQuery(tag)}
+                  onClick={() => { navigate(`/search?query=${tag}`); handleClose(); }}
                   className="rounded-full transition-all duration-200"
                   style={{ padding: "0.35rem 0.9rem", fontSize: "0.8rem", color: "#9ca3af", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(168,85,247,0.15)", cursor: "pointer" }}
                   onMouseEnter={(e) => { e.currentTarget.style.color = "white"; e.currentTarget.style.background = "rgba(124,58,237,0.15)"; e.currentTarget.style.borderColor = "rgba(168,85,247,0.4)"; }}
