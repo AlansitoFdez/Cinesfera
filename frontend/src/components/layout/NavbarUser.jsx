@@ -77,7 +77,7 @@ function SearchModal({ isOpen, onClose }) {
           <div className="px-5 py-4">
             <p style={{ fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.15em", color: "#4b5563", marginBottom: "0.75rem" }}>Búsquedas populares</p>
             <div className="flex flex-wrap gap-2">
-              {["Acción", "Comedia", "Drama", "Sci-Fi", "Terror"].map((tag) => (
+              {["Vengadores", "Batman", "Harry Potter", "Star Wars", "El Señor de los Anillos", "Marvel"].map((tag) => (
                 <button
                   key={tag}
                   onClick={() => setQuery(tag)}

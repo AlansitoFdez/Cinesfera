@@ -28,7 +28,7 @@ export default function Search() {
 
     return (
         <div>
-            <h1>Search Results</h1>
+            <h1 className="text-2xl font-bold mb-4 text-amber-50">Search Results</h1>
             {loading && <p>Loading...</p>}
             {!loading && error && <p>Error: {error.message}</p>}
             {!loading && datos.length === 0 && <p>No results found.</p>}
