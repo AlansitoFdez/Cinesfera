@@ -120,6 +120,22 @@ function ProfileSection({ user }) {
         formData.append("avatar", avatarFile);
       }
 
+      if (form.email !== user?.email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(form.email)) {
+          setError("Correo electrónico inválido");
+          return;
+        }
+      }
+
+      if (form.username !== user?.username) {
+        const usernameRegex = /^[a-zA-Z0-9_]+$/;
+        if (!usernameRegex.test(form.username)) {
+          setError("Nombre de usuario inválido");
+          return;
+        }
+      }
+
       // Content-Type: undefined le dice a axios que lo detecte solo
       // y ponga el multipart/form-data correcto con su boundary
       const { datos } = await api.put("/user/me", formData, {

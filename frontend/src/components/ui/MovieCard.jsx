@@ -1,8 +1,9 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import api from "../../api";
+import { cn } from "@/lib/utils";
 
-export default function MovieCard({ movie, mediaType }) {
+export default function MovieCard({ movie, mediaType, className }) {
   const overlayRef = useRef(null);
   const [providers, setProviders] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -31,7 +32,7 @@ export default function MovieCard({ movie, mediaType }) {
 
   return (
     <div
-      className="relative overflow-hidden w-48 rounded-lg"
+      className={cn("relative overflow-hidden rounded-lg", className)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >

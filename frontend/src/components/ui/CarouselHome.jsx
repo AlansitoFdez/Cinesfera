@@ -9,7 +9,7 @@ export default function CarouselSection({ titulo, peliculas, mediaType }) {
                 <CarouselContent>
                     {peliculas.map(pelicula => (
                         <CarouselItem key={pelicula.id} className="basis-1/6">
-                            <MovieCard movie={pelicula} mediaType={mediaType || pelicula.media_type}/>
+                            <MovieCard movie={pelicula} mediaType={mediaType || pelicula.media_type} className="w-48" />
                         </CarouselItem>
                     ))}
                 </CarouselContent>
