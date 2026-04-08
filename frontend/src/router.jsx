@@ -9,6 +9,7 @@ import PlaceholderPage from "./components/ui/PlaceHolderPage";
 import Settings from "./components/setting/Settings";
 import Home from "./components/pages/Home";
 import Search from "./components/pages/Search";
+import Details from "./components/pages/Details";
 
 /* ==========================================================================
 OBJETO ROUTER CON TODAS LAS RUTAS
@@ -37,6 +38,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <Home />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "details/:type/:id",
+        element: (
+          <ProtectedRoute>
+            <Details />
           </ProtectedRoute>
         ),
       },

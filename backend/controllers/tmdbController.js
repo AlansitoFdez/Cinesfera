@@ -68,6 +68,17 @@ class TmdbController {
             return res.status(error.status || 500).json(Respuesta.error(null, error.message || "Error al obtener busqueda"))
         }
     }
+
+    async getDetails(req, res) {
+        const {type, id} = req.params
+        try {
+            const response = await tmdbService.getDetails(type, id)
+            return res.status(200).json(Respuesta.exito(response, "Detalles Exitosos"))
+        } catch (error) {
+            logMensaje(error)
+            return res.status(error.status || 500).json(Respuesta.error(null, error.message || "Error al obtener detalles"))
+        }
+    }
 }
 
 module.exports = new TmdbController()
