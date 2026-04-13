@@ -2,9 +2,11 @@ import { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import api from "../../api";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 
 export default function MovieCard({ movie, mediaType, className }) {
   const overlayRef = useRef(null);
+  const navigate = useNavigate();
   const [providers, setProviders] = useState([]);
   const [loading, setLoading] = useState(false);
   const type = mediaType || movie.media_type
@@ -35,6 +37,7 @@ export default function MovieCard({ movie, mediaType, className }) {
       className={cn("relative overflow-hidden rounded-lg", className)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onClick={() => navigate(`/details/${type}/${movie.id}`)}
     >
       <img
         src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}

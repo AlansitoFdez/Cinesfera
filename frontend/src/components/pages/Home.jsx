@@ -29,7 +29,7 @@ export default function Home() {
                     <div className='z-10 absolute bottom-8 left-16 max-w-lg '>
                         <h1 className='text-4xl font-bold text-white'>{peliHero?.title || peliHero?.name}</h1>
                         <p className='text-lg mt-4 text-gray-300'>{peliHero?.overview?.slice(0, 150) + "..."}</p>
-                        <button className='mt-4 px-4 py-2 rounded-lg font-bold text-white' style={{background: "linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)"}} onClick={() => navigate(`/${peliHero.media_type}/${peliHero.id}`)}>Ver más</button>
+                        <button className='mt-4 px-4 py-2 rounded-lg font-bold text-white' style={{background: "linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)"}} onClick={() => navigate(`/details/${peliHero.media_type}/${peliHero.id}`)}>Ver más</button>
                     </div>
                 </div>
                 <CarouselSection titulo="Tendencias" peliculas={trending.slice(1)} />

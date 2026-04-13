@@ -5,6 +5,7 @@ const sequelize = require("../config/sequelize")
 const models = initModels(sequelize)
 
 const User = models.users
+const List = models.lists
 
 class AuthService {
   async login(email, password) {
@@ -47,6 +48,8 @@ class AuthService {
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await User.create({ username, email, password: hashedPassword, biography });
     delete newUser.dataValues.password;
+
+    const newList = await List.create({user_id: newUser.id, name: "Favoritos", description: "Listado de Películas y Series Favoritas", is_default: 1});
 
     const token = jwt.sign({
       sub: newUser.id,
