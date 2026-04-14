@@ -14,6 +14,7 @@ const { verifyToken } = require('./middlewares/auth.js')
 const authRoutes = require("./routes/authRoutes")
 const userRoutes = require("./routes/userRoutes");
 const homeRoutes = require("./routes/homeRoutes");
+const reviewRoutes = require("./routes/reviewRoutes");
 const cookieParser = require('cookie-parser');
 
 
@@ -46,6 +47,7 @@ app.use(cors({
 app.use("/api/auth", authRoutes)
 app.use("/api/user", verifyToken, userRoutes)
 app.use("/api/home", verifyToken, homeRoutes)
+app.use("/api/reviews", verifyToken, reviewRoutes)
 
 
 // ============================================================================
