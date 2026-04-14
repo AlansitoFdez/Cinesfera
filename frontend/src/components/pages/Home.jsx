@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import useHomeData from '../../hooks/useHomeData'
+import useHomeData from '../../hooks/UseHomeData'
 import CarouselSection from '../ui/CarouselHome'
 
 export default function Home() {

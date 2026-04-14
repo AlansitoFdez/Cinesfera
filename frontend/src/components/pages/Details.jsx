@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import useDetailData from "../../hooks/useDetailData";
+import Reviews from "../ui/reviews";
 
 // ─── HERO ─────────────────────────────────────────────────────────────────────
 function Hero({ trailerKey, backdropPath, title }) {
@@ -201,24 +202,6 @@ function Providers({ providers, providersRef }) {
     );
 }
 
-// ─── RESEÑAS (PLACEHOLDER) ────────────────────────────────────────────────────
-function Reviews({ reviewsRef }) {
-    return (
-        <section ref={reviewsRef} className="px-16 mb-20">
-            <SectionTitle>Reseñas</SectionTitle>
-            <div
-                className="rounded-2xl p-12 flex flex-col items-center justify-center gap-4"
-                style={{ background: "rgba(15,15,20,0.95)", border: "1px dashed rgba(168,85,247,0.2)" }}
-            >
-                <span style={{ fontSize: "2.5rem" }}>✍️</span>
-                <p className="uppercase tracking-widest text-sm" style={{ color: "#4b5563" }}>
-                    Las reseñas están en camino
-                </p>
-            </div>
-        </section>
-    );
-}
-
 // ─── HELPER: TÍTULO DE SECCIÓN ────────────────────────────────────────────────
 function SectionTitle({ children }) {
     return (
@@ -282,7 +265,7 @@ export default function Details() {
             <Info data={data} infoRef={infoRef} />
             <Cast cast={data.cast} castRef={castRef} />
             <Providers providers={data.providers} providersRef={providersRef} />
-            <Reviews reviewsRef={reviewsRef} />
+            <Reviews tmdb_id={data.tmdb_id} media_type={type} title={data.title} poster_path={data.poster_path} vote_average={data.vote_average} />
         </div>
     );
 }

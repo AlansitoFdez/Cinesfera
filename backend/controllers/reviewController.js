@@ -5,7 +5,7 @@ class ReviewController {
 
     async createReview(req, res) {
         try {
-            const review = await reviewService.createReview(req.user.id, req.body)
+            const review = await reviewService.createReview(req.user.sub, req.body)
             res.status(201).json(Respuesta.exito(review, "Reseña creada exitosamente"))
         } catch (error) {
             res.status(500).json(Respuesta.error("Error al crear la reseña"))
@@ -23,7 +23,7 @@ class ReviewController {
 
     async deleteReview(req, res) {
         try {
-            await reviewService.deleteReview(req.params.id, req.user.id)
+            await reviewService.deleteReview(req.params.id, req.user.sub)
             res.status(200).json(Respuesta.exito(null, "Reseña eliminada exitosamente"))
         } catch (error) {
             res.status(500).json(Respuesta.error("Error al eliminar la reseña"))

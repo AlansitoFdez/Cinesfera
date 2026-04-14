@@ -3,7 +3,8 @@ const sequelize = require("../config/sequelize")
 const models = initModels(sequelize)
 
 const Review = models.reviews
-const ContentCache = models.content_cache
+const ContentCache = models.contentCache
+const User = models.users
 
 class ReviewService {
 
@@ -36,7 +37,14 @@ class ReviewService {
 
     async getReviewsByContent(tmdb_id, media_type) {
         const reviews = await Review.findAll({
-            where: { tmdb_id, media_type }
+            where: { tmdb_id, media_type },
+            include: [
+                {
+                    model: User,
+                    as: "user",
+                    attributes: ["id", "username", "avatar"]
+                }
+            ]
         })
         return reviews
     }
