@@ -220,10 +220,13 @@ export default function Reviews({ tmdb_id, media_type, title, poster_path, vote_
     const [editando, setEditando] = useState(false);
 
     // Buscar si el usuario actual ya tiene reseña
-    const miReseña = reviews?.find(r => r.user_id === user?.id);
+    const miReseña = reviews?.find(r => r.user_id === user?.sub);
 
     // Reseñas de otros usuarios
-    const otrasReseñas = reviews?.filter(r => r.user_id !== user?.id);
+    const otrasReseñas = reviews?.filter(r => r.user_id !== user?.sub);
+
+    console.log(reviews, user)
+    console.log(typeof user?.id, typeof reviews?.[0]?.user_id)
 
     const handleCreate = async (reviewData) => {
         await createReview({ ...reviewData, tmdb_id, media_type, title, poster_path, vote_average });

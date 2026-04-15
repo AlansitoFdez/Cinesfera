@@ -55,6 +55,16 @@ class ReviewService {
         if (review.user_id !== userId) throw new Error("No tienes permiso para eliminar esta reseña")
         await review.destroy()
     }
+
+    async editReview(reviewId, userId, { rating, comment }) {
+        const review = await Review.findByPk(reviewId)
+        if (!review) throw new Error("Reseña no encontrada")
+        if (review.user_id !== userId) throw new Error("No tienes permiso para editar esta reseña")
+        review.rating = rating
+        review.comment = comment
+        await review.save()
+        return review
+    }
 }
 
 module.exports = new ReviewService()

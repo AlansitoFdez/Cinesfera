@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import api from "../api";
+import { useAuth } from "./UseAuth";
 
 export default function useReviews(tmdb_id, media_type) {
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const { user } = useAuth();
 
     useEffect(() => {
         const cargarReviews = async () => {
@@ -23,7 +25,15 @@ export default function useReviews(tmdb_id, media_type) {
     const createReview = async (reviewData) => {
         try {
             const res = await api.post('/reviews', reviewData);
-            setReviews([...reviews, res.datos]);
+            const reviewConUsuario = {
+                ...res.datos,
+                user: {
+                    id: user.sub,
+                    username: user.username,
+                    avatar: user.avatar
+                }
+            }
+            setReviews([...reviews, reviewConUsuario])
         } catch (error) {
             setError(error);
         }
@@ -32,7 +42,15 @@ export default function useReviews(tmdb_id, media_type) {
     const editReview = async (reviewId, reviewData) => {
         try {
             const res = await api.put(`/reviews/${reviewId}`, reviewData);
-            setReviews(reviews.map(review => review.id === reviewData.id ? res.datos : review));
+            const reviewConUsuario = {
+                ...res.datos,
+                user: {
+                    id: user.sub,
+                    username: user.username,
+                    avatar: user.avatar
+                }
+            }
+            setReviews(reviews.map(review => review.id === reviewId ? reviewConUsuario : review));
         } catch (error) {
             setError(error);
         }
