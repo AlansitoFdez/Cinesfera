@@ -59,9 +59,9 @@ class TmdbController {
 
 
     async search(req, res) {
-        const {query} = req.query
+        const {query, type} = req.query
         try {
-            const response = await tmdbService.search(query)
+            const response = await tmdbService.search(query, type)
             return res.status(200).json(Respuesta.exito(response, "Busqueda Exitosa"))
         } catch (error) {
             logMensaje(error)

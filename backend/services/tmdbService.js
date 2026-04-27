@@ -47,11 +47,11 @@ class TmdbService {
         }
     }
 
-    async search(query) {
+    async search(query, type = null) {
         try {
             const response = await api.get(`/search/multi`, {params: {query, language: "es-ES"}})
             const datos = response.results
-            return datos.filter(item => item.media_type === "movie" || item.media_type === "tv")
+            return datos.filter(item => type ? item.media_type === type : item.media_type === "movie" || item.media_type === "tv")
         } catch (error) {
             throw error
         }

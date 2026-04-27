@@ -10,6 +10,7 @@ import Settings from "./components/setting/Settings";
 import Home from "./components/pages/Home";
 import Search from "./components/pages/Search";
 import Details from "./components/pages/Details";
+import Catalog from "./components/pages/Catalog";
 
 /* ==========================================================================
 OBJETO ROUTER CON TODAS LAS RUTAS
@@ -61,7 +62,7 @@ export const router = createBrowserRouter([
         path: "movies",
         element: (
           <ProtectedRoute>
-            <PlaceholderPage title="Películas" /> {/*Aquí irá el componente Movies, todavía por crear*/}
+            <Catalog type="movie" />
           </ProtectedRoute>
         ),
       },
@@ -69,7 +70,7 @@ export const router = createBrowserRouter([
         path: "series",
         element: (
           <ProtectedRoute>
-            <PlaceholderPage title="Series" /> {/*Aquí irá el componente Series, todavía por crear*/}
+            <Catalog type="tv" />
           </ProtectedRoute>
         ),
       },
