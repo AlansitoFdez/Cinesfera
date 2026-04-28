@@ -74,6 +74,48 @@ class UserController {
       return res.status(500).json(Respuesta.error("Error al actualizar el perfil"))
     }
   }
+
+  async getProfile(req, res) {
+    try {
+        const { username } = req.params
+        const profile = await userService.getProfile(username)
+        return res.status(200).json(Respuesta.exito(profile, "Perfil obtenido correctamente"))
+    } catch (error) {
+        logMensaje(error)
+        if (error.isControlled) {
+            return res.status(404).json(Respuesta.error(error.message))
+        }
+        return res.status(500).json(Respuesta.error("Error al obtener el perfil"))
+    }
+}
+
+async getProfileReviews(req, res) {
+    try {
+        const { username } = req.params
+        const reviews = await userService.getProfileReviews(username, 4)
+        return res.status(200).json(Respuesta.exito(reviews, "Reviews obtenidas correctamente"))
+    } catch (error) {
+        logMensaje(error)
+        if (error.isControlled) {
+            return res.status(404).json(Respuesta.error(error.message))
+        }
+        return res.status(500).json(Respuesta.error("Error al obtener las reviews"))
+    }
+}
+
+async getProfileFavorites(req, res) {
+    try {
+        const { username } = req.params
+        const favorites = await userService.getProfileFavorites(username)
+        return res.status(200).json(Respuesta.exito(favorites, "Favoritos obtenidos correctamente"))
+    } catch (error) {
+        logMensaje(error)
+        if (error.isControlled) {
+            return res.status(404).json(Respuesta.error(error.message))
+        }
+        return res.status(500).json(Respuesta.error("Error al obtener los favoritos"))
+    }
+}
 }
 
 module.exports = new UserController()

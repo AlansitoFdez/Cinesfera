@@ -71,10 +71,10 @@ class UserService {
 
     // ── Construir objeto con solo los campos que llegaron ─────────────────────
     const fieldsToUpdate = {}
-    if (username  !== undefined) fieldsToUpdate.username  = username
-    if (email     !== undefined) fieldsToUpdate.email     = email
+    if (username !== undefined) fieldsToUpdate.username = username
+    if (email !== undefined) fieldsToUpdate.email = email
     if (biography !== undefined) fieldsToUpdate.biography = biography
-    if (avatarUrl !== undefined) fieldsToUpdate.avatar    = avatarUrl
+    if (avatarUrl !== undefined) fieldsToUpdate.avatar = avatarUrl
 
     if (Object.keys(fieldsToUpdate).length === 0) {
       throw controlledError("No se han enviado campos para actualizar")
@@ -89,6 +89,85 @@ class UserService {
 
     return updatedUser
   }
+
+  async getProfile(username) {
+    const user = await User.findOne({
+      where: { username },
+      attributes: { exclude: ["password", "email", "banned"] }
+    })
+
+    if (!user) throw controlledError("Usuario no encontrado")
+
+    // Contamos por separado — más limpio y sin problemas de subqueries
+    const reviewsCount = await models.reviews.count({ where: { user_id: user.id } })
+    const followersCount = await models.follows.count({ where: { followed_id: user.id } })
+    const followingCount = await models.follows.count({ where: { follower_id: user.id } })
+
+    // Añadimos los conteos al objeto del usuario
+    return {
+      ...user.dataValues,
+      reviews_count: reviewsCount,
+      followers_count: followersCount,
+      following_count: followingCount
+    }
+  }
+
+  async getProfileReviews(username) {
+    // 1. Primero buscamos el usuario para obtener su id
+    //    No podemos hacer WHERE username en reviews, reviews solo tiene user_id
+    const user = await User.findOne({ where: { username }, attributes: ["id"] })
+    if (!user) throw controlledError("Usuario no encontrado")
+
+    // 2. Buscamos sus reviews con JOIN a content_cache
+    const reviews = await models.reviews.findAll({
+      where: { user_id: user.id },
+      include: [
+        {
+          model: models.contentCache,
+          as: "tmdb",  // el alias que está en init-models
+          attributes: ["title", "poster_path", "media_type"]
+        }
+      ],
+      order: [["created_at", "DESC"]], // las más recientes primero
+      limit: 4  // solo las últimas 4 para el perfil
+    })
+
+    return reviews
+  }
+
+  async getProfileFavorites(username) {
+    // 1. Buscamos el usuario
+    const user = await User.findOne({ where: { username }, attributes: ["id"] })
+    if (!user) throw controlledError("Usuario no encontrado")
+
+    // 2. Buscamos la lista con is_default = 1 de ese usuario
+    const favoritesList = await models.lists.findOne({
+      where: { user_id: user.id, is_default: 1 },
+      // 3. JOIN a list_items y de ahí a content_cache
+      include: [
+        {
+          model: models.listItems,
+          as: "list_items",
+          include: [
+            {
+              model: models.contentCache,
+              as: "tmdb",
+              attributes: ["tmdb_id", "title", "poster_path", "media_type"]
+            }
+          ],
+          limit: 8  // solo los primeros 8 para el perfil
+        }
+      ]
+    })
+
+    // 4. Si no tiene lista (no debería pasar, pero por si acaso)
+    if (!favoritesList) return []
+
+    // 5. Aplanamos la respuesta — no queremos devolver la lista entera,
+    //    solo el array de contenido
+    return favoritesList.list_items.map(item => item.tmdb)
+  }
+
 }
 
 module.exports = new UserService()

@@ -15,12 +15,15 @@ const upload = multer({
     },
 })
 
+// ── Rutas específicas primero ─────────────────────────────────────────────
 router.get("/", userController.getAllUsers)
 
 router.delete("/me", userController.deleteAccount)
-
 router.put("/me/password", userController.changePassword)
-
 router.put("/me", upload.single("avatar"), userController.updateProfile)
 
+// ── Rutas dinámicas al final ──────────────────────────────────────────────
+router.get("/:username", userController.getProfile)
+router.get("/:username/reviews", userController.getProfileReviews)
+router.get("/:username/favorites", userController.getProfileFavorites)
 module.exports = router

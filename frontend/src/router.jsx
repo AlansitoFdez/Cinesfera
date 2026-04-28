@@ -11,6 +11,7 @@ import Home from "./components/pages/Home";
 import Search from "./components/pages/Search";
 import Details from "./components/pages/Details";
 import Catalog from "./components/pages/Catalog";
+import Profile from "./components/pages/Profile";
 
 /* ==========================================================================
 OBJETO ROUTER CON TODAS LAS RUTAS
@@ -87,6 +88,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <PlaceholderPage title="Amigos" /> {/*Aquí irá el componente Friends, todavía por crear*/}
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "profile/:username",
+        element: (
+          <ProtectedRoute>
+            <Profile />
           </ProtectedRoute>
         ),
       },

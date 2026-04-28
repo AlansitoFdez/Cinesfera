@@ -19,13 +19,6 @@ const NAV_CARDS_ADMIN = [
   { label: "Próximamente", description: "Nuevas herramientas de administración en camino.", bgColor: "#100e16", to: null },
 ];
 
-const USER_CARDS = [
-  { label: "Amigos", description: "Comparte lo que ves y descubre qué ven los demás.", bgColor: "#0d0d12", to: "/friends", icon: UserCircle, isLogout: false },
-  { label: "Configuración", description: "Gestiona tu perfil, tus datos y tu privacidad.", bgColor: "#0f0e15", to: "/settings", icon: Settings, isLogout: false },
-  { label: "Cerrar Sesión", description: "Hasta la próxima.", bgColor: "#120d0d", to: null, icon: LogOut, isLogout: true },
-];
-
-
 // ─── MODAL DE BÚSQUEDA ────────────────────────────────────────────────────────
 function SearchModal({ isOpen, onClose }) {
   const [query, setQuery] = useState("");
@@ -141,6 +134,12 @@ export default function Navbar() {
 
   // Modo admin activo cuando devMode es true
   const isAdmin = devMode;
+
+  const USER_CARDS = [
+    { label: "Mi Perfil", description: "Ve tu perfil tal y como lo ven los demás.", bgColor: "#0f0e15", to: `/profile/${user?.username}`, icon: User, isLogout: false },
+    { label: "Amigos", description: "Comparte lo que ves y descubre qué ven los demás.", bgColor: "#0d0d12", to: "/friends", icon: UserCircle, isLogout: false },
+    { label: "Cerrar Sesión", description: "Hasta la próxima.", bgColor: "#120d0d", to: null, icon: LogOut, isLogout: true },
+  ];
 
   const handleLogout = () => { logout(); navigate("/login"); };
   const handleToggleDevMode = () => {
