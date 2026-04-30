@@ -15,6 +15,7 @@ const authRoutes = require("./routes/authRoutes")
 const userRoutes = require("./routes/userRoutes");
 const homeRoutes = require("./routes/homeRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
+const followRoutes = require("./routes/followRoutes");
 const cookieParser = require('cookie-parser');
 
 
@@ -48,6 +49,7 @@ app.use("/api/auth", authRoutes)
 app.use("/api/user", verifyToken, userRoutes)
 app.use("/api/home", verifyToken, homeRoutes)
 app.use("/api/reviews", verifyToken, reviewRoutes)
+app.use("/api/follow", verifyToken, followRoutes)
 
 
 // ============================================================================
