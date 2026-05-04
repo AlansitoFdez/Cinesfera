@@ -4,7 +4,7 @@ import useProfile from "../../hooks/useProfile";
 import { useAuth } from "../../hooks/UseAuth";
 
 // ─── HEADER ───────────────────────────────────────────────────────────────────
-function ProfileHeader({ profile, isOwnProfile }) {
+function ProfileHeader({ profile, isOwnProfile, following, followLoading, toggleFollow }) {
     const navigate = useNavigate();
 
     return (
@@ -57,11 +57,17 @@ function ProfileHeader({ profile, isOwnProfile }) {
                     Editar perfil
                 </button>
             ) : (
+                // El botón cambia de estilo según si ya sigues al usuario o no
                 <button
-                    className="px-6 py-2 rounded-full text-sm font-semibold uppercase tracking-widest text-white"
-                    style={{ background: "rgba(168,85,247,0.8)" }}
+                    onClick={toggleFollow}
+                    disabled={followLoading}
+                    className="px-6 py-2 rounded-full text-sm font-semibold uppercase tracking-widest transition-all duration-200"
+                    style={following
+                        ? { border: "1px solid rgba(168,85,247,0.4)", color: "#a855f7" }
+                        : { background: "rgba(168,85,247,0.8)", color: "#ffffff" }
+                    }
                 >
-                    Seguir
+                    {followLoading ? "..." : following ? "Siguiendo" : "Seguir"}
                 </button>
             )}
         </div>
@@ -87,13 +93,11 @@ function ProfileReviews({ reviews }) {
                     style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(168,85,247,0.1)" }}
                     onClick={() => navigate(`/details/${review.tmdb?.media_type}/${review.tmdb_id}`)}
                 >
-                    {/* Póster */}
                     <img
                         src={`https://image.tmdb.org/t/p/w92${review.tmdb?.poster_path}`}
                         alt={review.tmdb?.title}
                         className="w-12 rounded-lg shrink-0 object-cover"
                     />
-                    {/* Contenido */}
                     <div className="flex flex-col gap-1">
                         <span className="text-white font-semibold text-sm">{review.tmdb?.title}</span>
                         <span className="text-xs" style={{ color: "#a855f7" }}>
@@ -153,10 +157,13 @@ function SectionTitle({ children }) {
 export default function Profile() {
     const { username } = useParams();
     const { user } = useAuth();
-    const { profile, reviews, favorites, loading, error } = useProfile(username);
 
-    // Comparación clave: ¿es tu propio perfil?
     const isOwnProfile = user?.username === username;
+
+    // Solo pasamos currentUserId si NO es nuestro propio perfil
+    // Así evitamos llamar a /follow/status/:username innecesariamente
+    const { profile, reviews, favorites, loading, error, following, followLoading, toggleFollow } =
+        useProfile(username, isOwnProfile ? null : user?.sub);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -176,7 +183,13 @@ export default function Profile() {
 
     return (
         <div className="min-h-screen px-8 md:px-24 pb-24" style={{ background: "#0d1117" }}>
-            <ProfileHeader profile={profile} isOwnProfile={isOwnProfile} />
+            <ProfileHeader
+                profile={profile}
+                isOwnProfile={isOwnProfile}
+                following={following}
+                followLoading={followLoading}
+                toggleFollow={toggleFollow}
+            />
 
             <div className="flex flex-col gap-16 max-w-3xl mx-auto">
                 <section>
