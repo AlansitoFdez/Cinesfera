@@ -48,6 +48,17 @@ class FollowService {
         return { following: false }
     }
 
+    async getFollowStatus(followerId, targetUsername) {
+        const targetUser = await User.findOne({ where: { username: targetUsername } })
+        if (!targetUser) throw controlledError("Usuario no encontrado")
+
+        const follow = await Follow.findOne({
+            where: { follower_id: followerId, followed_id: targetUser.id }
+        })
+
+        return { following: !!follow }
+    }
+
 }
 
 module.exports = new FollowService()
