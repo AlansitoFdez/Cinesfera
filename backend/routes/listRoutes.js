@@ -7,4 +7,6 @@ router.get("/dropdown/:tmdbId/:mediaType", listController.getListsForDropdown)
 router.get("/user/:userId", listController.getPublicListsByUser)
 router.post("/", listController.createList)
 
+router.get("/:id", listController.getListDetail)
+
 module.exports = router

@@ -114,6 +114,46 @@ class ListService {
  
         return list
     }
+
+    async getListDetail(listId, userId) {
+        const list = await List.findByPk(listId)
+        if (!list) {
+            const error = new Error("Lista no encontrada")
+            error.isControlled = true
+            error.status = 404
+            throw error
+        }
+ 
+        const isOwner = list.user_id === userId
+        if (!list.is_public && !isOwner) {
+            const error = new Error("Esta lista es privada")
+            error.isControlled = true
+            error.status = 403
+            throw error
+        }
+ 
+        const items = await ListItem.findAll({
+            where: { list_id: listId },
+            include: [
+                {
+                    model: ContentCache,
+                    as: "tmdb",
+                    attributes: ["tmdb_id", "title", "poster_path", "vote_average", "media_type"]
+                }
+            ],
+            order: [["added_at", "DESC"]]
+        })
+ 
+        return {
+            id: list.id,
+            name: list.name,
+            description: list.description,
+            is_default: list.is_default,
+            is_public: list.is_public,
+            is_owner: isOwner,
+            items: items.map(item => item.tmdb)
+        }
+    }
 }
 
 module.exports = new ListService()
