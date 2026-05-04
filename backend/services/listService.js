@@ -5,6 +5,7 @@ const models = initModels(sequelize)
 const List = models.lists
 const ListItem = models.listItems
 
+const MAX_LISTS_PER_USER = 10
 
 class ListService {
     
@@ -75,6 +76,43 @@ class ListService {
             item_count: list.list_items.length,
             created_at: list.created_at
         }))
+    }
+
+    async createList(userId, { name, description, is_public = true }) {
+        const count = await List.count({ where: { user_id: userId } })
+        if (count >= MAX_LISTS_PER_USER) {
+            const error = new Error(`No puedes tener más de ${MAX_LISTS_PER_USER} listas`)
+            error.isControlled = true
+            error.status = 400
+            throw error
+        }
+ 
+        if (!name || name.trim().length === 0) {
+            const error = new Error("El nombre de la lista es obligatorio")
+            error.isControlled = true
+            error.status = 400
+            throw error
+        }
+ 
+        const existing = await List.findOne({
+            where: { user_id: userId, name: name.trim() }
+        })
+        if (existing) {
+            const error = new Error("Ya tienes una lista con ese nombre")
+            error.isControlled = true
+            error.status = 400
+            throw error
+        }
+ 
+        const list = await List.create({
+            user_id: userId,
+            name: name.trim(),
+            description: description?.trim() || null,
+            is_public,
+            is_default: false
+        })
+ 
+        return list
     }
 }
 

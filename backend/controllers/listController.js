@@ -35,6 +35,19 @@ class ListController {
             return res.status(500).json(Respuesta.error("Error al obtener las listas del usuario"))
         }
     }
+
+    async createList(req, res) {
+        try {
+            const list = await listService.createList(req.user.sub, req.body)
+            return res.status(201).json(Respuesta.exito(list, "Lista creada correctamente"))
+        } catch (error) {
+            logMensaje(error)
+            if (error.isControlled) {
+                return res.status(error.status || 400).json(Respuesta.error(error.message))
+            }
+            return res.status(500).json(Respuesta.error("Error al crear la lista"))
+        }
+    }
 }
 
 module.exports = new ListController()
