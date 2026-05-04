@@ -64,6 +64,17 @@ class FollowController {
             return res.status(500).json(Respuesta.error("Error al obtener seguidores"))
         }
     }
+
+    async getSuggestedUsers(req, res) {
+        try {
+            const userId = req.user.sub
+            const users = await followService.getSuggestedUsers(userId)
+            return res.status(200).json(Respuesta.exito(users, "Usuarios sugeridos obtenidos correctamente"))
+        } catch (error) {
+            logMensaje(error)
+            return res.status(500).json(Respuesta.error("Error al obtener usuarios sugeridos"))
+        }
+    }
 }
 
 module.exports = new FollowController()

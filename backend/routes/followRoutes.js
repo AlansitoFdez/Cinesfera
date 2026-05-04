@@ -8,5 +8,6 @@ router.get("/status/:username", followController.getFollowStatus)
 
 router.get("/friends", followController.getFriends)
 router.get("/followers", followController.getFollowersNotFollowing)
+router.get("/discover", followController.getSuggestedUsers)
 
 module.exports = router

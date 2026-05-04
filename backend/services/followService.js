@@ -155,6 +155,35 @@ class FollowService {
  
         return users
     }
+
+    async getSuggestedUsers(userId) {
+        const iFollow = await Follow.findAll({
+            where: { follower_id: userId },
+            attributes: ["followed_id"]
+        })
+
+        const excludeIds = [...iFollow.map(f => f.followed_id), userId]
+ 
+        const { Op } = require("sequelize")
+        const suggested = await User.findAll({
+            where: { id: { [Op.notIn]: excludeIds } },
+            attributes: ["id", "username", "avatar", "biography"],
+            limit: 20
+        })
+
+        const result = await Promise.all(suggested.map(async (user) => {
+            const followersCount = await Follow.count({ where: { followed_id: user.id } })
+            return {
+                id: user.id,
+                username: user.username,
+                avatar: user.avatar,
+                biography: user.biography,
+                followers_count: followersCount
+            }
+        }))
+ 
+        return result.sort((a, b) => b.followers_count - a.followers_count)
+    }
 }
 
 module.exports = new FollowService()
