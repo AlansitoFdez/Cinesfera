@@ -11,6 +11,7 @@ import Home from "./components/pages/Home";
 import Search from "./components/pages/Search";
 import Details from "./components/pages/Details";
 import Catalog from "./components/pages/Catalog";
+import Social from "./components/pages/Social";
 import Profile from "./components/pages/Profile";
 
 /* ==========================================================================
@@ -84,10 +85,10 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "friends",
+        path: "social",
         element: (
           <ProtectedRoute>
-            <PlaceholderPage title="Amigos" /> {/*Aquí irá el componente Friends, todavía por crear*/}
+            <Social />
           </ProtectedRoute>
         ),
       },

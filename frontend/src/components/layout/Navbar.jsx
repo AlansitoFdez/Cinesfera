@@ -137,7 +137,7 @@ export default function Navbar() {
 
   const USER_CARDS = [
     { label: "Mi Perfil", description: "Ve tu perfil tal y como lo ven los demás.", bgColor: "#0f0e15", to: `/profile/${user?.username}`, icon: User, isLogout: false },
-    { label: "Amigos", description: "Comparte lo que ves y descubre qué ven los demás.", bgColor: "#0d0d12", to: "/friends", icon: UserCircle, isLogout: false },
+    { label: "Social", description: "Comparte lo que ves y descubre qué ven los demás.", bgColor: "#0d0d12", to: "/social", icon: UserCircle, isLogout: false },
     { label: "Cerrar Sesión", description: "Hasta la próxima.", bgColor: "#120d0d", to: null, icon: LogOut, isLogout: true },
   ];
 
