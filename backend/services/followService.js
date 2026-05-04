@@ -33,6 +33,21 @@ class FollowService {
         return { following: true }
     }
 
+    async unfollowUser(followerId, targetUsername) {
+        // 1. Buscamos el usuario objetivo por username
+        const targetUser = await User.findOne({ where: { username: targetUsername } })
+        if (!targetUser) throw controlledError("Usuario no encontrado")
+
+        // 2. Intentamos borrar el follow
+        const deleted = await Follow.destroy({
+            where: { follower_id: followerId, followed_id: targetUser.id }
+        })
+
+        if (deleted === 0) throw controlledError("No sigues a este usuario")
+
+        return { following: false }
+    }
+
 }
 
 module.exports = new FollowService()
