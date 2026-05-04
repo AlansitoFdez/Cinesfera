@@ -42,6 +42,17 @@ class FollowController {
             return res.status(500).json(Respuesta.error("Error al obtener estado"))
         }
     }
+
+    async getFriends(req, res) {
+        try {
+            const userId = req.user.sub
+            const friends = await followService.getFriends(userId)
+            return res.status(200).json(Respuesta.exito(friends, "Amigos obtenidos correctamente"))
+        } catch (error) {
+            logMensaje(error)
+            return res.status(500).json(Respuesta.error("Error al obtener amigos"))
+        }
+    }
 }
 
 module.exports = new FollowController()

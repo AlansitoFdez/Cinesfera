@@ -59,6 +59,73 @@ class FollowService {
         return { following: !!follow }
     }
 
+
+    async getFriends(userId) {
+        // 1. IDs de usuarios a los que YO sigo
+        const iFollow = await Follow.findAll({
+            where: { follower_id: userId },
+            attributes: ["followed_id"]
+        })
+        const iFollowIds = iFollow.map(f => f.followed_id)
+
+        if (iFollowIds.length === 0) return []
+
+        // 2. De esos, los que también me siguen a mí → amigos mutuos
+        const mutualFollows = await Follow.findAll({
+            where: { follower_id: iFollowIds, followed_id: userId },
+            attributes: ["follower_id"]
+        })
+        const friendIds = mutualFollows.map(f => f.follower_id)
+
+        if (friendIds.length === 0) return []
+
+        // 3. Datos de los amigos con sus conteos
+        const friends = await User.findAll({
+            where: { id: friendIds },
+            attributes: ["id", "username", "avatar", "biography"]
+        })
+
+        // 4. Conteos de seguidores/siguiendo para cada amigo
+        const followersCountMap = {}
+        const followingCountMap = {}
+        await Promise.all(friendIds.map(async (id) => {
+            followersCountMap[id] = await Follow.count({ where: { followed_id: id } })
+            followingCountMap[id] = await Follow.count({ where: { follower_id: id } })
+        }))
+ 
+        // 5. Favoritos de todos los amigos en UNA sola query (evita el problema N+1)
+        const favoriteLists = await List.findAll({
+            where: { user_id: friendIds, is_default: 1 },
+            include: [{
+                model: ListItem,
+                as: "list_items",
+                limit: 5,
+                include: [{
+                    model: ContentCache,
+                    as: "tmdb",
+                    attributes: ["tmdb_id", "title", "poster_path", "media_type"]
+                }]
+            }]
+        })
+
+        // Mapa: user_id → items de favoritos
+        const favoritesMap = {}
+        favoriteLists.forEach(list => {
+            favoritesMap[list.user_id] = list.list_items.map(item => item.tmdb)
+        })
+
+        // 6. Construimos la respuesta final
+        return friends.map(friend => ({
+            id: friend.id,
+            username: friend.username,
+            avatar: friend.avatar,
+            biography: friend.biography,
+            followers_count: followersCountMap[friend.id] || 0,
+            following_count: followingCountMap[friend.id] || 0,
+            favorites: favoritesMap[friend.id] || []
+        }))
+    }
+
 }
 
 module.exports = new FollowService()
