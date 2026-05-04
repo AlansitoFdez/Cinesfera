@@ -24,6 +24,17 @@ class ListController {
             return res.status(500).json(Respuesta.error("Error al obtener las listas"))
         }
     }
+
+    async getPublicListsByUser(req, res) {
+        try {
+            const { userId } = req.params
+            const lists = await listService.getPublicListsByUser(parseInt(userId))
+            return res.status(200).json(Respuesta.exito(lists, "Listas públicas obtenidas correctamente"))
+        } catch (error) {
+            logMensaje(error)
+            return res.status(500).json(Respuesta.error("Error al obtener las listas del usuario"))
+        }
+    }
 }
 
 module.exports = new ListController()
