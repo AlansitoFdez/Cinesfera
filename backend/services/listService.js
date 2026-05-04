@@ -31,6 +31,28 @@ class ListService {
             created_at: list.created_at
         }))
     }
+
+    async getListsForDropdown(userId, tmdb_id, media_type) {
+        const lists = await List.findAll({
+            where: { user_id: userId },
+            include: [
+                {
+                    model: ListItem,
+                    as: "list_items",
+                    required: false, 
+                    where: { tmdb_id, media_type }
+                }
+            ],
+            order: [["created_at", "ASC"]]
+        })
+ 
+        return lists.map(list => ({
+            id: list.id,
+            name: list.name,
+            is_default: list.is_default,
+            contains: list.list_items.length > 0
+        }))
+    }
 }
 
 module.exports = new ListService()

@@ -13,6 +13,17 @@ class ListController {
             return res.status(500).json(Respuesta.error("Error al obtener las listas"))
         }
     }
+
+    async getListsForDropdown(req, res) {
+        try {
+            const { tmdbId, mediaType } = req.params
+            const lists = await listService.getListsForDropdown(req.user.sub, parseInt(tmdbId), mediaType)
+            return res.status(200).json(Respuesta.exito(lists, "Listas para dropdown obtenidas correctamente"))
+        } catch (error) {
+            logMensaje(error)
+            return res.status(500).json(Respuesta.error("Error al obtener las listas"))
+        }
+    }
 }
 
 module.exports = new ListController()
