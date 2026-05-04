@@ -8,5 +8,6 @@ router.get("/user/:userId", listController.getPublicListsByUser)
 router.post("/", listController.createList)
 
 router.get("/:id", listController.getListDetail)
+router.put("/:id", listController.updateList)
 
 module.exports = router

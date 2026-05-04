@@ -154,6 +154,49 @@ class ListService {
             items: items.map(item => item.tmdb)
         }
     }
+
+    async updateList(listId, userId, { name, description, is_public}) {
+        const list = await List.findByPk(listId)
+        if (!list) {
+            const error = new Error("Lista no encontrada")
+            error.isControlled = true
+            error.status = 404
+            throw error
+        }
+
+        if (list.user_id !== userId) {
+            const error = new Error("No tienes permiso para editar esta lista")
+            error.isControlled = true
+            error.status = 403
+            throw error
+        }
+ 
+        if (list.is_default) {
+            const error = new Error("La lista de Favoritos no se puede modificar")
+            error.isControlled = true
+            error.status = 400
+            throw error
+        }
+ 
+        if (name && name.trim() !== list.name) {
+            const existing = await List.findOne({
+                where: { user_id: userId, name: name.trim() }
+            })
+            if (existing) {
+                const error = new Error("Ya tienes una lista con ese nombre")
+                error.isControlled = true
+                error.status = 400
+                throw error
+            }
+        }
+ 
+        if (name !== undefined) list.name = name.trim()
+        if (description !== undefined) list.description = description?.trim() || null
+        if (is_public !== undefined) list.is_public = is_public
+ 
+        await list.save()
+        return list
+    }
 }
 
 module.exports = new ListService()

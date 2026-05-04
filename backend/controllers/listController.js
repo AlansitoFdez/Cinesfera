@@ -61,6 +61,19 @@ class ListController {
             return res.status(500).json(Respuesta.error("Error al obtener el detalle de la lista"))
         }
     }
+
+    async updateList(req, res) {
+        try {
+            const list = await listService.updateList(parseInt(req.params.id), req.user.sub, req.body)
+            return res.status(200).json(Respuesta.exito(list, "Lista actualizada correctamente"))
+        } catch (error) {
+            logMensaje(error)
+            if(error.isControlled) {
+                return res.status(error.status || 400).json(Respuesta.error(error.message))
+            }
+            return res.status(500).json(Respuesta.error("Error al actualizar la lista"))
+        }
+    }
 }
 
 module.exports = new ListController()
