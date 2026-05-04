@@ -53,6 +53,17 @@ class FollowController {
             return res.status(500).json(Respuesta.error("Error al obtener amigos"))
         }
     }
+
+    async getFollowersNotFollowing(req, res) {
+        try {
+            const userId = req.user.sub
+            const users = await followService.getFollowersNotFollowing(userId)
+            return res.status(200).json(Respuesta.exito(users, "Seguidores obtenidos correctamente"))
+        } catch (error) {
+            logMensaje(error)
+            return res.status(500).json(Respuesta.error("Error al obtener seguidores"))
+        }
+    }
 }
 
 module.exports = new FollowController()

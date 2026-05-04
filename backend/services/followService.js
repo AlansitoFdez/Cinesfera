@@ -126,6 +126,35 @@ class FollowService {
         }))
     }
 
+    async getFollowersNotFollowing(userId) {
+        // 1. IDs de los que me siguen
+        const followers = await Follow.findAll({
+            where: { followed_id: userId },
+            attributes: ["follower_id"]
+        })
+        const followerIds = followers.map(f => f.follower_id)
+ 
+        if (followerIds.length === 0) return []
+ 
+        // 2. IDs de los que yo sigo
+        const iFollow = await Follow.findAll({
+            where: { follower_id: userId },
+            attributes: ["followed_id"]
+        })
+        const iFollowIds = iFollow.map(f => f.followed_id)
+ 
+        // 3. Filtramos: me siguen pero yo no les sigo
+        const notFollowingIds = followerIds.filter(id => !iFollowIds.includes(id))
+ 
+        if (notFollowingIds.length === 0) return []
+ 
+        const users = await User.findAll({
+            where: { id: notFollowingIds },
+            attributes: ["id", "username", "avatar", "biography"]
+        })
+ 
+        return users
+    }
 }
 
 module.exports = new FollowService()
