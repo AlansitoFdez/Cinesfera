@@ -55,7 +55,7 @@ class ListController {
             return res.status(200).json(Respuesta.exito(list, "Lista obtenida correctamente"))
         } catch (error) {
             logMensaje(error)
-            if(error.isControlled) {
+            if (error.isControlled) {
                 return res.status(error.status || 400).json(Respuesta.error(error.message))
             }
             return res.status(500).json(Respuesta.error("Error al obtener el detalle de la lista"))
@@ -68,10 +68,23 @@ class ListController {
             return res.status(200).json(Respuesta.exito(list, "Lista actualizada correctamente"))
         } catch (error) {
             logMensaje(error)
-            if(error.isControlled) {
+            if (error.isControlled) {
                 return res.status(error.status || 400).json(Respuesta.error(error.message))
             }
             return res.status(500).json(Respuesta.error("Error al actualizar la lista"))
+        }
+    }
+
+    async deleteList(req, res) {
+        try {
+            await listService.deleteList(parseInt(req.params.id), req.user.sub)
+            return res.status(200).json(Respuesta.exito(null, "Lista eliminada correctamente"))
+        } catch (error) {
+            logMensaje(error)
+            if (error.isControlled) {
+                return res.status(error.status || 400).json(Respuesta.error(error.message))
+            }
+            return res.status(500).json(Respuesta.error("Error al eliminar la lista"))
         }
     }
 }

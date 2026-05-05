@@ -9,5 +9,6 @@ router.post("/", listController.createList)
 
 router.get("/:id", listController.getListDetail)
 router.put("/:id", listController.updateList)
+router.delete("/:id", listController.deleteList)
 
 module.exports = router

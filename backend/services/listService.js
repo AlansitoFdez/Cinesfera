@@ -8,7 +8,7 @@ const ListItem = models.listItems
 const MAX_LISTS_PER_USER = 10
 
 class ListService {
-    
+
     async getMyLists(userId) {
         const lists = await List.findAll({
             where: { user_id: userId },
@@ -21,7 +21,7 @@ class ListService {
             ],
             order: [["created_at", "ASC"]]
         })
- 
+
         return lists.map(list => ({
             id: list.id,
             name: list.name,
@@ -40,13 +40,13 @@ class ListService {
                 {
                     model: ListItem,
                     as: "list_items",
-                    required: false, 
+                    required: false,
                     where: { tmdb_id, media_type }
                 }
             ],
             order: [["created_at", "ASC"]]
         })
- 
+
         return lists.map(list => ({
             id: list.id,
             name: list.name,
@@ -67,7 +67,7 @@ class ListService {
             ],
             order: [["created_at", "ASC"]]
         })
- 
+
         return lists.map(list => ({
             id: list.id,
             name: list.name,
@@ -86,14 +86,14 @@ class ListService {
             error.status = 400
             throw error
         }
- 
+
         if (!name || name.trim().length === 0) {
             const error = new Error("El nombre de la lista es obligatorio")
             error.isControlled = true
             error.status = 400
             throw error
         }
- 
+
         const existing = await List.findOne({
             where: { user_id: userId, name: name.trim() }
         })
@@ -103,7 +103,7 @@ class ListService {
             error.status = 400
             throw error
         }
- 
+
         const list = await List.create({
             user_id: userId,
             name: name.trim(),
@@ -111,7 +111,7 @@ class ListService {
             is_public,
             is_default: false
         })
- 
+
         return list
     }
 
@@ -123,7 +123,7 @@ class ListService {
             error.status = 404
             throw error
         }
- 
+
         const isOwner = list.user_id === userId
         if (!list.is_public && !isOwner) {
             const error = new Error("Esta lista es privada")
@@ -131,7 +131,7 @@ class ListService {
             error.status = 403
             throw error
         }
- 
+
         const items = await ListItem.findAll({
             where: { list_id: listId },
             include: [
@@ -143,7 +143,7 @@ class ListService {
             ],
             order: [["added_at", "DESC"]]
         })
- 
+
         return {
             id: list.id,
             name: list.name,
@@ -155,7 +155,7 @@ class ListService {
         }
     }
 
-    async updateList(listId, userId, { name, description, is_public}) {
+    async updateList(listId, userId, { name, description, is_public }) {
         const list = await List.findByPk(listId)
         if (!list) {
             const error = new Error("Lista no encontrada")
@@ -170,14 +170,14 @@ class ListService {
             error.status = 403
             throw error
         }
- 
+
         if (list.is_default) {
             const error = new Error("La lista de Favoritos no se puede modificar")
             error.isControlled = true
             error.status = 400
             throw error
         }
- 
+
         if (name && name.trim() !== list.name) {
             const existing = await List.findOne({
                 where: { user_id: userId, name: name.trim() }
@@ -189,13 +189,40 @@ class ListService {
                 throw error
             }
         }
- 
+
         if (name !== undefined) list.name = name.trim()
         if (description !== undefined) list.description = description?.trim() || null
         if (is_public !== undefined) list.is_public = is_public
- 
+
         await list.save()
         return list
+    }
+
+    async deleteList(listId, userId) {
+        const list = await List.findByPk(listId)
+        if (!list) {
+            const error = new Error("Lista no encontrada")
+            error.isControlled = true
+            error.status = 404
+            throw error
+        }
+
+        if (list.user_id !== userId) {
+            const error = new Error("No tienes permiso para borrar esta lista")
+            error.isControlled = true
+            error.status = 403
+            throw error
+        }
+
+        // La lista por defecto (Favoritos) no se puede borrar
+        if (list.is_default) {
+            const error = new Error("La lista de Favoritos no se puede borrar")
+            error.isControlled = true
+            error.status = 400
+            throw error
+        }
+
+        await list.destroy()
     }
 }
 
