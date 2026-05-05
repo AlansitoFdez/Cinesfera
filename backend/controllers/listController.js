@@ -87,6 +87,20 @@ class ListController {
             return res.status(500).json(Respuesta.error("Error al eliminar la lista"))
         }
     }
+
+    async toggleItem(req, res) {
+        try {
+            const result = await listService.toggleItem(parseInt(req.params.id), req.user.sub, req.body)
+            const mensaje = result.action === "added" ? "Añadido a la lista" : "Eliminado de la lista"
+            return res.status(200).json(Respuesta.exito(result, mensaje))
+        } catch (error) {
+            logMensaje(error)
+            if (error.isControlled) {
+                return res.status(error.status || 400).json(Respuesta.error(error.message))
+            }
+            return res.status(500).json(Respuesta.error("Error al modificar la lista"))
+        }
+    }
 }
 
 module.exports = new ListController()

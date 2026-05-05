@@ -224,6 +224,39 @@ class ListService {
 
         await list.destroy()
     }
+
+    async toggleItem(listId, userId, { tmdb_id, media_type, title, poster_path, vote_average }) {
+        const list = await List.findByPk(listId)
+        if (!list) {
+            const error = new Error("Lista no encontrada")
+            error.isControlled = true
+            error.status = 404
+            throw error
+        }
+
+        if (list.user_id !== userId) {
+            const error = new Error("No tienes permiso para modificar esta lista")
+            error.isControlled = true
+            error.status = 403
+            throw error
+        }
+
+        const existing = await ListItem.findOne({
+            where: { list_id: listId, tmdb_id, media_type }
+        })
+
+        if (existing) {
+            await existing.destroy()
+            return { action: "removed" }
+        } else {
+            await ContentCache.findOrCreate({
+                where: { tmdb_id, media_type },
+                defaults: { title, poster_path, vote_average }
+            })
+            await ListItem.create({ list_id: listId, tmdb_id, media_type })
+            return { action: "added" }
+        }
+    }
 }
 
 module.exports = new ListService()
