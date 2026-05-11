@@ -8,6 +8,9 @@ class ReviewController {
             const review = await reviewService.createReview(req.user.sub, req.body)
             res.status(201).json(Respuesta.exito(review, "Reseña creada exitosamente"))
         } catch (error) {
+            if (error.isControlled) {
+                return res.status(error.status || 400).json(Respuesta.error(error.message))
+            }
             res.status(500).json(Respuesta.error("Error al crear la reseña"))
         }
     }
@@ -26,6 +29,9 @@ class ReviewController {
             await reviewService.deleteReview(req.params.id, req.user.sub)
             res.status(200).json(Respuesta.exito(null, "Reseña eliminada exitosamente"))
         } catch (error) {
+            if (error.isControlled) {
+                return res.status(error.status || 400).json(Respuesta.error(error.message))
+            }
             res.status(500).json(Respuesta.error("Error al eliminar la reseña"))
         }
     }
@@ -35,6 +41,9 @@ class ReviewController {
             const review = await reviewService.editReview(req.params.id, req.user.sub, req.body)
             res.status(200).json(Respuesta.exito(review, "Reseña editada exitosamente"))
         } catch (error) {
+            if (error.isControlled) {
+                return res.status(error.status || 400).json(Respuesta.error(error.message))
+            }
             res.status(500).json(Respuesta.error("Error al editar la reseña"))
         }
     }
