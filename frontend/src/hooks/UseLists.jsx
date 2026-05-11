@@ -75,3 +75,36 @@ export function useListDetail(listId) {
  
     return { list, loading, error, removeItem };
 }
+
+export function useListsDropdown(tmdb_id, media_type) {
+    const [lists, setLists] = useState([]);
+    const [loading, setLoading] = useState(true);
+ 
+    useEffect(() => {
+        if (!tmdb_id || !media_type) return;
+        const cargar = async () => {
+            setLoading(true);
+            try {
+                const res = await api.get(`/lists/dropdown/${tmdb_id}/${media_type}`);
+                setLists(res.datos);
+            } catch {
+                // Si falla el dropdown no bloqueamos la página entera
+            } finally {
+                setLoading(false);
+            }
+        };
+        cargar();
+    }, [tmdb_id, media_type]);
+ 
+    const toggle = async (listId, itemData) => {
+        const res = await api.post(`/lists/${listId}/items/toggle`, itemData);
+        const action = res.datos.action;
+        // Actualización optimista: invertimos el tick localmente
+        setLists(prev =>
+            prev.map(l => l.id === listId ? { ...l, contains: action === "added" } : l)
+        );
+        return action;
+    };
+ 
+    return { lists, loading, toggle };
+}

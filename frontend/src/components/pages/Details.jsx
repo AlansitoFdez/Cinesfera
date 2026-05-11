@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import useDetailData from "../../hooks/useDetailData";
 import Reviews from "../ui/reviews";
+import AddToListDropdown from "../ui/addtolistdropdown";
 
 // ─── HERO ─────────────────────────────────────────────────────────────────────
 function Hero({ trailerKey, backdropPath, title }) {
@@ -44,7 +45,7 @@ function Hero({ trailerKey, backdropPath, title }) {
 }
 
 // ─── INFO ─────────────────────────────────────────────────────────────────────
-function Info({ data, infoRef }) {
+function Info({ data, infoRef, mediaType }) {
     return (
         <div ref={infoRef} className="relative z-10 flex gap-10 px-16 -mt-48 mb-16">
             {/* Póster */}
@@ -113,6 +114,14 @@ function Info({ data, infoRef }) {
                         ))}
                     </div>
                 )}
+
+                <AddToListDropdown
+                    tmdb_id={data.tmdb_id}
+                    media_type={mediaType}
+                    title={data.title}
+                    poster_path={data.poster_path}
+                    vote_average={data.vote_average}
+                />
 
                 {data.overview && (
                     <p style={{ color: "#d1d5db", fontSize: "1rem", lineHeight: "1.8", maxWidth: "650px" }}>
@@ -262,7 +271,7 @@ export default function Details() {
     return (
         <div className="min-h-screen" style={{ background: "#0d1117" }}>
             <Hero trailerKey={data.trailer_key} backdropPath={data.backdrop_path} title={data.title} />
-            <Info data={data} infoRef={infoRef} />
+            <Info data={data} infoRef={infoRef} mediaType={type} />
             <Cast cast={data.cast} castRef={castRef} />
             <Providers providers={data.providers} providersRef={providersRef} />
             <Reviews tmdb_id={data.tmdb_id} media_type={type} title={data.title} poster_path={data.poster_path} vote_average={data.vote_average} />
