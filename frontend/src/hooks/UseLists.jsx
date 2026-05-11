@@ -42,3 +42,36 @@ export function useLists() {
  
     return { lists, loading, error, createList, updateList, deleteList };
 }
+
+export function useListDetail(listId) {
+    const [list, setList] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+ 
+    useEffect(() => {
+        if (!listId) return;
+        const cargar = async () => {
+            setLoading(true);
+            setError(null);
+            try {
+                const res = await api.get(`/lists/${listId}`);
+                setList(res.datos);
+            } catch (err) {
+                setError(err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        cargar();
+    }, [listId]);
+ 
+    const removeItem = async (tmdb_id, media_type) => {
+        await api.post(`/lists/${listId}/items/toggle`, { tmdb_id, media_type });
+        setList(prev => ({
+            ...prev,
+            items: prev.items.filter(i => !(i.tmdb_id === tmdb_id && i.media_type === media_type))
+        }));
+    };
+ 
+    return { list, loading, error, removeItem };
+}
