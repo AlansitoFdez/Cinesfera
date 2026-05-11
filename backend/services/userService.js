@@ -17,12 +17,10 @@ const controlledError = (message) => {
 class UserService {
 
   async getAllUsers() {
-    try {
-      const users = await User.findAll();
-      return users;
-    } catch (error) {
-      throw error;
-    }
+    const users = await User.findAll({
+      attributes: { exclude: ["password"] }
+    })
+    return users
   }
 
   async deleteAccount(userId) {
