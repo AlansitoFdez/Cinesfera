@@ -13,6 +13,8 @@ import Details from "./components/pages/Details";
 import Catalog from "./components/pages/Catalog";
 import Social from "./components/pages/Social";
 import Profile from "./components/pages/Profile";
+import Lists from "./components/pages/Lists";
+import ListDetail from "./components/pages/ListDetail";
 
 /* ==========================================================================
 OBJETO ROUTER CON TODAS LAS RUTAS
@@ -80,7 +82,15 @@ export const router = createBrowserRouter([
         path: "list",
         element: (
           <ProtectedRoute>
-            <PlaceholderPage title="Mi Lista" /> {/*Aquí irá el componente MyList, todavía por crear*/}
+            <Lists />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "list/:id",
+        element: (
+          <ProtectedRoute>
+            <ListDetail />
           </ProtectedRoute>
         ),
       },
