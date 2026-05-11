@@ -4,6 +4,7 @@ const models = initModels(sequelize)
 
 const List = models.lists
 const ListItem = models.listItems
+const ContentCache = models.contentCache
 
 const MAX_LISTS_PER_USER = 10
 
