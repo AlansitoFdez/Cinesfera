@@ -4,6 +4,9 @@ const models = initModels(sequelize)
 
 const User = models.users
 const Follow = models.follows
+const List = models.lists
+const ListItem = models.listItems
+const ContentCache = models.contentCache
 
 
 const controlledError = (message) => {
