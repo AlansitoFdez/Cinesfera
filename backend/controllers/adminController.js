@@ -27,6 +27,19 @@ class AdminController {
         }
     }
 
+    async changeRole(req, res) {
+        try {
+            const user = await adminService.changeRole(req.params.id)
+            return res.status(200).json(Respuesta.exito(user, `Rol cambiado a ${user.role} exitosamente`))
+        } catch (error) {
+            logMensaje(error)
+            if (error.isControlled) {
+                return res.status(error.status || 400).json(Respuesta.error(error.message))
+            }
+            return res.status(500).json(Respuesta.error("Error al cambiar el rol"))
+        }
+    }
+
 }
 
 module.exports = new AdminController()

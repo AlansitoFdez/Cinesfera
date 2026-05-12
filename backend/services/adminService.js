@@ -50,6 +50,14 @@ class AdminService {
         return user
     }
 
+    async changeRole(id) {
+        const user = await User.findByPk(id)
+        if (!user) throw controlledError("Usuario no encontrado", 404)
+        const newRole = user.role === "ADMIN" ? "USER" : "ADMIN"
+        await user.update({ role: newRole })
+        return user
+    }
+
 }
 
 module.exports = new AdminService()
