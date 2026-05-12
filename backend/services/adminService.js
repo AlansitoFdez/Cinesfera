@@ -101,6 +101,12 @@ class AdminService {
             totalPages: Math.ceil(count / limit)
         }
     }
+
+    async deleteReview(id) {
+        const review = await Review.findByPk(id)
+        if (!review) throw controlledError("Reseña no encontrada", 404)
+        await review.destroy()
+    }
 }
 
 module.exports = new AdminService()

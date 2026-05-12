@@ -8,5 +8,6 @@ router.patch("/users/:id/role", adminController.changeRole)
 router.delete("/users/:id", adminController.deleteUser)
 
 router.get("/reviews", adminController.getReviews)
+router.delete("/reviews/:id", adminController.deleteReview)
 
 module.exports = router

@@ -63,6 +63,19 @@ class AdminController {
         }
     }
 
+    async deleteReview(req, res) {
+        try {
+            await adminService.deleteReview(req.params.id)
+            return res.status(200).json(Respuesta.exito(null, "Reseña eliminada exitosamente"))
+        } catch (error) {
+            logMensaje(error)
+            if (error.isControlled) {
+                return res.status(error.status || 400).json(Respuesta.error(error.message))
+            }
+            return res.status(500).json(Respuesta.error("Error al eliminar la reseña"))
+        }
+    }
+
 }
 
 module.exports = new AdminController()
