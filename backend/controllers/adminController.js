@@ -40,6 +40,19 @@ class AdminController {
         }
     }
 
+    async deleteUser(req, res) {
+        try {
+            await adminService.deleteUser(req.params.id)
+            return res.status(200).json(Respuesta.exito(null, "Usuario eliminado exitosamente"))
+        } catch (error) {
+            logMensaje(error)
+            if (error.isControlled) {
+                return res.status(error.status || 400).json(Respuesta.error(error.message))
+            }
+            return res.status(500).json(Respuesta.error("Error al eliminar el usuario"))
+        }
+    }
+
 }
 
 module.exports = new AdminController()

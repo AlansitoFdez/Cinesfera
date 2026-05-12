@@ -58,6 +58,13 @@ class AdminService {
         return user
     }
 
+    async deleteUser(id) {
+        const user = await User.findByPk(id)
+        if (!user) throw controlledError("Usuario no encontrado", 404)
+        if (user.role === "ADMIN") throw controlledError("No puedes eliminar a un administrador")
+        await user.destroy()
+    }
+
 }
 
 module.exports = new AdminService()
