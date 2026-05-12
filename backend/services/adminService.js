@@ -5,6 +5,13 @@ const { Op } = require("sequelize")
 
 const User = models.users
 
+const controlledError = (message, status = 400) => {
+    const err = new Error(message)
+    err.isControlled = true
+    err.status = status
+    return err
+}
+
 class AdminService {
 
     async getUsers({ page = 1, limit = 10, search = "" }) {
@@ -33,6 +40,14 @@ class AdminService {
             page: Number(page),
             totalPages: Math.ceil(count / limit)
         }
+    }
+
+    async banUser(id) {
+        const user = await User.findByPk(id)
+        if (!user) throw controlledError("Usuario no encontrado", 404)
+        if (user.role === "ADMIN") throw controlledError("No puedes banear a un administrador")
+        await user.update({ banned: !user.banned })
+        return user
     }
 
 }

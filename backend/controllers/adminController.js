@@ -14,6 +14,19 @@ class AdminController {
         }
     }
 
+    async banUser(req, res) {
+        try {
+            const user = await adminService.banUser(req.params.id)
+            return res.status(200).json(Respuesta.exito(user, `Usuario ${user.banned ? "baneado" : "desbaneado"} exitosamente`))
+        } catch (error) {
+            logMensaje(error)
+            if (error.isControlled) {
+                return res.status(error.status || 400).json(Respuesta.error(error.message))
+            }
+            return res.status(500).json(Respuesta.error("Error al banear el usuario"))
+        }
+    }
+
 }
 
 module.exports = new AdminController()
