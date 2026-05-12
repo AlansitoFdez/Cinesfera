@@ -4,6 +4,8 @@ const models = initModels(sequelize)
 const { Op } = require("sequelize")
 
 const User = models.users
+const Review = models.reviews
+const ContentCache = models.content_cache
 
 const controlledError = (message, status = 400) => {
     const err = new Error(message)
@@ -65,6 +67,40 @@ class AdminService {
         await user.destroy()
     }
 
+    async getReviews({ page = 1, limit = 10, search = "" }) {
+        const offset = (page - 1) * limit
+
+        const where = search
+            ? { "$user.username$": { [Op.like]: `%${search}%` } }
+            : {}
+
+        const { count, rows } = await Review.findAndCountAll({
+            where,
+            include: [
+                {
+                    model: User,
+                    as: "user",
+                    attributes: ["id", "username", "avatar"]
+                },
+                {
+                    model: ContentCache,
+                    as: "tmdb",
+                    attributes: ["title", "poster_path", "media_type"]
+                }
+            ],
+            order: [["created_at", "DESC"]],
+            limit: Number(limit),
+            offset: Number(offset),
+            subQuery: false
+        })
+
+        return {
+            data: rows,
+            total: count,
+            page: Number(page),
+            totalPages: Math.ceil(count / limit)
+        }
+    }
 }
 
 module.exports = new AdminService()

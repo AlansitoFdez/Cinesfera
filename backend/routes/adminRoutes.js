@@ -7,4 +7,6 @@ router.patch("/users/:id/ban", adminController.banUser)
 router.patch("/users/:id/role", adminController.changeRole)
 router.delete("/users/:id", adminController.deleteUser)
 
+router.get("/reviews", adminController.getReviews)
+
 module.exports = router

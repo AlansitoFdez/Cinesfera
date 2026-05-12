@@ -53,6 +53,16 @@ class AdminController {
         }
     }
 
+    async getReviews(req, res) {
+        try {
+            const result = await adminService.getReviews(req.query)
+            return res.status(200).json(Respuesta.exito(result, "Reseñas obtenidas exitosamente"))
+        } catch (error) {
+            logMensaje(error)
+            return res.status(500).json(Respuesta.error("Error al obtener las reseñas"))
+        }
+    }
+
 }
 
 module.exports = new AdminController()
