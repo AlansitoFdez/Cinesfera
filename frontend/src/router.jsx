@@ -17,6 +17,7 @@ import Lists from "./components/pages/Lists";
 import ListDetail from "./components/pages/ListDetail";
 import NotFound from "./components/ui/NotFound";
 import AdminUsers from "./components/pages/admin/AdminUsers"
+import AdminReviews from "./components/pages/admin/AdminReviews"
 
 /* ==========================================================================
 OBJETO ROUTER CON TODAS LAS RUTAS
@@ -144,6 +145,14 @@ export const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      {
+        path: "admin/reviews",
+        element: (
+          <ProtectedRoute role="ADMIN">
+            <AdminReviews />
+          </ProtectedRoute>
+        ),
+      }
     ],
   },
 ]);
