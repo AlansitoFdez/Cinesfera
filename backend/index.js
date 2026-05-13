@@ -6,6 +6,7 @@ const express = require('express');
 const cors = require('cors')
 const { logMensaje } = require('./utils/logger.js')
 const { verifyToken } = require('./middlewares/auth.js')
+const { verifyAdmin } = require('./middlewares/auth.js')
 
 
 // ============================================================================
@@ -17,6 +18,7 @@ const homeRoutes = require("./routes/homeRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
 const followRoutes = require("./routes/followRoutes");
 const listRoutes = require("./routes/listRoutes")
+const adminRoutes = require("./routes/adminRoutes")
 const cookieParser = require('cookie-parser');
 
 
@@ -52,6 +54,7 @@ app.use("/api/home", verifyToken, homeRoutes)
 app.use("/api/reviews", verifyToken, reviewRoutes)
 app.use("/api/follow", verifyToken, followRoutes)
 app.use("/api/lists", verifyToken, listRoutes)
+app.use("/api/admin", verifyToken, verifyAdmin, adminRoutes)
 
 
 // ============================================================================

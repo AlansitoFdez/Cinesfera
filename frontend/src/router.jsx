@@ -15,6 +15,7 @@ import Social from "./components/pages/Social";
 import Profile from "./components/pages/Profile";
 import Lists from "./components/pages/Lists";
 import ListDetail from "./components/pages/ListDetail";
+import NotFound from "./components/ui/NotFound";
 
 /* ==========================================================================
 OBJETO ROUTER CON TODAS LAS RUTAS
@@ -38,6 +39,14 @@ export const router = createBrowserRouter([
 
       //A partir de aquí se muestran todas las rutas de la app y todas están envueltas en un componente ProtectedRoute
       //que se encarga de verificar si el usuario está logueado y si tiene el rol adecuado
+      {
+        path: "*",
+        element: (
+          <ProtectedRoute>
+            <NotFound />
+          </ProtectedRoute>
+        )
+      },
       {
         path: "home",
         element: (
