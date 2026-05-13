@@ -113,6 +113,8 @@ class AdminService {
         const totalReviews = await Review.count()
         const bannedUsers = await User.count({where: {banned: true}})
         const adminUsers = await User.count({where: {role: "ADMIN"}})
+
+        return { totalUsers, totalReviews, bannedUsers, adminUsers }
     }
 }
 
