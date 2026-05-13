@@ -5,7 +5,7 @@ const { Op } = require("sequelize")
 
 const User = models.users
 const Review = models.reviews
-const ContentCache = models.content_cache
+const ContentCache = models.contentCache
 
 const controlledError = (message, status = 400) => {
     const err = new Error(message)
