@@ -15,7 +15,7 @@ import axios from 'axios';
  * Instancia configurada de Axios para comunicación con el backend
  * 
  * Características:
- * - Base URL: http://localhost:3000/api
+ * - Base URL: definida por la variable de entorno VITE_API_URL
  * - Timeout: 5000ms (5 segundos)
  * - Content-Type: application/json
  * - Incluye interceptores para manejo de errores
@@ -24,7 +24,7 @@ import axios from 'axios';
  * @constant
  */
 const api = axios.create({
-    baseURL: "http://localhost:3000/api",
+    baseURL: import.meta.env.VITE_API_URL,
     timeout: 5000,
     withCredentials: true,
     headers: {
