@@ -10,4 +10,6 @@ router.delete("/users/:id", adminController.deleteUser)
 router.get("/reviews", adminController.getReviews)
 router.delete("/reviews/:id", adminController.deleteReview)
 
+router.get("/stats", adminController.getStats)
+
 module.exports = router

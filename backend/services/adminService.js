@@ -107,6 +107,13 @@ class AdminService {
         if (!review) throw controlledError("Reseña no encontrada", 404)
         await review.destroy()
     }
+
+    async getStats() {
+        const totalUsers = await User.count()
+        const totalReviews = await Review.count()
+        const bannedUsers = await User.count({where: {banned: true}})
+        const adminUsers = await User.count({where: {role: "ADMIN"}})
+    }
 }
 
 module.exports = new AdminService()

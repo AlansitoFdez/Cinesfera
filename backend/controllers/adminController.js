@@ -76,6 +76,16 @@ class AdminController {
         }
     }
 
+    async getStats(req, res) {
+        try {
+            const stats = await adminService.getStats()
+            return res.status(200).json(Respuesta.exito(stats, "Stats obtenidas correctamente"))
+        } catch (error) {
+            logMensaje(error)
+            return res.status(500).json(Respuesta.error("Error al obtener las stats"))
+        }
+    }
+
 }
 
 module.exports = new AdminController()
