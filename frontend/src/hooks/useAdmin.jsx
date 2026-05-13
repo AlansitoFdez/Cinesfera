@@ -9,6 +9,7 @@ export default function useAdmin() {
     const [error, setError] = useState(null)
     const [usersPagination, setUsersPagination] = useState({ page: 1, totalPages: 1, total: 0 })
     const [reviewsPagination, setReviewsPagination] = useState({ page: 1, totalPages: 1, total: 0 })
+    const [stats, setStats] = useState(null)
 
     const getUsers = useCallback(async ({ page = 1, limit = 10, search = "" } = {}) => {
         setLoading(true)
@@ -16,6 +17,18 @@ export default function useAdmin() {
             const res = await api.get("/admin/users", { params: { page, limit, search } })
             setUsers(res.datos.data)
             setUsersPagination({ page: res.datos.page, totalPages: res.datos.totalPages, total: res.datos.total })
+        } catch (error) {
+            setError(error)
+        } finally {
+            setLoading(false)
+        }
+    }, [])
+
+    const getStats = useCallback(async () => {
+        setLoading(true)
+        try {
+            const res = await api.get("/admin/stats")
+            setStats(res.datos)
         } catch (error) {
             setError(error)
         } finally {
@@ -76,6 +89,6 @@ export default function useAdmin() {
         users, reviews, loading, error,
         usersPagination, reviewsPagination,
         getUsers, banUser, changeRole, deleteUser,
-        getReviews, deleteReview
+        getReviews, deleteReview, getStats, stats
     }
 }
