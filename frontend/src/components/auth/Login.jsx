@@ -63,11 +63,7 @@ export default function Login() {
 
       // Recogemos el campo role de los datos para redirigir al usuario a la página correspondiente
       //En caso de ser usuario se redigirá al Home de la app y si es Admin se le enviará a la página principal del Dashboard de Admin
-      if (response.datos.role === "ADMIN") {
-        navigate("/admin");
-      } else {
-        navigate("/home");
-      }
+      navigate("/home")
     } catch (err) {
       // El interceptor ya normaliza el error con { mensaje: "..." }
       setError(err.mensaje || "Error de conexión con el servidor");
