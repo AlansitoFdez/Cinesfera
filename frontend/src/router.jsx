@@ -16,6 +16,7 @@ import Profile from "./components/pages/Profile";
 import Lists from "./components/pages/Lists";
 import ListDetail from "./components/pages/ListDetail";
 import NotFound from "./components/ui/NotFound";
+import AdminUsers from "./components/pages/admin/AdminUsers"
 
 /* ==========================================================================
 OBJETO ROUTER CON TODAS LAS RUTAS
@@ -139,7 +140,7 @@ export const router = createBrowserRouter([
         path: "admin/users",
         element: (
           <ProtectedRoute role="ADMIN">
-            <PlaceholderPage title="Usuarios" /> {/*Aquí irá el componente Usuarios, todavía por crear*/}
+            <AdminUsers />
           </ProtectedRoute>
         ),
       },
