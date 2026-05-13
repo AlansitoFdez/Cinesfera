@@ -24,13 +24,9 @@ class UserService {
   }
 
   async deleteAccount(userId) {
-    try {
-      const user = await User.findByPk(userId)
-      if (!user) throw new Error("Usuario no encontrado")
-      await user.destroy()
-    } catch (error) {
-      throw error
-    }
+    const user = await User.findByPk(userId)
+    if (!user) throw new Error("Usuario no encontrado")
+    await user.destroy()
   }
 
   async changePassword(userId, currentPassword, newPassword) {
