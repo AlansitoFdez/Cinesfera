@@ -49,7 +49,7 @@ class AuthService {
     const newUser = await User.create({ username, email, password: hashedPassword, biography });
     delete newUser.dataValues.password;
 
-    const newList = await List.create({user_id: newUser.id, name: "Favoritos", description: "Listado de Películas y Series Favoritas", is_default: 1});
+    const newList = await List.create({user_id: newUser.id, name: "Favoritos", description: "Listado de Películas y Series Favoritas", is_default: true});
 
     const token = jwt.sign({
       sub: newUser.id,

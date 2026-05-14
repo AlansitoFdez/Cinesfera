@@ -98,7 +98,7 @@ class FollowService {
  
         // 5. Favoritos de todos los amigos en UNA sola query (evita el problema N+1)
         const favoriteLists = await List.findAll({
-            where: { user_id: friendIds, is_default: 1 },
+            where: { user_id: friendIds, is_default: true },
             include: [{
                 model: ListItem,
                 as: "list_items",

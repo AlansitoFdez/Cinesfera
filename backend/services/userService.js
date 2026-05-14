@@ -134,9 +134,9 @@ class UserService {
     const user = await User.findOne({ where: { username }, attributes: ["id"] })
     if (!user) throw controlledError("Usuario no encontrado")
 
-    // 2. Buscamos la lista con is_default = 1 de ese usuario
+    // 2. Buscamos la lista con is_default = true de ese usuario
     const favoritesList = await models.lists.findOne({
-      where: { user_id: user.id, is_default: 1 },
+      where: { user_id: user.id, is_default: true },
       // 3. JOIN a list_items y de ahí a content_cache
       include: [
         {
