@@ -26,7 +26,7 @@ module.exports = function(sequelize, DataTypes) {
     is_default: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: 0
+      defaultValue: false
     },
     created_at: {
       type: DataTypes.DATE,
@@ -36,21 +36,13 @@ module.exports = function(sequelize, DataTypes) {
     is_public: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: 1
+      defaultValue: true
     }
   }, {
     sequelize,
     tableName: 'lists',
     timestamps: false,
     indexes: [
-      {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "id" },
-        ]
-      },
       {
         name: "user_id",
         using: "BTREE",

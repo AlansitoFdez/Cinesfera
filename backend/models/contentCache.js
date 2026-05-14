@@ -33,15 +33,6 @@ module.exports = function(sequelize, DataTypes) {
     tableName: 'content_cache',
     timestamps: false,
     indexes: [
-      {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "tmdb_id" },
-          { name: "media_type" },
-        ]
-      },
     ]
   });
 };

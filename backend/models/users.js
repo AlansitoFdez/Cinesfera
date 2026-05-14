@@ -37,7 +37,7 @@ module.exports = function(sequelize, DataTypes) {
     banned: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: 0
+      defaultValue: false
     },
     created_at: {
       type: DataTypes.DATE,
@@ -54,14 +54,6 @@ module.exports = function(sequelize, DataTypes) {
     tableName: 'users',
     timestamps: false,
     indexes: [
-      {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "id" },
-        ]
-      },
       {
         name: "user_email_UK",
         unique: true,
