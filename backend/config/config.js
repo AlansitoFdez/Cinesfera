@@ -13,7 +13,7 @@ const config = {
     },
     secretKey: process.env.SECRET_KEY,
     frontendUrl: process.env.FRONTEND_URL,
-    geminiApiKey: process.env.GEMINI_API_KEY,
+    openrouterApiKey: process.env.OPENROUTER_API_KEY,
 }
 
 module.exports = config
