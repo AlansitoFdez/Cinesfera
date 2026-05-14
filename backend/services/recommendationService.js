@@ -3,8 +3,9 @@ const initModels = require("../models/init-models").initModels
 const sequelize = require("../config/sequelize")
 const models = initModels(sequelize)
 const tmdbService = require("./tmdbService")
+const config = require("../config/config")
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
+const genAI = new GoogleGenerativeAI(config.geminiApiKey)
 
 const Review = models.reviews
 const List = models.lists
@@ -33,10 +34,15 @@ class RecommendationService {
         // 3. Favoritos del usuario
         const favoritesList = await List.findOne({
             where: { user_id: userId, is_default: true },
+            attributes: ["id", "user_id", "name", "is_default"],
             include: [{
                 model: ListItem,
                 as: "list_items",
-                include: [{ model: ContentCache, as: "tmdb", attributes: ["title", "media_type"] }],
+                include: [{ 
+                    model: ContentCache, 
+                    as: "tmdb", 
+                    attributes: ["title", "media_type"] 
+                }],
                 limit: 10
             }]
         })

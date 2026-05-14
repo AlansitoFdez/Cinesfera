@@ -41,7 +41,7 @@ app.use(cookieParser())
 // MIDDLEWARE - CORS
 // ============================================================================
 app.use(cors({
-    origin: process.env.FRONTEND_URL,
+    origin: config.frontendUrl,
     credentials: true
 }))
 

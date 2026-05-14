@@ -12,6 +12,8 @@ const config = {
         port: process.env.DB_PORT,
     },
     secretKey: process.env.SECRET_KEY,
+    frontendUrl: process.env.FRONTEND_URL,
+    geminiApiKey: process.env.GEMINI_API_KEY,
 }
 
 module.exports = config
