@@ -19,6 +19,7 @@ const reviewRoutes = require("./routes/reviewRoutes");
 const followRoutes = require("./routes/followRoutes");
 const listRoutes = require("./routes/listRoutes")
 const adminRoutes = require("./routes/adminRoutes")
+const recommendationRoutes = require("./routes/recommendationRoutes")
 const cookieParser = require('cookie-parser');
 
 
@@ -55,6 +56,7 @@ app.use("/api/reviews", verifyToken, reviewRoutes)
 app.use("/api/follow", verifyToken, followRoutes)
 app.use("/api/lists", verifyToken, listRoutes)
 app.use("/api/admin", verifyToken, verifyAdmin, adminRoutes)
+app.use("/api/recommendations", verifyToken, recommendationRoutes)
 
 
 // ============================================================================
