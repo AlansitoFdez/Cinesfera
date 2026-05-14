@@ -1,11 +1,9 @@
-const { GoogleGenerativeAI } = require("@google/generative-ai")
+const axios = require("axios")
 const initModels = require("../models/init-models").initModels
 const sequelize = require("../config/sequelize")
 const models = initModels(sequelize)
 const tmdbService = require("./tmdbService")
 const config = require("../config/config")
-
-const genAI = new GoogleGenerativeAI(config.geminiApiKey)
 
 const Review = models.reviews
 const List = models.lists
@@ -38,16 +36,12 @@ class RecommendationService {
             include: [{
                 model: ListItem,
                 as: "list_items",
-                include: [{ 
-                    model: ContentCache, 
-                    as: "tmdb", 
-                    attributes: ["title", "media_type"] 
-                }],
+                include: [{ model: ContentCache, as: "tmdb", attributes: ["title", "media_type"] }],
                 limit: 10
             }]
         })
 
-        // 4. Construir contexto para Gemini
+        // 4. Construir contexto
         const liked = highRatedReviews
             .filter(r => r.rating >= 7)
             .map(r => `- ${r.tmdb?.title} (${r.tmdb?.media_type === "movie" ? "película" : "serie"}) → ${r.rating}/10`)
@@ -62,7 +56,7 @@ class RecommendationService {
             ?.map(i => `- ${i.tmdb?.title} (${i.tmdb?.media_type === "movie" ? "película" : "serie"})`)
             .join("\n") || ""
 
-        // 5. Si no hay suficiente contexto
+        // 5. Validación mínima de contexto
         if (!liked && !favorites) {
             throw { status: 400, message: "Necesitas valorar o guardar contenido antes de recibir recomendaciones", isControlled: true }
         }
@@ -93,13 +87,28 @@ INSTRUCCIONES:
   }
 ]`
 
-        // 6. Llamar a Gemini
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
-        const result = await model.generateContent(prompt)
-        const text = result.response.text()
+        // 6. Llamar a OpenRouter
+        const response = await axios.post(
+            "https://openrouter.ai/api/v1/chat/completions",
+            {
+                model: "meta-llama/llama-3.1-8b-instruct:free",
+                messages: [{ role: "user", content: prompt }],
+                temperature: 0.7
+            },
+            {
+                headers: {
+                    "Authorization": `Bearer ${config.openrouterApiKey}`,
+                    "Content-Type": "application/json",
+                    "HTTP-Referer": "https://cinesfera.app",
+                    "X-Title": "Cinesfera"
+                }
+            }
+        )
 
         // 7. Parsear respuesta
-        const recommendations = JSON.parse(text.trim())
+        const text = response.data.choices[0].message.content.trim()
+        const clean = text.replace(/```json|```/g, "").trim()
+        const recommendations = JSON.parse(clean)
 
         // 8. Buscar tmdb_id para cada recomendación
         const enriched = await Promise.allSettled(
@@ -117,7 +126,6 @@ INSTRUCCIONES:
             })
         )
 
-        // Filtramos los que no se encontraron en TMDB
         return enriched
             .filter(r => r.status === "fulfilled" && r.value !== null)
             .map(r => r.value)
