@@ -1,7 +1,7 @@
 import { useLayoutEffect, useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { gsap } from "gsap";
-import { Search, User, UserCircle, Settings, LogOut, X } from "lucide-react";
+import { Search, User, UserCircle, Settings, LogOut, X, Sparkles } from "lucide-react";
 import { GoArrowUpRight } from "react-icons/go";
 import { useAuth } from "../../hooks/UseAuth";
 import { useDevMode } from "../../hooks/UseDevMode";
@@ -303,7 +303,20 @@ export default function Navbar() {
               </div>
 
               {/* Acciones derecha */}
+              {/* Recomendaciones IA — solo usuario */}
               <div className="flex items-center gap-1">
+                {!isAdmin && (
+                  <button
+                    onClick={() => navigate("/recommendations")}
+                    className="p-2 rounded-full transition-all duration-200"
+                    style={{ color: "#6b7280", background: "transparent", border: "none", cursor: "pointer" }}
+                    onMouseEnter={(e) => { e.currentTarget.style.color = "#a855f7"; e.currentTarget.style.background = "rgba(168,85,247,0.08)"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.color = "#6b7280"; e.currentTarget.style.background = "transparent"; }}
+                    title="Recomendaciones para ti"
+                  >
+                    <Sparkles size={15} />
+                  </button>
+                )}
                 {/* Búsqueda — solo usuario */}
                 {!isAdmin && (
                   <button
