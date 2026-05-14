@@ -19,6 +19,7 @@ import NotFound from "./components/ui/NotFound";
 import AdminUsers from "./components/pages/admin/AdminUsers"
 import AdminReviews from "./components/pages/admin/AdminReviews"
 import AdminDashboard from "./components/pages/admin/AdminDashboard";
+import Recommendations from "./components/pages/Recommendations";
 
 /* ==========================================================================
 OBJETO ROUTER CON TODAS LAS RUTAS
@@ -127,6 +128,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <Settings />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "recommendations",
+        element: (
+          <ProtectedRoute>
+            <Recommendations />
           </ProtectedRoute>
         ),
       },
