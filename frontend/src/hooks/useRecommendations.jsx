@@ -11,7 +11,7 @@ export default function useRecommendations() {
         setLoading(true)
         setError(null)
         try {
-            const res = await api.get("/recommendations")
+            const res = await api.get("/recommendations", { timeout: 35000 })
             setRecommendations(res.datos)
             setHasLoaded(true)
         } catch (err) {

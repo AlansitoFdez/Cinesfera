@@ -91,7 +91,7 @@ INSTRUCCIONES:
         const response = await axios.post(
             "https://openrouter.ai/api/v1/chat/completions",
             {
-                model: "meta-llama/llama-3.1-8b-instruct:free",
+                model: "openrouter/free",
                 messages: [{ role: "user", content: prompt }],
                 temperature: 0.7
             },
@@ -101,7 +101,8 @@ INSTRUCCIONES:
                     "Content-Type": "application/json",
                     "HTTP-Referer": "https://cinesfera.app",
                     "X-Title": "Cinesfera"
-                }
+                },
+                timeout: 30000
             }
         )
 
