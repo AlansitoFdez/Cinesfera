@@ -10,8 +10,8 @@ class AuthController {
 
       res.cookie("token", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production", // ← CAMBIADO
-        sameSite: "strict",
+        secure: true,
+        sameSite: "none",
         maxAge: 3600000
       })
       
@@ -44,8 +44,8 @@ class AuthController {
   async logout(req, res) {
     res.clearCookie('token', {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict"
+      secure: true,
+      sameSite: "none"
     });
     return res.status(200).json(Respuesta.exito(null, "Cierre de sesión exitoso"));
   }
