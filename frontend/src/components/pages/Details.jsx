@@ -8,7 +8,7 @@ import AddToListDropdown from "../ui/Addtolistdropdown";
 // ─── HERO ─────────────────────────────────────────────────────────────────────
 function Hero({ trailerKey, backdropPath, title }) {
     return (
-        <div className="relative w-full overflow-hidden" style={{ height: "65vh" }}>
+        <div className="relative w-full overflow-hidden" style={{ height: "75vh" }}>
             {trailerKey ? (
                 <iframe
                     src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1&mute=1&controls=0&loop=1&playlist=${trailerKey}&modestbranding=1`}
@@ -19,7 +19,7 @@ function Hero({ trailerKey, backdropPath, title }) {
                         pointerEvents: "none",
                         width: "100vw",
                         height: "56.25vw",
-                        minHeight: "65vh",
+                        minHeight: "75vh",
                         minWidth: "177.78vh",
                         position: "absolute",
                         top: "50%",
@@ -34,12 +34,44 @@ function Hero({ trailerKey, backdropPath, title }) {
                     className="absolute inset-0 w-full h-full object-cover object-top"
                 />
             )}
+
+            {/* Grano cinematográfico */}
+            <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E")`,
+                    opacity: 0.5,
+                    mixBlendMode: "overlay"
+                }}
+            />
+
+            {/* Degradado inferior */}
             <div className="absolute inset-0" style={{
-                background: "linear-gradient(to top, #0d1117 0%, rgba(13,17,23,0.3) 60%, transparent 100%)"
+                background: "linear-gradient(to top, #0d1117 0%, rgba(13,17,23,0.55) 40%, rgba(13,17,23,0.1) 70%, transparent 100%)"
             }} />
+            {/* Degradado lateral */}
             <div className="absolute inset-0" style={{
-                background: "linear-gradient(to right, #0d1117 0%, transparent 40%)"
+                background: "linear-gradient(to right, rgba(13,17,23,0.55) 0%, transparent 40%)"
             }} />
+            {/* Víneta superior */}
+            <div className="absolute inset-0" style={{
+                background: "linear-gradient(to bottom, rgba(13,17,23,0.35) 0%, transparent 18%)"
+            }} />
+        </div>
+    );
+}
+
+// ─── TÍTULO DE SECCIÓN ────────────────────────────────────────────────────────
+function SectionTitle({ children }) {
+    return (
+        <div className="flex items-center gap-3 mb-7">
+            <div
+                className="w-[3px] h-5 rounded-full shrink-0"
+                style={{ background: "linear-gradient(to bottom, #7c3aed, #a855f7)" }}
+            />
+            <h2 className="text-lg font-semibold tracking-wide" style={{ color: "#e5e7eb" }}>
+                {children}
+            </h2>
         </div>
     );
 }
@@ -47,66 +79,83 @@ function Hero({ trailerKey, backdropPath, title }) {
 // ─── INFO ─────────────────────────────────────────────────────────────────────
 function Info({ data, infoRef, mediaType }) {
     return (
-        <div ref={infoRef} className="relative z-10 flex gap-10 px-16 -mt-48 mb-16">
+        <div ref={infoRef} className="relative z-10 flex gap-10 px-14 -mt-52 mb-16">
             {/* Póster */}
-            <div className="shrink-0" style={{ width: "220px" }}>
+            <div className="shrink-0" style={{ width: "210px" }}>
                 <img
                     src={`https://image.tmdb.org/t/p/w342${data.poster_path}`}
-                    alt={data.title}
-                    className="rounded-2xl w-full"
+                    alt={data.title || data.name}
+                    className="rounded-xl w-full"
                     style={{
-                        border: "1px solid rgba(168,85,247,0.25)",
-                        boxShadow: "0 0 60px rgba(124,58,237,0.25), 0 20px 40px rgba(0,0,0,0.8)"
+                        border: "1px solid rgba(168,85,247,0.28)",
+                        boxShadow: "0 0 80px rgba(124,58,237,0.18), 0 24px 48px rgba(0,0,0,0.9)"
                     }}
                 />
             </div>
 
-            {/* Información */}
-            <div className="flex flex-col gap-5 pt-32">
-                <h1
-                    className="text-5xl font-black text-white leading-tight"
-                    style={{ fontFamily: "'Georgia', serif", letterSpacing: "0.02em", maxWidth: "700px" }}
+            {/* Columna de información */}
+            <div className="flex flex-col gap-5 pt-36">
+                {/* Badge tipo */}
+                <span
+                    className="self-start px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] rounded-sm text-white"
+                    style={{ background: "linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)" }}
                 >
-                    {data.title}
+                    {mediaType === "movie" ? "Película" : "Serie"}
+                </span>
+
+                {/* Título */}
+                <h1
+                    className="font-bold text-white leading-tight"
+                    style={{ fontSize: "clamp(1.8rem, 3vw, 3rem)", maxWidth: "700px" }}
+                >
+                    {data.title || data.name}
                 </h1>
 
-                <div className="flex items-center gap-4 flex-wrap">
-                    <div className="flex items-center gap-2">
-                        <span style={{ color: "#fbbf24", fontSize: "1.1rem" }}>⭐</span>
-                        <span className="text-white font-bold text-lg">
-                            {data.vote_average?.toFixed(1)}
-                        </span>
-                        <span style={{ color: "#6b7280", fontSize: "0.85rem" }}>
-                            ({data.vote_count?.toLocaleString()} votos)
+                {/* Metadata */}
+                <div className="flex items-center gap-3 flex-wrap">
+                    <div className="flex items-center gap-1.5">
+                        <span style={{ color: "#eab308" }}>★</span>
+                        <span className="text-white font-bold">{data.vote_average?.toFixed(1)}</span>
+                        <span className="text-sm" style={{ color: "#6b7280" }}>
+                            ({data.vote_count?.toLocaleString()})
                         </span>
                     </div>
-                    <span style={{ color: "#374151" }}>|</span>
-                    <span style={{ color: "#9ca3af" }}>{data.release_date?.slice(0, 4)}</span>
+                    {data.release_date && (
+                        <>
+                            <div className="w-px h-4" style={{ background: "rgba(255,255,255,0.1)" }} />
+                            <span className="text-sm" style={{ color: "#9ca3af" }}>
+                                {data.release_date.slice(0, 4)}
+                            </span>
+                        </>
+                    )}
                     {data.runtime && (
                         <>
-                            <span style={{ color: "#374151" }}>|</span>
-                            <span style={{ color: "#9ca3af" }}>{data.runtime} min</span>
+                            <div className="w-px h-4" style={{ background: "rgba(255,255,255,0.1)" }} />
+                            <span className="text-sm" style={{ color: "#9ca3af" }}>{data.runtime} min</span>
                         </>
                     )}
                     {data.seasons && (
                         <>
-                            <span style={{ color: "#374151" }}>|</span>
-                            <span style={{ color: "#9ca3af" }}>{data.seasons.length} temporadas</span>
+                            <div className="w-px h-4" style={{ background: "rgba(255,255,255,0.1)" }} />
+                            <span className="text-sm" style={{ color: "#9ca3af" }}>
+                                {data.seasons.length} temporada{data.seasons.length !== 1 ? "s" : ""}
+                            </span>
                         </>
                     )}
                 </div>
 
+                {/* Géneros */}
                 {data.genres?.length > 0 && (
                     <div className="flex gap-2 flex-wrap">
                         {data.genres.map((genre) => (
                             <span
                                 key={genre.id}
-                                className="rounded-full px-4 py-1.5 text-sm font-semibold"
+                                className="rounded-full px-3.5 py-1 text-xs font-semibold"
                                 style={{
-                                    background: "rgba(124,58,237,0.15)",
-                                    border: "1px solid rgba(168,85,247,0.3)",
+                                    background: "rgba(124,58,237,0.1)",
+                                    border: "1px solid rgba(168,85,247,0.22)",
                                     color: "#c084fc",
-                                    letterSpacing: "0.03em"
+                                    letterSpacing: "0.04em"
                                 }}
                             >
                                 {genre.name}
@@ -115,18 +164,23 @@ function Info({ data, infoRef, mediaType }) {
                     </div>
                 )}
 
+                {/* Añadir a lista */}
                 <AddToListDropdown
                     tmdb_id={data.tmdb_id}
                     media_type={mediaType}
-                    title={data.title}
+                    title={data.title || data.name}
                     poster_path={data.poster_path}
                     vote_average={data.vote_average}
                 />
 
+                {/* Divisor + sinopsis */}
                 {data.overview && (
-                    <p style={{ color: "#d1d5db", fontSize: "1rem", lineHeight: "1.8", maxWidth: "650px" }}>
-                        {data.overview}
-                    </p>
+                    <>
+                        <div className="h-px" style={{ background: "rgba(255,255,255,0.06)", maxWidth: "640px" }} />
+                        <p style={{ color: "#9ca3af", fontSize: "0.95rem", lineHeight: "1.85", maxWidth: "640px" }}>
+                            {data.overview}
+                        </p>
+                    </>
                 )}
             </div>
         </div>
@@ -135,36 +189,77 @@ function Info({ data, infoRef, mediaType }) {
 
 // ─── REPARTO ──────────────────────────────────────────────────────────────────
 function Cast({ cast, castRef }) {
+    const listRef = useRef(null);
+
+    useEffect(() => {
+        const el = castRef?.current;
+        if (!el || !cast?.length) return;
+
+        gsap.set(el, { opacity: 0, y: 24 });
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (!entry.isIntersecting) return;
+                gsap.to(el, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" });
+                if (listRef.current) {
+                    gsap.fromTo(
+                        [...listRef.current.children],
+                        { opacity: 0, y: 14 },
+                        { opacity: 1, y: 0, duration: 0.45, stagger: 0.035, ease: "power2.out", delay: 0.15 }
+                    );
+                }
+                observer.unobserve(el);
+            },
+            { threshold: 0.1 }
+        );
+
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, [cast, castRef]);
+
     if (!cast?.length) return null;
 
     return (
-        <section ref={castRef} className="px-16 mb-14">
+        <section ref={castRef} className="px-14 mb-14">
             <SectionTitle>Reparto</SectionTitle>
-            <div className="flex gap-5 overflow-x-auto pb-4" style={{ scrollbarWidth: "none" }}>
+            <div
+                ref={listRef}
+                className="flex gap-4 overflow-x-auto pb-4"
+                style={{ scrollbarWidth: "none" }}
+            >
                 {cast.map((actor) => (
-                    <div key={actor.id} className="shrink-0 flex flex-col gap-3" style={{ width: "120px" }}>
+                    <div
+                        key={actor.id}
+                        className="shrink-0 flex flex-col gap-2.5 transition-transform duration-200 hover:scale-[1.05]"
+                        style={{ width: "108px", cursor: "default" }}
+                    >
                         {actor.profile_path ? (
                             <img
                                 src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`}
                                 alt={actor.name}
-                                className="rounded-xl object-cover w-full"
-                                style={{ height: "160px", border: "1px solid rgba(168,85,247,0.15)" }}
+                                className="rounded-lg object-cover w-full"
+                                style={{
+                                    height: "145px",
+                                    border: "1px solid rgba(168,85,247,0.1)"
+                                }}
                             />
                         ) : (
                             <div
-                                className="rounded-xl flex items-center justify-center w-full"
+                                className="rounded-lg flex items-center justify-center w-full"
                                 style={{
-                                    height: "160px",
-                                    background: "rgba(124,58,237,0.08)",
-                                    border: "1px solid rgba(168,85,247,0.15)"
+                                    height: "145px",
+                                    background: "rgba(124,58,237,0.06)",
+                                    border: "1px solid rgba(168,85,247,0.1)"
                                 }}
                             >
-                                <span style={{ fontSize: "2.5rem" }}>🎭</span>
+                                <span style={{ fontSize: "1.8rem", opacity: 0.4 }}>🎭</span>
                             </div>
                         )}
                         <div>
-                            <p className="text-white text-sm font-semibold leading-tight">{actor.name}</p>
-                            <p className="text-xs mt-1" style={{ color: "#6b7280" }}>{actor.character}</p>
+                            <p className="text-white text-xs font-semibold leading-tight">{actor.name}</p>
+                            <p className="text-xs mt-0.5 truncate" style={{ color: "#6b7280" }}>
+                                {actor.character}
+                            </p>
                         </div>
                     </div>
                 ))}
@@ -175,54 +270,65 @@ function Cast({ cast, castRef }) {
 
 // ─── PROVIDERS ────────────────────────────────────────────────────────────────
 function Providers({ providers, providersRef }) {
+    useEffect(() => {
+        const el = providersRef?.current;
+        if (!el) return;
+
+        gsap.set(el, { opacity: 0, y: 24 });
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (!entry.isIntersecting) return;
+                gsap.to(el, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" });
+                observer.unobserve(el);
+            },
+            { threshold: 0.1 }
+        );
+
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, [providersRef]);
+
     return (
-        <section ref={providersRef} className="px-16 mb-14">
+        <section ref={providersRef} className="px-14 mb-14">
             <SectionTitle>Disponible en</SectionTitle>
             {providers?.length > 0 ? (
-                <div className="flex gap-4 flex-wrap">
+                <div className="flex gap-3 flex-wrap">
                     {providers.map((provider) => (
                         <div
                             key={provider.provider_id}
-                            className="flex items-center gap-3 rounded-2xl px-5 py-3 transition-all duration-200"
+                            className="flex items-center gap-3 rounded-xl px-4 py-2.5 transition-all duration-200"
                             style={{
-                                background: "rgba(15,15,20,0.95)",
-                                border: "1px solid rgba(168,85,247,0.15)",
-                                boxShadow: "0 4px 20px rgba(0,0,0,0.4)"
+                                background: "rgba(255,255,255,0.03)",
+                                border: "1px solid rgba(168,85,247,0.12)"
                             }}
-                            onMouseEnter={e => e.currentTarget.style.borderColor = "rgba(168,85,247,0.4)"}
-                            onMouseLeave={e => e.currentTarget.style.borderColor = "rgba(168,85,247,0.15)"}
+                            onMouseEnter={e => {
+                                e.currentTarget.style.borderColor = "rgba(168,85,247,0.38)";
+                                e.currentTarget.style.background = "rgba(124,58,237,0.08)";
+                            }}
+                            onMouseLeave={e => {
+                                e.currentTarget.style.borderColor = "rgba(168,85,247,0.12)";
+                                e.currentTarget.style.background = "rgba(255,255,255,0.03)";
+                            }}
                         >
                             <img
                                 src={`https://image.tmdb.org/t/p/w45${provider.logo_path}`}
                                 alt={provider.provider_name}
-                                className="rounded-xl"
-                                style={{ width: "40px", height: "40px" }}
+                                className="rounded-lg"
+                                style={{ width: "36px", height: "36px" }}
                             />
-                            <span className="text-white font-semibold">{provider.provider_name}</span>
+                            <span className="text-sm font-medium" style={{ color: "#e5e7eb" }}>
+                                {provider.provider_name}
+                            </span>
                         </div>
                     ))}
                 </div>
             ) : (
-                <p style={{ color: "#4b5563", fontSize: "0.9rem" }}>
+                <p className="text-sm" style={{ color: "#4b5563" }}>
                     No disponible en plataformas de streaming en España.
                 </p>
             )}
         </section>
-    );
-}
-
-// ─── HELPER: TÍTULO DE SECCIÓN ────────────────────────────────────────────────
-function SectionTitle({ children }) {
-    return (
-        <div className="flex items-center gap-4 mb-8">
-            <h2
-                className="text-2xl font-black text-white uppercase tracking-widest shrink-0"
-                style={{ fontFamily: "'Georgia', serif" }}
-            >
-                {children}
-            </h2>
-            <div className="flex-1 h-px" style={{ background: "rgba(168,85,247,0.15)" }} />
-        </div>
     );
 }
 
@@ -236,26 +342,48 @@ export default function Details() {
     const providersRef = useRef(null);
     const reviewsRef = useRef(null);
 
+    // Entrada de la sección Info
     useEffect(() => {
-        if (!data) return;
-        const sections = [infoRef, castRef, providersRef, reviewsRef]
-            .map(r => r.current)
-            .filter(Boolean);
+        if (!data || !infoRef.current) return;
         gsap.fromTo(
-            sections,
-            { opacity: 0, y: 40 },
-            { opacity: 1, y: 0, duration: 0.7, ease: "power3.out", stagger: 0.12, delay: 0.1 }
+            infoRef.current,
+            { opacity: 0, y: 36 },
+            { opacity: 1, y: 0, duration: 0.85, ease: "power3.out", delay: 0.1 }
         );
     }, [data]);
 
+    // Reveal de la sección Reseñas
     useEffect(() => {
-        window.scrollTo(0, 0)
-    }, [])
+        const el = reviewsRef.current;
+        if (!el) return;
+
+        gsap.set(el, { opacity: 0, y: 24 });
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (!entry.isIntersecting) return;
+                gsap.to(el, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" });
+                observer.unobserve(el);
+            },
+            { threshold: 0.05 }
+        );
+
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, [data]);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center" style={{ background: "#0d1117" }}>
-                <p className="uppercase tracking-widest text-sm" style={{ color: "#6b7280" }}>Cargando...</p>
+            <div className="min-h-screen flex flex-col items-center justify-center gap-5" style={{ background: "#0d1117" }}>
+                <div
+                    className="w-9 h-9 rounded-full border-2 border-t-transparent animate-spin"
+                    style={{ borderColor: "#7c3aed #7c3aed #7c3aed transparent" }}
+                />
+                <p className="uppercase tracking-[0.3em] text-xs" style={{ color: "#4b5563" }}>Cargando</p>
             </div>
         );
     }
@@ -270,11 +398,25 @@ export default function Details() {
 
     return (
         <div className="min-h-screen" style={{ background: "#0d1117" }}>
-            <Hero trailerKey={data.trailer_key} backdropPath={data.backdrop_path} title={data.title} />
+            <Hero
+                trailerKey={data.trailer_key}
+                backdropPath={data.backdrop_path}
+                title={data.title || data.name}
+            />
             <Info data={data} infoRef={infoRef} mediaType={type} />
             <Cast cast={data.cast} castRef={castRef} />
             <Providers providers={data.providers} providersRef={providersRef} />
-            <Reviews tmdb_id={data.tmdb_id} media_type={type} title={data.title} poster_path={data.poster_path} vote_average={data.vote_average} />
+
+            <section ref={reviewsRef} className="px-14 mb-20">
+                <SectionTitle>Reseñas</SectionTitle>
+                <Reviews
+                    tmdb_id={data.tmdb_id}
+                    media_type={type}
+                    title={data.title || data.name}
+                    poster_path={data.poster_path}
+                    vote_average={data.vote_average}
+                />
+            </section>
         </div>
     );
 }
