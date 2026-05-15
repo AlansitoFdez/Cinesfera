@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import api from "../api";
-import { useAuth } from "./UseAuth";
+import { useAuth } from "./useAuth";
 
 export default function useReviews(tmdb_id, media_type) {
     const [reviews, setReviews] = useState([]);
