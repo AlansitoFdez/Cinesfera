@@ -2,8 +2,8 @@ import { useParams } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import useDetailData from "../../hooks/useDetailData";
-import Reviews from "../ui/reviews";
-import AddToListDropdown from "../ui/addtolistdropdown";
+import Reviews from "../ui/Reviews";
+import AddToListDropdown from "../ui/Addtolistdropdown";
 
 // ─── HERO ─────────────────────────────────────────────────────────────────────
 function Hero({ trailerKey, backdropPath, title }) {
