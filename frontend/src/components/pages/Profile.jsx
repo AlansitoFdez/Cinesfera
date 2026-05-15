@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import useProfile from "../../hooks/useProfile";
-import { useAuth } from "../../hooks/UseAuth";
+import { useAuth } from "../../hooks/useAuth";
 
 // ─── HEADER ───────────────────────────────────────────────────────────────────
 function ProfileHeader({ profile, isOwnProfile, following, followLoading, toggleFollow }) {

@@ -3,8 +3,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { gsap } from "gsap";
 import { Search, User, UserCircle, Settings, LogOut, X, Sparkles } from "lucide-react";
 import { GoArrowUpRight } from "react-icons/go";
-import { useAuth } from "../../hooks/UseAuth";
-import { useDevMode } from "../../hooks/UseDevMode";
+import { useAuth } from "../../hooks/useAuth";
+import { useDevMode } from "../../hooks/useDevMode";
 
 // ─── CONSTANTES ───────────────────────────────────────────────────────────────
 const NAV_CARDS_USER = [

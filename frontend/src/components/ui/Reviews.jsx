@@ -1,6 +1,6 @@
 import { useState } from "react";
 import useReviews from "../../hooks/useReviews";
-import {useAuth} from "../../hooks/UseAuth";
+import { useAuth } from "../../hooks/useAuth";
 
 // ─── ESTRELLAS ────────────────────────────────────────────────────────────────
 function StarRating({ value, onChange, readonly = false }) {

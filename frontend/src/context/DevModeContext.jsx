@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { DevModeContext } from "../hooks/UseDevMode"
+import { DevModeContext } from "../hooks/useDevMode"
 
 //Esto es el componente que envolverá la App para que el resto de componentes puedan comprobar si el modo dev está activado
 export function DevModeProvider({ children }) {
