@@ -5,7 +5,6 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import RootLayout from "./components/layout/RootLayout";
 import Login from "./components/auth/Login";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
-import PlaceholderPage from "./components/ui/PlaceHolderPage";
 import Settings from "./components/setting/Settings";
 import Home from "./components/pages/Home";
 import Search from "./components/pages/Search";
