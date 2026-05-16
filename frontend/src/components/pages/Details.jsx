@@ -8,7 +8,7 @@ import AddToListDropdown from "../ui/Addtolistdropdown";
 // ─── HERO ─────────────────────────────────────────────────────────────────────
 function Hero({ trailerKey, backdropPath, title }) {
     return (
-        <div className="relative w-full overflow-hidden" style={{ height: "75vh" }}>
+        <div className="relative w-full overflow-hidden h-[50vh] md:h-[75vh]">
             {trailerKey ? (
                 <iframe
                     src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1&mute=1&controls=0&loop=1&playlist=${trailerKey}&modestbranding=1`}
@@ -19,7 +19,7 @@ function Hero({ trailerKey, backdropPath, title }) {
                         pointerEvents: "none",
                         width: "100vw",
                         height: "56.25vw",
-                        minHeight: "75vh",
+                        minHeight: "50vh",
                         minWidth: "177.78vh",
                         position: "absolute",
                         top: "50%",
@@ -44,16 +44,12 @@ function Hero({ trailerKey, backdropPath, title }) {
                     mixBlendMode: "overlay"
                 }}
             />
-
-            {/* Degradado inferior */}
             <div className="absolute inset-0" style={{
                 background: "linear-gradient(to top, #0d1117 0%, rgba(13,17,23,0.55) 40%, rgba(13,17,23,0.1) 70%, transparent 100%)"
             }} />
-            {/* Degradado lateral */}
             <div className="absolute inset-0" style={{
                 background: "linear-gradient(to right, rgba(13,17,23,0.55) 0%, transparent 40%)"
             }} />
-            {/* Víneta superior */}
             <div className="absolute inset-0" style={{
                 background: "linear-gradient(to bottom, rgba(13,17,23,0.35) 0%, transparent 18%)"
             }} />
@@ -79,9 +75,12 @@ function SectionTitle({ children }) {
 // ─── INFO ─────────────────────────────────────────────────────────────────────
 function Info({ data, infoRef, mediaType }) {
     return (
-        <div ref={infoRef} className="relative z-10 flex gap-10 px-14 -mt-52 mb-16">
+        <div
+            ref={infoRef}
+            className="relative z-10 flex flex-row gap-4 md:gap-10 px-4 md:px-14 -mt-16 md:-mt-52 mb-12 md:mb-16"
+        >
             {/* Póster */}
-            <div className="shrink-0" style={{ width: "210px" }}>
+            <div className="shrink-0 w-28 md:w-[210px]">
                 <img
                     src={`https://image.tmdb.org/t/p/w342${data.poster_path}`}
                     alt={data.title || data.name}
@@ -94,10 +93,10 @@ function Info({ data, infoRef, mediaType }) {
             </div>
 
             {/* Columna de información */}
-            <div className="flex flex-col gap-5 pt-36">
+            <div className="flex flex-col gap-3 md:gap-5 pt-2 md:pt-36 min-w-0">
                 {/* Badge tipo */}
                 <span
-                    className="self-start px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] rounded-sm text-white"
+                    className="self-start px-2.5 py-0.5 md:px-3 md:py-1 text-[9px] md:text-[10px] font-bold uppercase tracking-[0.18em] rounded-sm text-white"
                     style={{ background: "linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)" }}
                 >
                     {mediaType === "movie" ? "Película" : "Serie"}
@@ -106,39 +105,39 @@ function Info({ data, infoRef, mediaType }) {
                 {/* Título */}
                 <h1
                     className="font-bold text-white leading-tight"
-                    style={{ fontSize: "clamp(1.8rem, 3vw, 3rem)", maxWidth: "700px" }}
+                    style={{ fontSize: "clamp(1.1rem, 3.5vw, 3rem)" }}
                 >
                     {data.title || data.name}
                 </h1>
 
                 {/* Metadata */}
-                <div className="flex items-center gap-3 flex-wrap">
-                    <div className="flex items-center gap-1.5">
-                        <span style={{ color: "#eab308" }}>★</span>
-                        <span className="text-white font-bold">{data.vote_average?.toFixed(1)}</span>
-                        <span className="text-sm" style={{ color: "#6b7280" }}>
+                <div className="flex items-center gap-2 md:gap-3 flex-wrap">
+                    <div className="flex items-center gap-1">
+                        <span style={{ color: "#eab308", fontSize: "11px" }}>★</span>
+                        <span className="text-white font-bold text-sm">{data.vote_average?.toFixed(1)}</span>
+                        <span className="text-xs hidden sm:inline" style={{ color: "#6b7280" }}>
                             ({data.vote_count?.toLocaleString()})
                         </span>
                     </div>
                     {data.release_date && (
                         <>
-                            <div className="w-px h-4" style={{ background: "rgba(255,255,255,0.1)" }} />
-                            <span className="text-sm" style={{ color: "#9ca3af" }}>
+                            <div className="w-px h-3 md:h-4" style={{ background: "rgba(255,255,255,0.1)" }} />
+                            <span className="text-xs md:text-sm" style={{ color: "#9ca3af" }}>
                                 {data.release_date.slice(0, 4)}
                             </span>
                         </>
                     )}
                     {data.runtime && (
                         <>
-                            <div className="w-px h-4" style={{ background: "rgba(255,255,255,0.1)" }} />
-                            <span className="text-sm" style={{ color: "#9ca3af" }}>{data.runtime} min</span>
+                            <div className="w-px h-3 md:h-4" style={{ background: "rgba(255,255,255,0.1)" }} />
+                            <span className="text-xs md:text-sm" style={{ color: "#9ca3af" }}>{data.runtime} min</span>
                         </>
                     )}
                     {data.seasons && (
                         <>
-                            <div className="w-px h-4" style={{ background: "rgba(255,255,255,0.1)" }} />
-                            <span className="text-sm" style={{ color: "#9ca3af" }}>
-                                {data.seasons.length} temporada{data.seasons.length !== 1 ? "s" : ""}
+                            <div className="w-px h-3 md:h-4" style={{ background: "rgba(255,255,255,0.1)" }} />
+                            <span className="text-xs md:text-sm" style={{ color: "#9ca3af" }}>
+                                {data.seasons.length} temp.
                             </span>
                         </>
                     )}
@@ -146,16 +145,15 @@ function Info({ data, infoRef, mediaType }) {
 
                 {/* Géneros */}
                 {data.genres?.length > 0 && (
-                    <div className="flex gap-2 flex-wrap">
+                    <div className="flex gap-1.5 md:gap-2 flex-wrap">
                         {data.genres.map((genre) => (
                             <span
                                 key={genre.id}
-                                className="rounded-full px-3.5 py-1 text-xs font-semibold"
+                                className="rounded-full px-2.5 md:px-3.5 py-0.5 md:py-1 text-[10px] md:text-xs font-semibold"
                                 style={{
                                     background: "rgba(124,58,237,0.1)",
                                     border: "1px solid rgba(168,85,247,0.22)",
-                                    color: "#c084fc",
-                                    letterSpacing: "0.04em"
+                                    color: "#c084fc"
                                 }}
                             >
                                 {genre.name}
@@ -173,16 +171,28 @@ function Info({ data, infoRef, mediaType }) {
                     vote_average={data.vote_average}
                 />
 
-                {/* Divisor + sinopsis */}
+                {/* Sinopsis — oculta en móvil (se mueve abajo) */}
                 {data.overview && (
                     <>
-                        <div className="h-px" style={{ background: "rgba(255,255,255,0.06)", maxWidth: "640px" }} />
-                        <p style={{ color: "#9ca3af", fontSize: "0.95rem", lineHeight: "1.85", maxWidth: "640px" }}>
+                        <div className="h-px hidden md:block" style={{ background: "rgba(255,255,255,0.06)", maxWidth: "640px" }} />
+                        <p className="hidden md:block" style={{ color: "#9ca3af", fontSize: "0.95rem", lineHeight: "1.85", maxWidth: "640px" }}>
                             {data.overview}
                         </p>
                     </>
                 )}
             </div>
+        </div>
+    );
+}
+
+// ─── SINOPSIS MÓVIL ───────────────────────────────────────────────────────────
+function MobileOverview({ overview }) {
+    if (!overview) return null;
+    return (
+        <div className="px-4 mb-10 md:hidden">
+            <p style={{ color: "#9ca3af", fontSize: "0.9rem", lineHeight: "1.8" }}>
+                {overview}
+            </p>
         </div>
     );
 }
@@ -220,46 +230,37 @@ function Cast({ cast, castRef }) {
     if (!cast?.length) return null;
 
     return (
-        <section ref={castRef} className="px-14 mb-14">
+        <section ref={castRef} className="px-4 md:px-14 mb-14">
             <SectionTitle>Reparto</SectionTitle>
             <div
                 ref={listRef}
-                className="flex gap-4 overflow-x-auto pb-4"
+                className="flex gap-3 md:gap-4 overflow-x-auto pb-4"
                 style={{ scrollbarWidth: "none" }}
             >
                 {cast.map((actor) => (
                     <div
                         key={actor.id}
-                        className="shrink-0 flex flex-col gap-2.5 transition-transform duration-200 hover:scale-[1.05]"
-                        style={{ width: "108px", cursor: "default" }}
+                        className="shrink-0 flex flex-col gap-2 transition-transform duration-200 hover:scale-[1.05]"
+                        style={{ width: "88px" }}
                     >
                         {actor.profile_path ? (
                             <img
                                 src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`}
                                 alt={actor.name}
                                 className="rounded-lg object-cover w-full"
-                                style={{
-                                    height: "145px",
-                                    border: "1px solid rgba(168,85,247,0.1)"
-                                }}
+                                style={{ height: "120px", border: "1px solid rgba(168,85,247,0.1)" }}
                             />
                         ) : (
                             <div
                                 className="rounded-lg flex items-center justify-center w-full"
-                                style={{
-                                    height: "145px",
-                                    background: "rgba(124,58,237,0.06)",
-                                    border: "1px solid rgba(168,85,247,0.1)"
-                                }}
+                                style={{ height: "120px", background: "rgba(124,58,237,0.06)", border: "1px solid rgba(168,85,247,0.1)" }}
                             >
-                                <span style={{ fontSize: "1.8rem", opacity: 0.4 }}>🎭</span>
+                                <span style={{ fontSize: "1.5rem", opacity: 0.4 }}>🎭</span>
                             </div>
                         )}
                         <div>
-                            <p className="text-white text-xs font-semibold leading-tight">{actor.name}</p>
-                            <p className="text-xs mt-0.5 truncate" style={{ color: "#6b7280" }}>
-                                {actor.character}
-                            </p>
+                            <p className="text-white text-[11px] font-semibold leading-tight">{actor.name}</p>
+                            <p className="text-[10px] mt-0.5 truncate" style={{ color: "#6b7280" }}>{actor.character}</p>
                         </div>
                     </div>
                 ))}
@@ -290,18 +291,15 @@ function Providers({ providers, providersRef }) {
     }, [providersRef]);
 
     return (
-        <section ref={providersRef} className="px-14 mb-14">
+        <section ref={providersRef} className="px-4 md:px-14 mb-14">
             <SectionTitle>Disponible en</SectionTitle>
             {providers?.length > 0 ? (
-                <div className="flex gap-3 flex-wrap">
+                <div className="flex gap-2 md:gap-3 flex-wrap">
                     {providers.map((provider) => (
                         <div
                             key={provider.provider_id}
-                            className="flex items-center gap-3 rounded-xl px-4 py-2.5 transition-all duration-200"
-                            style={{
-                                background: "rgba(255,255,255,0.03)",
-                                border: "1px solid rgba(168,85,247,0.12)"
-                            }}
+                            className="flex items-center gap-2 md:gap-3 rounded-xl px-3 md:px-4 py-2 md:py-2.5 transition-all duration-200"
+                            style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(168,85,247,0.12)" }}
                             onMouseEnter={e => {
                                 e.currentTarget.style.borderColor = "rgba(168,85,247,0.38)";
                                 e.currentTarget.style.background = "rgba(124,58,237,0.08)";
@@ -315,9 +313,9 @@ function Providers({ providers, providersRef }) {
                                 src={`https://image.tmdb.org/t/p/w45${provider.logo_path}`}
                                 alt={provider.provider_name}
                                 className="rounded-lg"
-                                style={{ width: "36px", height: "36px" }}
+                                style={{ width: "30px", height: "30px" }}
                             />
-                            <span className="text-sm font-medium" style={{ color: "#e5e7eb" }}>
+                            <span className="text-xs md:text-sm font-medium" style={{ color: "#e5e7eb" }}>
                                 {provider.provider_name}
                             </span>
                         </div>
@@ -342,7 +340,6 @@ export default function Details() {
     const providersRef = useRef(null);
     const reviewsRef = useRef(null);
 
-    // Entrada de la sección Info
     useEffect(() => {
         if (!data || !infoRef.current) return;
         gsap.fromTo(
@@ -352,7 +349,6 @@ export default function Details() {
         );
     }, [data]);
 
-    // Reveal de la sección Reseñas
     useEffect(() => {
         const el = reviewsRef.current;
         if (!el) return;
@@ -404,10 +400,11 @@ export default function Details() {
                 title={data.title || data.name}
             />
             <Info data={data} infoRef={infoRef} mediaType={type} />
+            <MobileOverview overview={data.overview} />
             <Cast cast={data.cast} castRef={castRef} />
             <Providers providers={data.providers} providersRef={providersRef} />
 
-            <section ref={reviewsRef} className="px-14 mb-20">
+            <section ref={reviewsRef} className="px-4 md:px-14 mb-20">
                 <SectionTitle>Reseñas</SectionTitle>
                 <Reviews
                     tmdb_id={data.tmdb_id}
