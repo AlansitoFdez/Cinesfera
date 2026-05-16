@@ -57,15 +57,21 @@ export default function AdminUsers() {
     const askConfirm = (message, action) => setConfirm({ message, onConfirm: action })
 
     if (loading) return (
-        <div className="min-h-screen flex flex-col items-center justify-center gap-5" style={{ background: "#0d1117" }}>
-            <div className="w-9 h-9 rounded-full border-2 border-t-transparent animate-spin"
-                style={{ borderColor: "#7c3aed #7c3aed #7c3aed transparent" }} />
-            <p className="uppercase tracking-[0.3em] text-xs" style={{ color: "#4b5563" }}>Cargando</p>
+        <div className="min-h-screen flex flex-col items-center justify-center gap-6" style={{ background: "#060810" }}>
+            <div className="relative w-12 h-12">
+                <div className="absolute inset-0 rounded-full" style={{ border: "1px solid rgba(124,58,237,0.15)" }} />
+                <div className="absolute inset-0 rounded-full animate-spin" style={{ borderTop: "1.5px solid #7c3aed", borderRight: "1.5px solid transparent", borderBottom: "1.5px solid transparent", borderLeft: "1.5px solid transparent" }} />
+                <div className="absolute inset-2 rounded-full animate-spin" style={{ borderTop: "1.5px solid rgba(168,85,247,0.4)", borderRight: "1.5px solid transparent", borderBottom: "1.5px solid transparent", borderLeft: "1.5px solid transparent", animationDuration: "1.5s", animationDirection: "reverse" }} />
+            </div>
+            <div className="flex flex-col items-center gap-1">
+                <p className="uppercase tracking-[0.4em] text-[10px] font-semibold" style={{ color: "#6d28d9" }}>Cinesfera</p>
+                <p className="uppercase tracking-[0.2em] text-[9px]" style={{ color: "#1f2937" }}>Cargando</p>
+            </div>
         </div>
     )
 
     return (
-        <div className="min-h-screen px-4 sm:px-8 md:px-24 pb-24 pt-28" style={{ background: "#0d1117" }}>
+        <div className="min-h-screen px-4 sm:px-8 md:px-24 pb-24 pt-28" style={{ background: "#060810" }}>
             <div className="max-w-6xl mx-auto flex flex-col gap-8">
 
                 {/* Header */}
@@ -73,7 +79,7 @@ export default function AdminUsers() {
                     <div className="flex items-center gap-3 mb-1">
                         <div className="w-[3px] h-7 rounded-full shrink-0"
                             style={{ background: "linear-gradient(to bottom, #7c3aed, #a855f7)" }} />
-                        <h1 className="text-2xl sm:text-3xl font-bold text-white">Gestión de usuarios</h1>
+                        <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">Gestión de usuarios</h1>
                     </div>
                     <p className="text-sm pl-6" style={{ color: "#4b5563" }}>
                         {usersPagination.total} usuarios registrados
@@ -101,8 +107,8 @@ export default function AdminUsers() {
                         type="submit"
                         className="rounded-xl px-4 py-2 text-sm font-semibold text-white transition-all duration-200 hover:scale-[1.03]"
                         style={{
-                            background: "linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)",
-                            boxShadow: "0 0 14px rgba(124,58,237,0.3)"
+                            background: "linear-gradient(135deg, #6d28d9 0%, #9333ea 100%)",
+                            boxShadow: "0 0 16px rgba(109,40,217,0.35)"
                         }}
                     >
                         Buscar
