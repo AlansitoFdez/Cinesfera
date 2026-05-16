@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import api from "../../api";
 import { cn } from "@/lib/utils";
@@ -10,7 +10,8 @@ export default function MovieCard({ movie, mediaType, className }) {
     const overlayRef = useRef(null);
     const overlayInnerRef = useRef(null);
     const shimmerRef = useRef(null);
-    const navigate = useNavigate();
+    const abortRef  = useRef(null);
+    const navigate  = useNavigate();
     const [providers, setProviders] = useState([]);
     const [loadingProviders, setLoadingProviders] = useState(false);
     const [imgLoaded, setImgLoaded] = useState(false);
@@ -18,6 +19,8 @@ export default function MovieCard({ movie, mediaType, className }) {
     const rating = movie.vote_average?.toFixed(1);
     const ratingPct = Math.round((movie.vote_average / 10) * 100);
     const mediaLabel = type === "movie" ? "Film" : "Series";
+
+    useEffect(() => () => abortRef.current?.abort(), []);
 
     useLayoutEffect(() => {
         gsap.set(overlayRef.current, { opacity: 0 });
@@ -41,13 +44,16 @@ export default function MovieCard({ movie, mediaType, className }) {
         cardRef.current.style.boxShadow = "0 0 0 1.5px rgba(124,58,237,0.55), 0 12px 40px rgba(109,40,217,0.22)";
 
         if (providers.length > 0) return;
+        abortRef.current = new AbortController();
         setLoadingProviders(true);
-        api.get(`/home/providers/${type}/${movie.id}`)
+        api.get(`/home/providers/${type}/${movie.id}`, { signal: abortRef.current.signal })
             .then(res => setProviders(res.datos ?? []))
+            .catch(() => {})
             .finally(() => setLoadingProviders(false));
     };
 
     const handleMouseLeave = () => {
+        abortRef.current?.abort();
         gsap.killTweensOf([imgRef.current, overlayRef.current, overlayInnerRef.current]);
 
         gsap.to(imgRef.current, { scale: 1, duration: 0.45, ease: "power2.out" });
