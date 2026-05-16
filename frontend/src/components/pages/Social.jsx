@@ -49,7 +49,7 @@ function TabBar({ activeTab, setActiveTab, counts }) {
                         {tab.label}
                         {counts[tab.key] > 0 && (
                             <span
-                                className="text-[10px] font-bold px-1.5 py-0.5 rounded-full"
+                                className="text-[10px] font-bold px-1.5 py-0.5 rounded-full hidden sm:inline"
                                 style={{
                                     background: active ? "rgba(168,85,247,0.3)" : "rgba(255,255,255,0.07)",
                                     color: active ? "#e9d5ff" : "#4b5563"
@@ -257,7 +257,7 @@ export default function Social() {
     };
 
     return (
-        <div className="min-h-screen pb-24 pt-28 px-8 md:px-24" style={{ background: "#0d1117" }}>
+        <div className="min-h-screen pb-24 pt-28 px-4 sm:px-8 md:px-24" style={{ background: "#0d1117" }}>
 
             {/* Header */}
             <div className="flex items-center gap-3 mb-10 max-w-2xl mx-auto">

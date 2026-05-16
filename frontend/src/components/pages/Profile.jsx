@@ -77,7 +77,7 @@ function ProfileHeader({ profile, isOwnProfile, following, followLoading, toggle
                 >
                     {METRICS.map((m, i) => (
                         <div key={m.label} className="flex items-center">
-                            <div className="flex flex-col items-center gap-0.5 px-7 py-3">
+                            <div className="flex flex-col items-center gap-0.5 px-4 sm:px-7 py-3">
                                 <span className="text-xl font-bold text-white">{m.value}</span>
                                 <span
                                     className="text-[10px] uppercase tracking-wider"
@@ -227,7 +227,7 @@ function ProfileFavorites({ favorites }) {
     );
 
     return (
-        <div className="grid grid-cols-4 gap-3">
+        <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
             {favorites.map(item => (
                 <div
                     key={`${item.tmdb_id}-${item.media_type}`}

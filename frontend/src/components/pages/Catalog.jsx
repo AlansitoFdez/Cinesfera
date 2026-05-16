@@ -65,7 +65,7 @@ export default function Catalog({ type }) {
     };
 
     return (
-        <div className="min-h-screen pt-24 pb-20 px-14" style={{ background: "#0d1117" }}>
+        <div className="min-h-screen pt-24 pb-20 px-4 sm:px-8 md:px-14" style={{ background: "#0d1117" }}>
 
             {/* ── Header ─────────────────────────────────── */}
             <div ref={headerRef} className="mb-10">
