@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import api from "../api";
+import logger from "../utils/logger";
 
 export default function useCatalog(type) {
     const [results, setResults] = useState([]);
@@ -15,7 +16,7 @@ export default function useCatalog(type) {
                 const res = await api.get(`/home/popular/${type}`);
                 setResults(res.datos.results);
             } catch (error) {
-                console.error(error);
+                logger.error(error);
             } finally {
                 setLoading(false);
             }
@@ -37,7 +38,7 @@ export default function useCatalog(type) {
                 const res = await api.get(`/home/search`, { params: { query, type } });
                 setResults(res.datos || []);
             } catch (error) {
-                console.error(error);
+                logger.error(error);
             } finally {
                 setLoading(false);
             }
@@ -57,7 +58,7 @@ export default function useCatalog(type) {
                 const res = await api.get(`/home/by_genre/${type}/${genreId}`);
                 setResults(res.datos.results || []);
             } catch (error) {
-                console.error(error);
+                logger.error(error);
             } finally {
                 setLoading(false);
             }

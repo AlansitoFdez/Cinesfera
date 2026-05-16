@@ -10,6 +10,7 @@
  */
 
 import axios from 'axios';
+import logger from './utils/logger';
 
 /**
  * Instancia configurada de Axios para comunicación con el backend
@@ -66,20 +67,20 @@ api.interceptors.response.use(
 
             // Registros específicos según el código de estado HTTP
             if (error.response.status === 404) {
-                console.warn(`Recurso no encontrado (404): ${error.config.url}`);
+                logger.warn(`Recurso no encontrado (404): ${error.config.url}`);
             } else if (error.response.status === 400) {
-                console.warn(`Solicitud inválida (400): ${error.config.url}`);
+                logger.warn(`Solicitud inválida (400): ${error.config.url}`);
             } else if (error.response.status >= 500) {
-                console.error(`Error del servidor (${error.response.status}): ${error.config.url}`);
+                logger.error(`Error del servidor (${error.response.status}): ${error.config.url}`);
             }
         } else if (error.request) {
             // La solicitud fue realizada pero el servidor no respondió
             respuestaError.mensaje = 'No hay respuesta del servidor. Verifica tu conexión.';
-            console.error('No hay respuesta del servidor:', error.request);
+            logger.error('No hay respuesta del servidor:', error.request);
         } else {
             // Algo sucedió al preparar la solicitud (ej: construcción de la URL)
             respuestaError.mensaje = error.message || 'Error al realizar la solicitud';
-            console.error('Error en la preparación de la solicitud:', error.message);
+            logger.error('Error en la preparación de la solicitud:', error.message);
         }
 
         return Promise.reject(respuestaError);

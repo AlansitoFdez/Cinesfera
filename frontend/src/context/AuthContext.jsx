@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { AuthContext } from "../hooks/useAuth";
 import api from "../api.js";
+import logger from "../utils/logger";
 
 //Creamos la función AuthProvider que será un envoltorio de componentes
 //Con el envolveremos el componente App para que cualquier componente pueda acceder al contexto
@@ -37,7 +38,7 @@ export function AuthProvider({ children }) {
     try {
       await api.post("/auth/logout", {});
     } catch (err) {
-      console.error("Error al cerrar sesión:", err);
+      logger.error("Error al cerrar sesión:", err);
     } finally {
       setUser(null);
     }

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import api from "../api";
+import logger from "../utils/logger";
 
 export default function useProfile(username, currentUserId) {
     const [profile, setProfile] = useState(null);
@@ -63,7 +64,7 @@ export default function useProfile(username, currentUserId) {
             // Invertimos el estado del botón
             setFollowing(prev => !prev)
         } catch (err) {
-            console.error("Error al cambiar follow:", err)
+            logger.error("Error al cambiar follow:", err)
         } finally {
             setFollowLoading(false)
         }

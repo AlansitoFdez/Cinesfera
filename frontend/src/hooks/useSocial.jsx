@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import api from "../api";
+import logger from "../utils/logger";
 
 export default function useSocial() {
     const [friends, setFriends] = useState([]);
@@ -24,7 +25,7 @@ export default function useSocial() {
                 setFollowers(resFollowers.datos);
                 setSuggested(resSuggested.datos);
             } catch (err) {
-                console.error("Error al cargar datos sociales:", err);
+                logger.error("Error al cargar datos sociales:", err);
             } finally {
                 setLoading(false);
             }
@@ -43,7 +44,7 @@ export default function useSocial() {
             setFollowers(prev => prev.filter(u => u.username !== username));
             setSuggested(prev => prev.filter(u => u.username !== username));
         } catch (err) {
-            console.error("Error al seguir:", err);
+            logger.error("Error al seguir:", err);
         }
     };
 
