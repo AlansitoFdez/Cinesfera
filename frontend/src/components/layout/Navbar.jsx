@@ -291,7 +291,7 @@ export default function Navbar() {
                 <span
                   onClick={() => navigate(isAdmin ? "/admin" : "/home")}
                   className="cursor-pointer"
-                  style={{ fontFamily: "'Georgia', serif", fontWeight: 900, fontSize: "1.2rem", letterSpacing: "0.25em", textTransform: "uppercase", color: "white" }}
+                  style={{ fontWeight: 700, fontSize: "1.15rem", letterSpacing: "0.22em", color: "white" }}
                 >
                   Cin<span style={{ color: "#a855f7" }}>esfera</span>
                 </span>

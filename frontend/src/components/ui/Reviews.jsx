@@ -1,25 +1,30 @@
 import { useState } from "react";
 import useReviews from "../../hooks/useReviews";
 import { useAuth } from "../../hooks/useAuth";
+import { Pencil, Trash2 } from "lucide-react";
 
 // ─── ESTRELLAS ────────────────────────────────────────────────────────────────
 function StarRating({ value, onChange, readonly = false }) {
     return (
-        <div className="flex gap-1">
+        <div className="flex gap-0.5 flex-wrap">
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((star) => (
                 <button
                     key={star}
                     type="button"
                     disabled={readonly}
                     onClick={() => onChange && onChange(star)}
+                    className="transition-transform duration-100"
                     style={{
-                        color: star <= value ? "#fbbf24" : "#374151",
-                        fontSize: "1.2rem",
+                        color: star <= value ? "#eab308" : "#1f2937",
+                        fontSize: "1.15rem",
                         background: "none",
                         border: "none",
                         cursor: readonly ? "default" : "pointer",
-                        padding: "0 1px"
+                        padding: "0 1px",
+                        lineHeight: 1
                     }}
+                    onMouseEnter={e => { if (!readonly) e.currentTarget.style.transform = "scale(1.2)" }}
+                    onMouseLeave={e => { if (!readonly) e.currentTarget.style.transform = "scale(1)" }}
                 >
                     ★
                 </button>
@@ -40,22 +45,24 @@ function ReviewForm({ onSubmit, initialData = null, onCancel }) {
 
     return (
         <div
-            className="rounded-2xl p-6 flex flex-col gap-4"
+            className="rounded-xl p-4 sm:p-5 flex flex-col gap-4"
             style={{
-                background: "rgba(15,15,20,0.95)",
-                border: "1px solid rgba(168,85,247,0.2)"
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(168,85,247,0.15)"
             }}
         >
-            <p className="text-white font-semibold">
+            <p className="text-white font-semibold text-sm">
                 {initialData ? "Editar tu reseña" : "¿Qué te pareció?"}
             </p>
 
             {/* Rating */}
             <div className="flex flex-col gap-2">
-                <span style={{ color: "#9ca3af", fontSize: "0.85rem" }}>Valoración</span>
+                <span className="text-xs" style={{ color: "#6b7280" }}>Valoración</span>
                 <StarRating value={rating} onChange={setRating} />
                 {rating > 0 && (
-                    <span style={{ color: "#c084fc", fontSize: "0.85rem" }}>{rating}/10</span>
+                    <span className="text-xs font-semibold" style={{ color: "#a855f7" }}>
+                        {rating} / 10
+                    </span>
                 )}
             </div>
 
@@ -67,30 +74,38 @@ function ReviewForm({ onSubmit, initialData = null, onCancel }) {
                 rows={3}
                 style={{
                     background: "rgba(255,255,255,0.03)",
-                    border: "1px solid rgba(168,85,247,0.2)",
-                    borderRadius: "12px",
+                    border: "1px solid rgba(255,255,255,0.08)",
+                    borderRadius: "10px",
                     color: "#d1d5db",
-                    padding: "12px",
+                    padding: "10px 12px",
                     fontSize: "0.9rem",
                     resize: "none",
                     outline: "none",
-                    width: "100%"
+                    width: "100%",
+                    transition: "border-color 0.2s, box-shadow 0.2s"
+                }}
+                onFocus={e => {
+                    e.target.style.borderColor = "rgba(168,85,247,0.45)"
+                    e.target.style.boxShadow = "0 0 0 3px rgba(124,58,237,0.08)"
+                }}
+                onBlur={e => {
+                    e.target.style.borderColor = "rgba(255,255,255,0.08)"
+                    e.target.style.boxShadow = "none"
                 }}
             />
 
             {/* Botones */}
-            <div className="flex gap-3">
+            <div className="flex gap-3 flex-wrap">
                 <button
                     onClick={handleSubmit}
                     disabled={!rating}
+                    className="px-5 py-2 rounded-lg text-sm font-semibold text-white transition-all duration-200"
                     style={{
-                        background: rating ? "rgba(124,58,237,0.8)" : "rgba(124,58,237,0.2)",
-                        border: "1px solid rgba(168,85,247,0.3)",
-                        borderRadius: "10px",
-                        color: rating ? "#fff" : "#6b7280",
-                        padding: "8px 20px",
-                        fontSize: "0.9rem",
-                        fontWeight: "600",
+                        background: rating
+                            ? "linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)"
+                            : "rgba(124,58,237,0.18)",
+                        boxShadow: rating ? "0 0 16px rgba(124,58,237,0.3)" : "none",
+                        color: rating ? "#fff" : "#4b5563",
                         cursor: rating ? "pointer" : "not-allowed"
                     }}
                 >
@@ -99,15 +114,14 @@ function ReviewForm({ onSubmit, initialData = null, onCancel }) {
                 {onCancel && (
                     <button
                         onClick={onCancel}
+                        className="px-5 py-2 rounded-lg text-sm font-semibold transition-colors duration-150"
                         style={{
-                            background: "transparent",
-                            border: "1px solid rgba(255,255,255,0.1)",
-                            borderRadius: "10px",
+                            border: "1px solid rgba(255,255,255,0.08)",
                             color: "#6b7280",
-                            padding: "8px 20px",
-                            fontSize: "0.9rem",
-                            cursor: "pointer"
+                            background: "transparent"
                         }}
+                        onMouseEnter={e => e.currentTarget.style.color = "#9ca3af"}
+                        onMouseLeave={e => e.currentTarget.style.color = "#6b7280"}
                     >
                         Cancelar
                     </button>
@@ -121,90 +135,88 @@ function ReviewForm({ onSubmit, initialData = null, onCancel }) {
 function ReviewCard({ review, isOwn = false, onEdit, onDelete }) {
     return (
         <div
-            className="rounded-2xl p-5 flex flex-col gap-3"
+            className="rounded-xl p-4 flex flex-col gap-3 transition-all duration-200"
             style={{
-                background: "rgba(15,15,20,0.95)",
-                border: `1px solid ${isOwn ? "rgba(168,85,247,0.3)" : "rgba(255,255,255,0.05)"}`
+                background: "rgba(255,255,255,0.03)",
+                border: `1px solid ${isOwn ? "rgba(168,85,247,0.22)" : "rgba(255,255,255,0.05)"}`
             }}
+            onMouseEnter={e => e.currentTarget.style.borderColor = isOwn ? "rgba(168,85,247,0.4)" : "rgba(168,85,247,0.15)"}
+            onMouseLeave={e => e.currentTarget.style.borderColor = isOwn ? "rgba(168,85,247,0.22)" : "rgba(255,255,255,0.05)"}
         >
             {/* Header */}
-            <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                    {review.user?.avatar ? (
-                        <img
-                            src={review.user.avatar}
-                            alt={review.user.username}
-                            className="rounded-full object-cover"
-                            style={{ width: "36px", height: "36px", border: "1px solid rgba(168,85,247,0.2)" }}
-                        />
-                    ) : (
-                        <div
-                            className="rounded-full flex items-center justify-center"
-                            style={{
-                                width: "36px",
-                                height: "36px",
-                                background: "rgba(124,58,237,0.15)",
-                                border: "1px solid rgba(168,85,247,0.2)",
-                                color: "#c084fc",
-                                fontSize: "0.85rem",
-                                fontWeight: "700"
-                            }}
-                        >
-                            {review.user?.username?.[0]?.toUpperCase()}
+            <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3 min-w-0">
+                    {/* Avatar con anillo si es propia */}
+                    <div
+                        className="rounded-full shrink-0 p-[2px]"
+                        style={{
+                            background: isOwn
+                                ? "linear-gradient(135deg, #7c3aed, #a855f7)"
+                                : "rgba(255,255,255,0.08)",
+                            width: "38px",
+                            height: "38px"
+                        }}
+                    >
+                        <div className="rounded-full overflow-hidden w-full h-full" style={{ background: "#0d1117" }}>
+                            {review.user?.avatar ? (
+                                <img
+                                    src={review.user.avatar}
+                                    alt={review.user.username}
+                                    className="w-full h-full object-cover"
+                                />
+                            ) : (
+                                <div className="w-full h-full flex items-center justify-center"
+                                    style={{ color: "#c084fc", fontSize: "0.8rem", fontWeight: 700 }}>
+                                    {review.user?.username?.[0]?.toUpperCase()}
+                                </div>
+                            )}
                         </div>
-                    )}
-                    <div>
-                        <p className="text-white text-sm font-semibold">{review.user?.username}</p>
+                    </div>
+
+                    <div className="min-w-0">
+                        <p className="text-white text-sm font-semibold truncate">{review.user?.username}</p>
                         {isOwn && (
-                            <p style={{ color: "#c084fc", fontSize: "0.75rem" }}>Tu reseña</p>
+                            <p className="text-xs" style={{ color: "#a855f7" }}>Tu reseña</p>
                         )}
                     </div>
                 </div>
 
                 {/* Rating */}
-                <div className="flex items-center gap-2">
-                    <span style={{ color: "#fbbf24" }}>★</span>
-                    <span className="text-white font-bold">{review.rating}</span>
-                    <span style={{ color: "#4b5563", fontSize: "0.85rem" }}>/10</span>
+                <div className="flex items-center gap-1.5 shrink-0">
+                    <span style={{ color: "#eab308", fontSize: "12px" }}>★</span>
+                    <span className="text-white font-bold text-sm">{review.rating}</span>
+                    <span className="text-xs" style={{ color: "#374151" }}>/10</span>
                 </div>
             </div>
 
             {/* Comentario */}
             {review.comment && (
-                <p style={{ color: "#d1d5db", fontSize: "0.9rem", lineHeight: "1.6" }}>
+                <p className="text-sm leading-relaxed" style={{ color: "#9ca3af" }}>
                     {review.comment}
                 </p>
             )}
 
-            {/* Botones editar/borrar si es la reseña propia */}
+            {/* Acciones si es propia */}
             {isOwn && (
                 <div className="flex gap-2 pt-1">
                     <button
                         onClick={onEdit}
-                        style={{
-                            background: "transparent",
-                            border: "1px solid rgba(168,85,247,0.3)",
-                            borderRadius: "8px",
-                            color: "#c084fc",
-                            padding: "4px 14px",
-                            fontSize: "0.8rem",
-                            cursor: "pointer"
-                        }}
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors duration-150"
+                        style={{ border: "1px solid rgba(168,85,247,0.25)", color: "#a855f7", background: "transparent" }}
+                        onMouseEnter={e => e.currentTarget.style.background = "rgba(124,58,237,0.1)"}
+                        onMouseLeave={e => e.currentTarget.style.background = "transparent"}
                     >
+                        <Pencil size={11} />
                         Editar
                     </button>
                     <button
                         onClick={onDelete}
-                        style={{
-                            background: "transparent",
-                            border: "1px solid rgba(239,68,68,0.3)",
-                            borderRadius: "8px",
-                            color: "#f87171",
-                            padding: "4px 14px",
-                            fontSize: "0.8rem",
-                            cursor: "pointer"
-                        }}
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors duration-150"
+                        style={{ border: "1px solid rgba(239,68,68,0.22)", color: "#f87171", background: "transparent" }}
+                        onMouseEnter={e => e.currentTarget.style.background = "rgba(239,68,68,0.08)"}
+                        onMouseLeave={e => e.currentTarget.style.background = "transparent"}
                     >
+                        <Trash2 size={11} />
                         Borrar
                     </button>
                 </div>
@@ -219,10 +231,7 @@ export default function Reviews({ tmdb_id, media_type, title, poster_path, vote_
     const { reviews, loading, createReview, editReview, deleteReview } = useReviews(tmdb_id, media_type);
     const [editando, setEditando] = useState(false);
 
-    // Buscar si el usuario actual ya tiene reseña
     const miReseña = reviews?.find(r => r.user_id === user?.sub);
-
-    // Reseñas de otros usuarios
     const otrasReseñas = reviews?.filter(r => r.user_id !== user?.sub);
 
     const handleCreate = async (reviewData) => {
@@ -238,52 +247,43 @@ export default function Reviews({ tmdb_id, media_type, title, poster_path, vote_
         await deleteReview(miReseña.id);
     };
 
-    if (loading) {
-        return (
-            <div style={{ color: "#4b5563", fontSize: "0.9rem", padding: "20px 0" }}>
-                Cargando reseñas...
-            </div>
-        );
-    }
+    if (loading) return (
+        <div className="flex items-center gap-3 py-6">
+            <div className="w-5 h-5 rounded-full border-2 border-t-transparent animate-spin"
+                style={{ borderColor: "#7c3aed #7c3aed #7c3aed transparent" }} />
+            <p className="text-sm" style={{ color: "#4b5563" }}>Cargando reseñas...</p>
+        </div>
+    );
 
     return (
-        <div className="flex flex-col gap-6">
-            {/* ── Sección del usuario actual ── */}
+        <div className="flex flex-col gap-5">
+            {/* Tu reseña / formulario */}
             {miReseña && !editando ? (
-                <ReviewCard
-                    review={miReseña}
-                    isOwn={true}
-                    onEdit={() => setEditando(true)}
-                    onDelete={handleDelete}
-                />
+                <ReviewCard review={miReseña} isOwn onEdit={() => setEditando(true)} onDelete={handleDelete} />
             ) : editando ? (
-                <ReviewForm
-                    initialData={miReseña}
-                    onSubmit={handleEdit}
-                    onCancel={() => setEditando(false)}
-                />
+                <ReviewForm initialData={miReseña} onSubmit={handleEdit} onCancel={() => setEditando(false)} />
             ) : (
                 <ReviewForm onSubmit={handleCreate} />
             )}
 
-            {/* ── Reseñas de otros usuarios ── */}
+            {/* Reseñas de otros */}
             {otrasReseñas?.length > 0 && (
-                <div className="flex flex-col gap-4">
-                    <p
-                        className="uppercase tracking-widest text-sm"
-                        style={{ color: "#6b7280" }}
-                    >
-                        {otrasReseñas.length} reseña{otrasReseñas.length !== 1 ? "s" : ""} de otros usuarios
-                    </p>
+                <div className="flex flex-col gap-3">
+                    <div className="flex items-center gap-2">
+                        <div className="w-[2px] h-4 rounded-full shrink-0"
+                            style={{ background: "linear-gradient(to bottom, #7c3aed, #a855f7)" }} />
+                        <p className="text-xs font-semibold" style={{ color: "#4b5563" }}>
+                            {otrasReseñas.length} reseña{otrasReseñas.length !== 1 ? "s" : ""} de la comunidad
+                        </p>
+                    </div>
                     {otrasReseñas.map(review => (
                         <ReviewCard key={review.id} review={review} />
                     ))}
                 </div>
             )}
 
-            {/* ── Sin reseñas de otros ── */}
             {otrasReseñas?.length === 0 && miReseña && (
-                <p style={{ color: "#4b5563", fontSize: "0.9rem" }}>
+                <p className="text-sm" style={{ color: "#374151" }}>
                     Sé el primero en compartir tu opinión con la comunidad.
                 </p>
             )}
