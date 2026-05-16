@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useReviews from "../../hooks/useReviews";
+import useReviews from "../../hooks/UseReviews";
 import { useAuth } from "../../hooks/useAuth";
 import { Pencil, Trash2 } from "lucide-react";
 
@@ -247,8 +247,9 @@ export default function Reviews({ tmdb_id, media_type, title, poster_path, vote_
     const { reviews, loading, createReview, editReview, deleteReview } = useReviews(tmdb_id, media_type);
     const [editando, setEditando] = useState(false);
 
-    const miReseña     = reviews?.find(r => r.user_id === user?.sub);
-    const otrasReseñas = reviews?.filter(r => r.user_id !== user?.sub);
+    const myId         = user?.sub ?? user?.id;
+    const miReseña     = reviews?.find(r => r.user_id === myId);
+    const otrasReseñas = reviews?.filter(r => r.user_id !== myId);
 
     const handleCreate = async data => {
         await createReview({ ...data, tmdb_id, media_type, title, poster_path, vote_average });
