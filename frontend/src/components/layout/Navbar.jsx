@@ -60,7 +60,7 @@ function SearchModal({ isOpen, onClose }) {
       <div
         ref={modalRef}
         className="w-[90%] max-w-[640px] rounded-2xl overflow-hidden"
-        style={{ background: "rgba(15,15,20,0.98)", border: "1px solid rgba(168,85,247,0.25)", boxShadow: "0 0 60px rgba(124,58,237,0.2), 0 20px 60px rgba(0,0,0,0.8)" }}
+        style={{ background: "rgba(6,8,16,0.98)", border: "1px solid rgba(124,58,237,0.25)", boxShadow: "0 0 60px rgba(109,40,217,0.2), 0 20px 60px rgba(0,0,0,0.9)" }}
         onKeyDown={handleKeyDown}
       >
         <div className="flex items-center gap-3 px-5 py-4" style={{ borderBottom: "1px solid rgba(168,85,247,0.1)" }}>
@@ -264,8 +264,8 @@ export default function Navbar() {
             ref={navRef}
             className="block h-[60px] p-0 rounded-xl relative overflow-hidden will-change-[height]"
             style={{
-              background: isAdmin ? "rgba(15,15,20,0.95)" : scrolled ? "rgba(15,15,20,0.95)" : "transparent",
-              border: isAdmin ? "1px solid rgba(168,85,247,0.3)" : "1px solid rgba(168,85,247,0.15)",
+              background: isAdmin ? "rgba(6,8,16,0.97)" : scrolled ? "rgba(6,8,16,0.97)" : "transparent",
+              border: isAdmin ? "1px solid rgba(124,58,237,0.32)" : "1px solid rgba(124,58,237,0.15)",
               boxShadow: isAdmin
                 ? "0 0 40px rgba(124,58,237,0.15), 0 8px 32px rgba(0,0,0,0.6)"
                 : "0 0 40px rgba(124,58,237,0.08), 0 8px 32px rgba(0,0,0,0.6)"
@@ -276,7 +276,7 @@ export default function Navbar() {
 
               {/* Hamburguesa */}
               <div
-                className="group flex flex-col justify-center gap-[6px] cursor-pointer order-2 md:order-none h-full"
+                className="group flex flex-col justify-center gap-[6px] cursor-pointer h-full shrink-0"
                 onClick={() => toggleMenuType("nav")}
                 role="button"
                 aria-label={activeMenu === "nav" ? "Cerrar menú" : "Abrir menú"}
@@ -287,7 +287,7 @@ export default function Navbar() {
               </div>
 
               {/* Logo + badge admin */}
-              <div className="md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 order-1 md:order-none flex items-center gap-2">
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2">
                 <span
                   onClick={() => navigate(isAdmin ? "/admin" : "/home")}
                   className="cursor-pointer"
@@ -358,9 +358,9 @@ export default function Navbar() {
                   <button
                     onClick={handleToggleDevMode}
                     className="rounded-full transition-all duration-200"
-                    style={{ padding: "0.4rem 1rem", fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.08em", color: "white", border: "none", cursor: "pointer", background: "linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)", boxShadow: "0 4px 15px rgba(124,58,237,0.4), 0 0 0 1px rgba(168,85,247,0.2)", marginLeft: "4px" }}
-                    onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 6px 20px rgba(124,58,237,0.6), 0 0 0 1px rgba(168,85,247,0.3)"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 4px 15px rgba(124,58,237,0.4), 0 0 0 1px rgba(168,85,247,0.2)"; }}
+                    style={{ padding: "0.4rem 1rem", fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.08em", color: "white", border: "none", cursor: "pointer", background: "linear-gradient(135deg, #6d28d9 0%, #9333ea 100%)", boxShadow: "0 0 16px rgba(109,40,217,0.45)", marginLeft: "4px" }}
+                    onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 0 24px rgba(109,40,217,0.65)"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 0 16px rgba(109,40,217,0.45)"; }}
                   >
                     ← Salir
                   </button>
