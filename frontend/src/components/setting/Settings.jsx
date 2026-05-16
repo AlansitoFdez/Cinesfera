@@ -39,9 +39,9 @@ export default function Settings() {
     ];
 
     return (
-        <div className="min-h-screen" style={{ background: "#0d1117" }}>
+        <div className="min-h-screen" style={{ background: "#060810" }}>
             <div className="fixed inset-0 pointer-events-none" style={{
-                background: "radial-gradient(ellipse at 70% 20%, rgba(88,28,135,0.15) 0%, transparent 65%)"
+                background: "radial-gradient(ellipse at 70% 20%, rgba(109,40,217,0.12) 0%, transparent 65%)"
             }} />
 
             <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-8 pt-28 pb-16">
@@ -96,9 +96,9 @@ export default function Settings() {
                     <main
                         className="flex-1 rounded-2xl p-5 sm:p-8"
                         style={{
-                            background: "rgba(12,13,18,0.96)",
-                            border: "1px solid rgba(168,85,247,0.12)",
-                            boxShadow: "0 0 40px rgba(124,58,237,0.06), 0 8px 32px rgba(0,0,0,0.5)"
+                            background: "rgba(10,11,16,0.98)",
+                            border: "1px solid rgba(124,58,237,0.14)",
+                            boxShadow: "0 0 40px rgba(109,40,217,0.07), 0 8px 32px rgba(0,0,0,0.6)"
                         }}
                     >
                         {activeTab === "profile"  && <ProfileSection user={user} />}
@@ -194,7 +194,7 @@ function ProfileSection({ user }) {
                     <button
                         onClick={() => inputRef.current?.click()}
                         className="absolute bottom-0 right-0 w-7 h-7 rounded-full flex items-center justify-center"
-                        style={{ background: "#7c3aed", border: "2px solid #0d1117" }}
+                        style={{ background: "linear-gradient(135deg, #6d28d9, #9333ea)", border: "2px solid #060810" }}
                     >
                         <Camera size={12} color="white" />
                     </button>
@@ -467,11 +467,12 @@ function SaveButton({ onClick, label = "Guardar cambios", disabled = false }) {
     return (
         <button
             onClick={onClick} disabled={disabled}
-            className="py-2.5 px-6 rounded-xl text-sm font-semibold text-white transition-all duration-200"
+            className="py-2.5 px-6 rounded-xl text-sm font-semibold text-white transition-all duration-200 hover:scale-[1.03] active:scale-[0.97]"
             style={{
-                background: disabled ? "rgba(124,58,237,0.35)" : "linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)",
-                boxShadow: disabled ? "none" : "0 4px 16px rgba(124,58,237,0.35)",
-                cursor: disabled ? "not-allowed" : "pointer"
+                background: disabled ? "rgba(109,40,217,0.25)" : "linear-gradient(135deg, #6d28d9 0%, #9333ea 100%)",
+                boxShadow: disabled ? "none" : "0 0 20px rgba(109,40,217,0.38)",
+                cursor: disabled ? "not-allowed" : "pointer",
+                transition: "transform 0.2s, box-shadow 0.2s"
             }}
         >
             {label}
