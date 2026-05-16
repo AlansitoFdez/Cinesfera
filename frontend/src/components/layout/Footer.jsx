@@ -11,7 +11,7 @@ export default function Footer() {
     const navigate = useNavigate()
 
     return (
-        <footer className="px-6 sm:px-8 pb-10 pt-2">
+        <footer className="px-6 sm:px-8 pb-10 pt-8" style={{ background: "#060810" }}>
             {/* Separador superior degradado */}
             <div className="mb-8 h-px" style={{
                 background: "linear-gradient(to right, transparent, rgba(168,85,247,0.18) 30%, rgba(168,85,247,0.18) 70%, transparent)"
