@@ -72,8 +72,13 @@ class AuthService {
     }
     try {
       const decoded = jwt.verify(token, process.env.SECRET_KEY);
-      return decoded;
+      const user = await User.findByPk(decoded.sub, {
+        attributes: { exclude: ['password'] }
+      });
+      if (!user) throw { status: 401, message: "Usuario no encontrado", isControlled: true };
+      return user;
     } catch (err) {
+      if (err.isControlled) throw err;
       throw { status: 401, message: "Sesión expirada o inválida" };
     }
   }
