@@ -14,7 +14,7 @@ const inputStyle = {
 }
 
 const onFocus = e => {
-    e.target.style.borderColor = "rgba(168,85,247,0.5)"
+    e.target.style.borderColor = "rgba(124,58,237,0.5)"
     e.target.style.boxShadow = "0 0 0 3px rgba(124,58,237,0.1)"
 }
 
@@ -31,7 +31,7 @@ function ActionBtn({ onClick, title, children, danger }) {
             title={title}
             className="rounded-lg p-1.5 transition-all duration-200"
             style={{ background: "rgba(255,255,255,0.04)" }}
-            onMouseEnter={e => e.currentTarget.style.background = danger ? "rgba(239,68,68,0.12)" : "rgba(168,85,247,0.12)"}
+            onMouseEnter={e => e.currentTarget.style.background = danger ? "rgba(239,68,68,0.12)" : "rgba(124,58,237,0.12)"}
             onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.04)"}
         >
             {children}
@@ -61,7 +61,7 @@ export default function AdminUsers() {
             <div className="relative w-12 h-12">
                 <div className="absolute inset-0 rounded-full" style={{ border: "1px solid rgba(124,58,237,0.15)" }} />
                 <div className="absolute inset-0 rounded-full animate-spin" style={{ borderTop: "1.5px solid #7c3aed", borderRight: "1.5px solid transparent", borderBottom: "1.5px solid transparent", borderLeft: "1.5px solid transparent" }} />
-                <div className="absolute inset-2 rounded-full animate-spin" style={{ borderTop: "1.5px solid rgba(168,85,247,0.4)", borderRight: "1.5px solid transparent", borderBottom: "1.5px solid transparent", borderLeft: "1.5px solid transparent", animationDuration: "1.5s", animationDirection: "reverse" }} />
+                <div className="absolute inset-2 rounded-full animate-spin" style={{ borderTop: "1.5px solid rgba(124,58,237,0.4)", borderRight: "1.5px solid transparent", borderBottom: "1.5px solid transparent", borderLeft: "1.5px solid transparent", animationDuration: "1.5s", animationDirection: "reverse" }} />
             </div>
             <div className="flex flex-col items-center gap-1">
                 <p className="uppercase tracking-[0.4em] text-[10px] font-semibold" style={{ color: "#6d28d9" }}>Cinesfera</p>
@@ -86,7 +86,7 @@ export default function AdminUsers() {
                     </p>
                 </div>
 
-                <div className="h-px" style={{ background: "linear-gradient(to right, transparent, rgba(168,85,247,0.12) 30%, rgba(168,85,247,0.12) 70%, transparent)" }} />
+                <div className="h-px" style={{ background: "linear-gradient(to right, transparent, rgba(124,58,237,0.12) 30%, rgba(124,58,237,0.12) 70%, transparent)" }} />
 
                 {/* Buscador */}
                 <form onSubmit={handleSearch} className="flex gap-3">
@@ -117,11 +117,11 @@ export default function AdminUsers() {
 
                 {/* Tabla — overflow-x-auto para móvil */}
                 <div className="rounded-xl overflow-hidden overflow-x-auto"
-                    style={{ border: "1px solid rgba(168,85,247,0.12)" }}>
+                    style={{ border: "1px solid rgba(124,58,237,0.12)" }}>
                     <Table>
                         <TableHeader>
                             <TableRow style={{
-                                borderBottom: "1px solid rgba(168,85,247,0.12)",
+                                borderBottom: "1px solid rgba(124,58,237,0.12)",
                                 background: "rgba(124,58,237,0.04)"
                             }}>
                                 {["Usuario", "Email", "Rol", "Estado", "Registro", "Acciones"].map(h => (
@@ -150,7 +150,7 @@ export default function AdminUsers() {
                                     <TableCell>
                                         <span className="text-[10px] rounded-full px-2.5 py-0.5 font-semibold whitespace-nowrap"
                                             style={user.role === "ADMIN"
-                                                ? { background: "rgba(168,85,247,0.12)", color: "#a855f7", border: "1px solid rgba(168,85,247,0.25)" }
+                                                ? { background: "rgba(124,58,237,0.12)", color: "#a855f7", border: "1px solid rgba(124,58,237,0.25)" }
                                                 : { background: "rgba(255,255,255,0.04)", color: "#6b7280", border: "1px solid rgba(255,255,255,0.08)" }
                                             }>
                                             {user.role}
@@ -230,10 +230,10 @@ export default function AdminUsers() {
                                     background: disabled ? "rgba(255,255,255,0.02)" : "rgba(255,255,255,0.05)",
                                     color: disabled ? "#2d3748" : "#9ca3af",
                                     cursor: disabled ? "not-allowed" : "pointer",
-                                    border: "1px solid rgba(168,85,247,0.08)"
+                                    border: "1px solid rgba(124,58,237,0.08)"
                                 }}
-                                onMouseEnter={e => { if (!disabled) e.currentTarget.style.borderColor = "rgba(168,85,247,0.3)" }}
-                                onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(168,85,247,0.08)" }}
+                                onMouseEnter={e => { if (!disabled) e.currentTarget.style.borderColor = "rgba(124,58,237,0.3)" }}
+                                onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(124,58,237,0.08)" }}
                             >
                                 <Icon size={15} />
                             </button>
