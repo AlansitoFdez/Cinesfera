@@ -26,10 +26,13 @@ export default function MovieCard({ movie, mediaType, className }) {
     }, []);
 
     const handleMouseEnter = () => {
+        gsap.killTweensOf([imgRef.current, overlayRef.current, overlayInnerRef.current]);
+
         gsap.to(imgRef.current, { scale: 1.08, duration: 0.55, ease: "power2.out" });
         gsap.to(overlayRef.current, { opacity: 1, duration: 0.28, ease: "power2.out" });
         gsap.to(overlayInnerRef.current, { y: 0, opacity: 1, duration: 0.38, ease: "power2.out", delay: 0.06 });
 
+        gsap.killTweensOf(shimmerRef.current);
         gsap.fromTo(shimmerRef.current,
             { xPercent: -120, opacity: 0.7 },
             { xPercent: 220, opacity: 0, duration: 0.65, ease: "power1.out", delay: 0.08 }
@@ -45,6 +48,8 @@ export default function MovieCard({ movie, mediaType, className }) {
     };
 
     const handleMouseLeave = () => {
+        gsap.killTweensOf([imgRef.current, overlayRef.current, overlayInnerRef.current]);
+
         gsap.to(imgRef.current, { scale: 1, duration: 0.45, ease: "power2.out" });
         gsap.to(overlayRef.current, { opacity: 0, duration: 0.22, ease: "power2.in" });
         gsap.to(overlayInnerRef.current, { y: 8, opacity: 0, duration: 0.18, ease: "power2.in" });
