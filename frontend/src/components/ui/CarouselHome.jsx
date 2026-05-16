@@ -26,18 +26,15 @@ export default function CarouselSection({ titulo, peliculas, mediaType }) {
     }, [])
 
     return (
-        <div ref={sectionRef} className="px-14 mb-10">
+        <div ref={sectionRef} className="px-4 sm:px-8 md:px-14 mb-10">
 
-            {/* Cabecera de sección */}
+            {/* Cabecera */}
             <div className="flex items-center gap-3 mb-5">
                 <div
                     className="w-[3px] h-5 rounded-full shrink-0"
                     style={{ background: "linear-gradient(to bottom, #7c3aed, #a855f7)" }}
                 />
-                <h2
-                    className="text-base font-semibold tracking-wide"
-                    style={{ color: '#e5e7eb' }}
-                >
+                <h2 className="text-sm sm:text-base font-semibold tracking-wide" style={{ color: '#e5e7eb' }}>
                     {titulo}
                 </h2>
             </div>
@@ -48,8 +45,7 @@ export default function CarouselSection({ titulo, peliculas, mediaType }) {
                     {peliculas.map(pelicula => (
                         <CarouselItem
                             key={pelicula.id}
-                            className="pl-3"
-                            style={{ flexBasis: 'calc(100% / 6.5)' }}
+                            className="pl-3 basis-[48%] sm:basis-[33%] md:basis-1/4 lg:basis-1/5 xl:basis-[calc(100%/6.5)]"
                         >
                             <MovieCard
                                 movie={pelicula}
@@ -58,8 +54,10 @@ export default function CarouselSection({ titulo, peliculas, mediaType }) {
                         </CarouselItem>
                     ))}
                 </CarouselContent>
+
+                {/* Botones de navegación — solo en pantallas medianas+ */}
                 <CarouselPrevious
-                    className="left-0 -translate-x-1/2 border-0"
+                    className="left-0 -translate-x-1/2 border-0 hidden md:flex"
                     style={{
                         background: "rgba(13,17,23,0.85)",
                         backdropFilter: "blur(8px)",
@@ -68,7 +66,7 @@ export default function CarouselSection({ titulo, peliculas, mediaType }) {
                     }}
                 />
                 <CarouselNext
-                    className="right-0 translate-x-1/2 border-0"
+                    className="right-0 translate-x-1/2 border-0 hidden md:flex"
                     style={{
                         background: "rgba(13,17,23,0.85)",
                         backdropFilter: "blur(8px)",

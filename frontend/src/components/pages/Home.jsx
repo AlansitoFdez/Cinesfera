@@ -26,12 +26,10 @@ export default function Home() {
         if (!trending.length || !heroContentRef.current || !heroImgRef.current) return
 
         const ctx = gsap.context(() => {
-            // Ken Burns en el backdrop
             gsap.fromTo(heroImgRef.current,
                 { scale: 1.08 },
                 { scale: 1, duration: 6, ease: 'power1.out' }
             )
-            // Entrada escalonada del contenido
             gsap.fromTo(
                 [...heroContentRef.current.children],
                 { y: 36, opacity: 0 },
@@ -77,7 +75,7 @@ export default function Home() {
                     alt={hero.title || hero.name}
                 />
 
-                {/* Capa de grano cinematográfico */}
+                {/* Grano cinematográfico */}
                 <div
                     className="absolute inset-0 pointer-events-none"
                     style={{
@@ -87,21 +85,19 @@ export default function Home() {
                     }}
                 />
 
-                {/* Degradado lateral izquierdo */}
+                {/* Degradados */}
                 <div className="absolute inset-0" style={{
                     background: "linear-gradient(105deg, rgba(13,17,23,0.92) 0%, rgba(13,17,23,0.55) 45%, rgba(13,17,23,0.1) 70%, transparent 100%)"
                 }} />
-
-                {/* Degradado inferior */}
                 <div className="absolute inset-0" style={{
                     background: "linear-gradient(to top, #0d1117 0%, rgba(13,17,23,0.6) 30%, transparent 60%)"
                 }} />
 
-                {/* Contenido del hero */}
+                {/* Contenido del hero — responsive */}
                 <div
                     ref={heroContentRef}
-                    className="absolute z-10 flex flex-col gap-5"
-                    style={{ bottom: '6rem', left: '4.5rem', maxWidth: '480px' }}
+                    className="absolute z-10 flex flex-col gap-4 bottom-14 left-4 right-4 md:bottom-24 md:left-16 md:right-auto"
+                    style={{ maxWidth: 'min(480px, 100%)' }}
                 >
                     {/* Badges */}
                     <div className="flex items-center gap-3">
@@ -120,13 +116,13 @@ export default function Home() {
                     {/* Título */}
                     <h1
                         className="font-bold text-white leading-[1.1]"
-                        style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)', textShadow: '0 4px 24px rgba(0,0,0,0.6)' }}
+                        style={{ fontSize: 'clamp(1.6rem, 5vw, 3.2rem)', textShadow: '0 4px 24px rgba(0,0,0,0.6)' }}
                     >
                         {hero.title || hero.name}
                     </h1>
 
-                    {/* Sinopsis */}
-                    <p className="text-sm leading-relaxed" style={{ color: '#9ca3af', maxWidth: '42ch' }}>
+                    {/* Sinopsis — oculta en móvil pequeño */}
+                    <p className="text-sm leading-relaxed hidden sm:block" style={{ color: '#9ca3af', maxWidth: '42ch' }}>
                         {hero.overview
                             ? hero.overview.slice(0, 165) + (hero.overview.length > 165 ? '...' : '')
                             : 'Sin descripción disponible.'}
@@ -136,7 +132,7 @@ export default function Home() {
                     <div className="flex items-center gap-3 mt-1">
                         <button
                             onClick={() => navigate(`/details/${hero.media_type}/${hero.id}`)}
-                            className="px-6 py-2.5 rounded-lg text-sm font-semibold text-white transition-all duration-200 hover:scale-[1.04] active:scale-[0.97]"
+                            className="px-5 py-2.5 rounded-lg text-sm font-semibold text-white transition-all duration-200 hover:scale-[1.04] active:scale-[0.97]"
                             style={{
                                 background: "linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)",
                                 boxShadow: "0 0 28px rgba(124,58,237,0.45)"
@@ -146,7 +142,7 @@ export default function Home() {
                         </button>
                         <button
                             onClick={() => navigate(`/details/${hero.media_type}/${hero.id}`)}
-                            className="px-6 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 hover:bg-white/10"
+                            className="px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 hover:bg-white/10"
                             style={{
                                 border: "1px solid rgba(255,255,255,0.18)",
                                 color: "rgba(255,255,255,0.82)",
@@ -158,8 +154,8 @@ export default function Home() {
                     </div>
                 </div>
 
-                {/* Scroll indicator */}
-                <div className="absolute bottom-7 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2" style={{ opacity: 0.35 }}>
+                {/* Scroll indicator — solo desktop */}
+                <div className="absolute bottom-7 left-1/2 -translate-x-1/2 flex-col items-center gap-2 hidden md:flex" style={{ opacity: 0.35 }}>
                     <div
                         className="w-px h-10"
                         style={{ background: "linear-gradient(to bottom, transparent, white)", animation: "pulse 2s ease-in-out infinite" }}
