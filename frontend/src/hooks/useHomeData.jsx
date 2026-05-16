@@ -16,33 +16,42 @@ export default function useHomeData() {
 
     useEffect(() => {
         const cargarDatos = async () => {
-            try {
-                const [resTrending, resPopularMovies, resPopularSeries, resTopRatedMovies, resTopRatedSeries, resTopComedySeries, resTopActionMovies, resTopHorrorMovies] = await Promise.all([
-                    api.get('/home/trending'),
-                    api.get('/home/popular/movie'),
-                    api.get('/home/popular/tv'),
-                    api.get('/home/top_rated/movie'),
-                    api.get('/home/top_rated/tv'),
-                    api.get('/home/by_genre/tv/35'),
-                    api.get('/home/by_genre/movie/28'),
-                    api.get('/home/by_genre/movie/27'),
-                ])
+            const resultados = await Promise.allSettled([
+                api.get('/home/trending'),
+                api.get('/home/popular/movie'),
+                api.get('/home/popular/tv'),
+                api.get('/home/top_rated/movie'),
+                api.get('/home/top_rated/tv'),
+                api.get('/home/by_genre/tv/35'),
+                api.get('/home/by_genre/movie/28'),
+                api.get('/home/by_genre/movie/27'),
+            ])
 
-                setTrending(resTrending.datos.results);
-                setPopularMovies(resPopularMovies.datos.results);
-                setPopularSeries(resPopularSeries.datos.results);
-                setTopRatedMovies(resTopRatedMovies.datos.results);
-                setTopRatedSeries(resTopRatedSeries.datos.results);
-                setTopComedySeries(resTopComedySeries.datos.results);
-                setTopActionMovies(resTopActionMovies.datos.results);
-                setTopHorrorMovies(resTopHorrorMovies.datos.results);
-            } catch (error) {
-                setError(error);
-            } finally {
-                setLoading(false);
+            const get = (r) => r.status === 'fulfilled' ? (r.value.datos.results ?? []) : []
+
+            const [
+                resTrending, resPopularMovies, resPopularSeries,
+                resTopRatedMovies, resTopRatedSeries, resTopComedySeries,
+                resTopActionMovies, resTopHorrorMovies
+            ] = resultados
+
+            setTrending(get(resTrending))
+            setPopularMovies(get(resPopularMovies))
+            setPopularSeries(get(resPopularSeries))
+            setTopRatedMovies(get(resTopRatedMovies))
+            setTopRatedSeries(get(resTopRatedSeries))
+            setTopComedySeries(get(resTopComedySeries))
+            setTopActionMovies(get(resTopActionMovies))
+            setTopHorrorMovies(get(resTopHorrorMovies))
+
+            // Solo error si todas fallaron
+            if (resultados.every(r => r.status === 'rejected')) {
+                setError(true)
             }
+
+            setLoading(false)
         }
-        cargarDatos();
+        cargarDatos()
     }, []);
 
     return {
