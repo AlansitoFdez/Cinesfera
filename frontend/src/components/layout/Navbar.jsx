@@ -274,20 +274,38 @@ export default function Navbar() {
             {/* ── Barra superior ── */}
             <div className="absolute inset-x-0 top-0 h-[60px] flex items-center justify-between px-4 z-[2]">
 
-              {/* Hamburguesa */}
-              <div
-                className="group flex flex-col justify-center gap-[6px] cursor-pointer h-full shrink-0"
-                onClick={() => toggleMenuType("nav")}
-                role="button"
-                aria-label={activeMenu === "nav" ? "Cerrar menú" : "Abrir menú"}
-                tabIndex={0}
-              >
-                <div className={`w-[22px] h-[2px] bg-gray-400 transition-all duration-300 origin-center group-hover:bg-white ${isHamburgerOpen ? "translate-y-[4px] rotate-45" : ""}`} />
-                <div className={`w-[22px] h-[2px] bg-gray-400 transition-all duration-300 origin-center group-hover:bg-white ${isHamburgerOpen ? "-translate-y-[4px] -rotate-45" : ""}`} />
+              {/* Izquierda: hamburguesa + logo (logo visible en móvil, oculto en desktop) */}
+              <div className="flex items-center gap-3 shrink-0">
+                <div
+                  className="group flex flex-col justify-center gap-[6px] cursor-pointer h-full shrink-0"
+                  onClick={() => toggleMenuType("nav")}
+                  role="button"
+                  aria-label={activeMenu === "nav" ? "Cerrar menú" : "Abrir menú"}
+                  tabIndex={0}
+                >
+                  <div className={`w-[22px] h-[2px] bg-gray-400 transition-all duration-300 origin-center group-hover:bg-white ${isHamburgerOpen ? "translate-y-[4px] rotate-45" : ""}`} />
+                  <div className={`w-[22px] h-[2px] bg-gray-400 transition-all duration-300 origin-center group-hover:bg-white ${isHamburgerOpen ? "-translate-y-[4px] -rotate-45" : ""}`} />
+                </div>
+
+                {/* Logo en móvil — junto a la hamburguesa */}
+                <div className="flex md:hidden items-center gap-2">
+                  <span
+                    onClick={() => navigate(isAdmin ? "/admin" : "/home")}
+                    className="cursor-pointer"
+                    style={{ fontWeight: 700, fontSize: "1.1rem", letterSpacing: "0.18em", color: "white" }}
+                  >
+                    Cin<span style={{ color: "#a855f7" }}>esfera</span>
+                  </span>
+                  {isAdmin && (
+                    <span style={{ fontSize: "0.55rem", textTransform: "uppercase", letterSpacing: "0.2em", color: "#a855f7", border: "1px solid rgba(124,58,237,0.3)", borderRadius: "9999px", padding: "0.15rem 0.5rem", background: "rgba(124,58,237,0.1)" }}>
+                      Admin
+                    </span>
+                  )}
+                </div>
               </div>
 
-              {/* Logo + badge admin */}
-              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2">
+              {/* Logo en desktop — centrado absoluto */}
+              <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-2">
                 <span
                   onClick={() => navigate(isAdmin ? "/admin" : "/home")}
                   className="cursor-pointer"
@@ -296,7 +314,7 @@ export default function Navbar() {
                   Cin<span style={{ color: "#a855f7" }}>esfera</span>
                 </span>
                 {isAdmin && (
-                  <span style={{ fontSize: "0.55rem", textTransform: "uppercase", letterSpacing: "0.2em", color: "#a855f7", border: "1px solid rgba(168,85,247,0.3)", borderRadius: "9999px", padding: "0.15rem 0.5rem", background: "rgba(124,58,237,0.1)" }}>
+                  <span style={{ fontSize: "0.55rem", textTransform: "uppercase", letterSpacing: "0.2em", color: "#a855f7", border: "1px solid rgba(124,58,237,0.3)", borderRadius: "9999px", padding: "0.15rem 0.5rem", background: "rgba(124,58,237,0.1)" }}>
                     Admin
                   </span>
                 )}
@@ -310,7 +328,7 @@ export default function Navbar() {
                     onClick={() => navigate("/recommendations")}
                     className="p-2 rounded-full transition-all duration-200"
                     style={{ color: "#6b7280", background: "transparent", border: "none", cursor: "pointer" }}
-                    onMouseEnter={(e) => { e.currentTarget.style.color = "#a855f7"; e.currentTarget.style.background = "rgba(168,85,247,0.08)"; }}
+                    onMouseEnter={(e) => { e.currentTarget.style.color = "#a855f7"; e.currentTarget.style.background = "rgba(124,58,237,0.08)"; }}
                     onMouseLeave={(e) => { e.currentTarget.style.color = "#6b7280"; e.currentTarget.style.background = "transparent"; }}
                     title="Recomendaciones para ti"
                   >
