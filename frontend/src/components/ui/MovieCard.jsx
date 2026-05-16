@@ -8,26 +8,34 @@ export default function MovieCard({ movie, mediaType, className }) {
     const cardRef = useRef(null);
     const imgRef = useRef(null);
     const overlayRef = useRef(null);
-    const badgeRef = useRef(null);
+    const overlayInnerRef = useRef(null);
+    const shimmerRef = useRef(null);
     const navigate = useNavigate();
     const [providers, setProviders] = useState([]);
     const [loadingProviders, setLoadingProviders] = useState(false);
+    const [imgLoaded, setImgLoaded] = useState(false);
     const type = mediaType || movie.media_type;
+    const rating = movie.vote_average?.toFixed(1);
+    const ratingPct = Math.round((movie.vote_average / 10) * 100);
+    const mediaLabel = type === "movie" ? "Film" : "Series";
 
     useLayoutEffect(() => {
         gsap.set(overlayRef.current, { opacity: 0 });
-        gsap.set(badgeRef.current, { opacity: 0, scale: 0.7 });
+        gsap.set(overlayInnerRef.current, { y: 8, opacity: 0 });
+        if (shimmerRef.current) gsap.set(shimmerRef.current, { xPercent: -120, opacity: 0 });
     }, []);
 
     const handleMouseEnter = () => {
-        // Imagen: zoom sutil
-        gsap.to(imgRef.current, { scale: 1.07, duration: 0.5, ease: "power2.out" });
-        // Overlay: fade in
-        gsap.to(overlayRef.current, { opacity: 1, duration: 0.3, ease: "power2.out" });
-        // Badge "Ver": pop in
-        gsap.to(badgeRef.current, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(1.5)", delay: 0.05 });
-        // Borde glow
-        cardRef.current.style.boxShadow = "0 0 0 1px rgba(168,85,247,0.5), 0 8px 32px rgba(124,58,237,0.18)";
+        gsap.to(imgRef.current, { scale: 1.08, duration: 0.55, ease: "power2.out" });
+        gsap.to(overlayRef.current, { opacity: 1, duration: 0.28, ease: "power2.out" });
+        gsap.to(overlayInnerRef.current, { y: 0, opacity: 1, duration: 0.38, ease: "power2.out", delay: 0.06 });
+
+        gsap.fromTo(shimmerRef.current,
+            { xPercent: -120, opacity: 0.7 },
+            { xPercent: 220, opacity: 0, duration: 0.65, ease: "power1.out", delay: 0.08 }
+        );
+
+        cardRef.current.style.boxShadow = "0 0 0 1.5px rgba(124,58,237,0.55), 0 12px 40px rgba(109,40,217,0.22)";
 
         if (providers.length > 0) return;
         setLoadingProviders(true);
@@ -38,10 +46,13 @@ export default function MovieCard({ movie, mediaType, className }) {
 
     const handleMouseLeave = () => {
         gsap.to(imgRef.current, { scale: 1, duration: 0.45, ease: "power2.out" });
-        gsap.to(overlayRef.current, { opacity: 0, duration: 0.25, ease: "power2.in" });
-        gsap.to(badgeRef.current, { opacity: 0, scale: 0.7, duration: 0.2, ease: "power2.in" });
+        gsap.to(overlayRef.current, { opacity: 0, duration: 0.22, ease: "power2.in" });
+        gsap.to(overlayInnerRef.current, { y: 8, opacity: 0, duration: 0.18, ease: "power2.in" });
         cardRef.current.style.boxShadow = "none";
     };
+
+    const ratingColor = ratingPct >= 70 ? "#4ade80" : ratingPct >= 50 ? "#fbbf24" : "#f87171";
+    const ratingBarColor = ratingPct >= 70 ? "#22c55e" : ratingPct >= 50 ? "#eab308" : "#ef4444";
 
     return (
         <div
@@ -50,12 +61,20 @@ export default function MovieCard({ movie, mediaType, className }) {
             style={{
                 aspectRatio: "2 / 3",
                 transition: "box-shadow 0.3s ease",
-                background: "#111318"
+                background: "#0e0f14"
             }}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onClick={() => navigate(`/details/${type}/${movie.id}`)}
         >
+            {/* Skeleton mientras carga el póster */}
+            {!imgLoaded && (
+                <div
+                    className="absolute inset-0 animate-pulse"
+                    style={{ background: "linear-gradient(135deg, #0e0f14 0%, #16181f 50%, #0e0f14 100%)" }}
+                />
+            )}
+
             {/* Póster */}
             <img
                 ref={imgRef}
@@ -63,59 +82,101 @@ export default function MovieCard({ movie, mediaType, className }) {
                 alt={movie.title || movie.name}
                 className="w-full h-full object-cover"
                 style={{ transformOrigin: "center center" }}
+                onLoad={() => setImgLoaded(true)}
             />
 
-            {/* Badge "Ver" — esquina superior derecha */}
+            {/* Shimmer scan al hacer hover */}
             <div
-                ref={badgeRef}
-                className="absolute top-2.5 right-2.5 w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold"
+                ref={shimmerRef}
+                className="absolute inset-0 pointer-events-none z-10"
                 style={{
-                    background: "linear-gradient(135deg, #7c3aed, #a855f7)",
-                    boxShadow: "0 2px 8px rgba(124,58,237,0.5)"
+                    width: "55%",
+                    background: "linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.07) 50%, transparent 70%)"
+                }}
+            />
+
+            {/* Badge rating — siempre visible */}
+            <div
+                className="absolute top-2 left-2 z-20 flex items-center gap-1 px-1.5 py-0.5 rounded"
+                style={{
+                    background: "rgba(6,8,16,0.78)",
+                    backdropFilter: "blur(6px)",
+                    border: "1px solid rgba(255,255,255,0.07)"
                 }}
             >
-                ›
+                <span style={{ color: "#eab308", fontSize: "9px" }}>★</span>
+                <span className="text-[10px] font-semibold text-white">{rating}</span>
             </div>
 
-            {/* Overlay con información */}
+            {/* Badge tipo — siempre visible */}
             <div
-                ref={overlayRef}
-                className="absolute inset-0 flex flex-col justify-end p-3"
+                className="absolute top-2 right-2 z-20 px-1.5 py-0.5 rounded-sm"
                 style={{
-                    background: "linear-gradient(to top, rgba(5,5,8,0.98) 0%, rgba(5,5,8,0.7) 45%, transparent 100%)"
+                    background: "rgba(6,8,16,0.78)",
+                    backdropFilter: "blur(6px)",
+                    border: "1px solid rgba(255,255,255,0.07)"
                 }}
             >
-                {/* Título */}
-                <h3 className="text-white text-sm font-semibold leading-tight mb-1.5">
-                    {movie.title || movie.name}
-                </h3>
+                <span
+                    className="text-[8px] font-semibold uppercase"
+                    style={{ color: "rgba(255,255,255,0.36)", letterSpacing: "0.12em" }}
+                >
+                    {mediaLabel}
+                </span>
+            </div>
 
-                {/* Rating */}
-                <div className="flex items-center gap-1 mb-2">
-                    <span style={{ color: "#eab308", fontSize: "11px" }}>★</span>
-                    <span className="text-xs font-semibold text-white">{movie.vote_average?.toFixed(1)}</span>
-                </div>
+            {/* Overlay hover */}
+            <div
+                ref={overlayRef}
+                className="absolute inset-0 z-20 flex flex-col justify-end p-3"
+                style={{
+                    background: "linear-gradient(to top, rgba(6,8,16,0.99) 0%, rgba(6,8,16,0.78) 40%, rgba(6,8,16,0.08) 70%, transparent 100%)"
+                }}
+            >
+                <div ref={overlayInnerRef} className="flex flex-col gap-1.5">
+                    {/* Título */}
+                    <h3 className="text-white text-sm font-semibold leading-tight">
+                        {movie.title || movie.name}
+                    </h3>
 
-                {/* Providers */}
-                {providers.length > 0 && (
-                    <div className="flex gap-1 flex-wrap">
-                        {providers.slice(0, 4).map((p) => (
-                            <img
-                                key={p.provider_id}
-                                src={`https://image.tmdb.org/t/p/w45${p.logo_path}`}
-                                alt={p.provider_name}
-                                title={p.provider_name}
-                                className="w-5 h-5 rounded-md"
+                    {/* Barra de puntuación */}
+                    <div className="flex items-center gap-2">
+                        <div
+                            className="flex-1 h-[3px] rounded-full overflow-hidden"
+                            style={{ background: "rgba(255,255,255,0.08)" }}
+                        >
+                            <div
+                                className="h-full rounded-full"
+                                style={{ width: `${ratingPct}%`, background: ratingBarColor }}
                             />
-                        ))}
+                        </div>
+                        <span className="text-[10px] font-semibold" style={{ color: ratingColor }}>
+                            {ratingPct}%
+                        </span>
                     </div>
-                )}
 
-                {!loadingProviders && providers.length === 0 && (
-                    <p className="text-[10px] uppercase tracking-wider" style={{ color: "#4b5563" }}>
-                        Sin streaming
-                    </p>
-                )}
+                    {/* Providers */}
+                    {providers.length > 0 && (
+                        <div className="flex gap-1 flex-wrap mt-0.5">
+                            {providers.slice(0, 4).map(p => (
+                                <img
+                                    key={p.provider_id}
+                                    src={`https://image.tmdb.org/t/p/w45${p.logo_path}`}
+                                    alt={p.provider_name}
+                                    title={p.provider_name}
+                                    className="w-5 h-5 rounded-md"
+                                    style={{ boxShadow: "0 1px 4px rgba(0,0,0,0.5)" }}
+                                />
+                            ))}
+                        </div>
+                    )}
+
+                    {!loadingProviders && providers.length === 0 && (
+                        <p className="text-[9px] uppercase tracking-wider" style={{ color: "#374151" }}>
+                            Sin streaming
+                        </p>
+                    )}
+                </div>
             </div>
         </div>
     );
