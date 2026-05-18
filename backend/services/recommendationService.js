@@ -102,7 +102,7 @@ INSTRUCCIONES:
                     "HTTP-Referer": "https://cinesfera.app",
                     "X-Title": "Cinesfera"
                 },
-                timeout: 30000
+                timeout: 90000
             }
         )
 
