@@ -150,8 +150,8 @@ VITE_API_URL=http://localhost:3000/api
 ---
 
 ## 👤 Credenciales de prueba
-
-Puedes registrarte directamente en la app o usar una cuenta de prueba contactando al autor.
+- **Email**: admin@cinesfera.com
+- **Contraseña**: password
 
 ---
 
