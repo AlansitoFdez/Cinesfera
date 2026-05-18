@@ -2,12 +2,12 @@
 -- PostgreSQL database dump
 --
 
-\restrict uccESnOx5zJv4bifEBhJPdbyymqNKgyaidJ93DW4SWUS9HyHbtBSQgc0iMoWvJG
+\restrict Qmhq9laj1pgMdEIPVOsIB4wbbYYXsIwyfULSkIgzKLPudAaW2ik52eEKHzBOmmU
 
 -- Dumped from database version 18.4
 -- Dumped by pg_dump version 18.4
 
--- Started on 2026-05-18 07:29:25
+-- Started on 2026-05-18 13:40:31
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -22,7 +22,7 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- TOC entry 5 (class 2615 OID 16578)
+-- TOC entry 5 (class 2615 OID 2200)
 -- Name: public; Type: SCHEMA; Schema: -; Owner: postgres
 --
 
@@ -32,7 +32,7 @@ SET row_security = off;
 ALTER SCHEMA public OWNER TO postgres;
 
 --
--- TOC entry 5088 (class 0 OID 0)
+-- TOC entry 5093 (class 0 OID 0)
 -- Dependencies: 5
 -- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: postgres
 --
@@ -41,7 +41,7 @@ COMMENT ON SCHEMA public IS '';
 
 
 --
--- TOC entry 868 (class 1247 OID 16581)
+-- TOC entry 862 (class 1247 OID 16390)
 -- Name: media_type_enum; Type: TYPE; Schema: public; Owner: postgres
 --
 
@@ -54,7 +54,7 @@ CREATE TYPE public.media_type_enum AS ENUM (
 ALTER TYPE public.media_type_enum OWNER TO postgres;
 
 --
--- TOC entry 871 (class 1247 OID 16586)
+-- TOC entry 865 (class 1247 OID 16396)
 -- Name: role_enum; Type: TYPE; Schema: public; Owner: postgres
 --
 
@@ -71,7 +71,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- TOC entry 227 (class 1259 OID 16616)
+-- TOC entry 219 (class 1259 OID 16401)
 -- Name: content_cache; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -88,7 +88,7 @@ CREATE TABLE public.content_cache (
 ALTER TABLE public.content_cache OWNER TO postgres;
 
 --
--- TOC entry 235 (class 1259 OID 16705)
+-- TOC entry 220 (class 1259 OID 16411)
 -- Name: follows; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -103,7 +103,7 @@ CREATE TABLE public.follows (
 ALTER TABLE public.follows OWNER TO postgres;
 
 --
--- TOC entry 234 (class 1259 OID 16704)
+-- TOC entry 221 (class 1259 OID 16419)
 -- Name: follows_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -119,8 +119,8 @@ CREATE SEQUENCE public.follows_id_seq
 ALTER SEQUENCE public.follows_id_seq OWNER TO postgres;
 
 --
--- TOC entry 5090 (class 0 OID 0)
--- Dependencies: 234
+-- TOC entry 5095 (class 0 OID 0)
+-- Dependencies: 221
 -- Name: follows_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -128,7 +128,7 @@ ALTER SEQUENCE public.follows_id_seq OWNED BY public.follows.id;
 
 
 --
--- TOC entry 231 (class 1259 OID 16652)
+-- TOC entry 222 (class 1259 OID 16420)
 -- Name: list_items; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -144,7 +144,7 @@ CREATE TABLE public.list_items (
 ALTER TABLE public.list_items OWNER TO postgres;
 
 --
--- TOC entry 230 (class 1259 OID 16651)
+-- TOC entry 223 (class 1259 OID 16429)
 -- Name: list_items_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -160,8 +160,8 @@ CREATE SEQUENCE public.list_items_id_seq
 ALTER SEQUENCE public.list_items_id_seq OWNER TO postgres;
 
 --
--- TOC entry 5091 (class 0 OID 0)
--- Dependencies: 230
+-- TOC entry 5096 (class 0 OID 0)
+-- Dependencies: 223
 -- Name: list_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -169,7 +169,7 @@ ALTER SEQUENCE public.list_items_id_seq OWNED BY public.list_items.id;
 
 
 --
--- TOC entry 229 (class 1259 OID 16629)
+-- TOC entry 224 (class 1259 OID 16430)
 -- Name: lists; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -187,7 +187,7 @@ CREATE TABLE public.lists (
 ALTER TABLE public.lists OWNER TO postgres;
 
 --
--- TOC entry 228 (class 1259 OID 16628)
+-- TOC entry 225 (class 1259 OID 16444)
 -- Name: lists_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -203,8 +203,8 @@ CREATE SEQUENCE public.lists_id_seq
 ALTER SEQUENCE public.lists_id_seq OWNER TO postgres;
 
 --
--- TOC entry 5092 (class 0 OID 0)
--- Dependencies: 228
+-- TOC entry 5097 (class 0 OID 0)
+-- Dependencies: 225
 -- Name: lists_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -212,7 +212,7 @@ ALTER SEQUENCE public.lists_id_seq OWNED BY public.lists.id;
 
 
 --
--- TOC entry 233 (class 1259 OID 16677)
+-- TOC entry 226 (class 1259 OID 16445)
 -- Name: reviews; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -230,7 +230,7 @@ CREATE TABLE public.reviews (
 ALTER TABLE public.reviews OWNER TO postgres;
 
 --
--- TOC entry 232 (class 1259 OID 16676)
+-- TOC entry 227 (class 1259 OID 16457)
 -- Name: reviews_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -246,8 +246,8 @@ CREATE SEQUENCE public.reviews_id_seq
 ALTER SEQUENCE public.reviews_id_seq OWNER TO postgres;
 
 --
--- TOC entry 5093 (class 0 OID 0)
--- Dependencies: 232
+-- TOC entry 5098 (class 0 OID 0)
+-- Dependencies: 227
 -- Name: reviews_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -255,7 +255,7 @@ ALTER SEQUENCE public.reviews_id_seq OWNED BY public.reviews.id;
 
 
 --
--- TOC entry 226 (class 1259 OID 16592)
+-- TOC entry 228 (class 1259 OID 16458)
 -- Name: users; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -276,7 +276,7 @@ CREATE TABLE public.users (
 ALTER TABLE public.users OWNER TO postgres;
 
 --
--- TOC entry 225 (class 1259 OID 16591)
+-- TOC entry 229 (class 1259 OID 16477)
 -- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -292,8 +292,8 @@ CREATE SEQUENCE public.users_id_seq
 ALTER SEQUENCE public.users_id_seq OWNER TO postgres;
 
 --
--- TOC entry 5094 (class 0 OID 0)
--- Dependencies: 225
+-- TOC entry 5099 (class 0 OID 0)
+-- Dependencies: 229
 -- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -301,7 +301,7 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
--- TOC entry 4907 (class 2604 OID 16708)
+-- TOC entry 4887 (class 2604 OID 16478)
 -- Name: follows id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -309,7 +309,7 @@ ALTER TABLE ONLY public.follows ALTER COLUMN id SET DEFAULT nextval('public.foll
 
 
 --
--- TOC entry 4903 (class 2604 OID 16655)
+-- TOC entry 4889 (class 2604 OID 16479)
 -- Name: list_items id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -317,7 +317,7 @@ ALTER TABLE ONLY public.list_items ALTER COLUMN id SET DEFAULT nextval('public.l
 
 
 --
--- TOC entry 4899 (class 2604 OID 16632)
+-- TOC entry 4891 (class 2604 OID 16480)
 -- Name: lists id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -325,7 +325,7 @@ ALTER TABLE ONLY public.lists ALTER COLUMN id SET DEFAULT nextval('public.lists_
 
 
 --
--- TOC entry 4905 (class 2604 OID 16680)
+-- TOC entry 4895 (class 2604 OID 16481)
 -- Name: reviews id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -333,7 +333,7 @@ ALTER TABLE ONLY public.reviews ALTER COLUMN id SET DEFAULT nextval('public.revi
 
 
 --
--- TOC entry 4892 (class 2604 OID 16595)
+-- TOC entry 4897 (class 2604 OID 16482)
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -341,7 +341,114 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 
 --
--- TOC entry 4914 (class 2606 OID 16627)
+-- TOC entry 5077 (class 0 OID 16401)
+-- Dependencies: 219
+-- Data for Name: content_cache; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.content_cache (tmdb_id, media_type, title, poster_path, vote_average, created_at) FROM stdin;
+\.
+
+
+--
+-- TOC entry 5078 (class 0 OID 16411)
+-- Dependencies: 220
+-- Data for Name: follows; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.follows (id, follower_id, followed_id, created_at) FROM stdin;
+\.
+
+
+--
+-- TOC entry 5080 (class 0 OID 16420)
+-- Dependencies: 222
+-- Data for Name: list_items; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.list_items (id, list_id, tmdb_id, media_type, added_at) FROM stdin;
+\.
+
+
+--
+-- TOC entry 5082 (class 0 OID 16430)
+-- Dependencies: 224
+-- Data for Name: lists; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.lists (id, user_id, name, description, is_default, is_public, created_at) FROM stdin;
+1	1	Favoritos	Listado de Películas y Series Favoritas	t	t	2026-05-18 11:38:16.973155
+\.
+
+
+--
+-- TOC entry 5084 (class 0 OID 16445)
+-- Dependencies: 226
+-- Data for Name: reviews; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.reviews (id, user_id, tmdb_id, media_type, rating, comment, created_at) FROM stdin;
+\.
+
+
+--
+-- TOC entry 5086 (class 0 OID 16458)
+-- Dependencies: 228
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.users (id, username, email, password, biography, role, avatar, banned, created_at, updated_at) FROM stdin;
+1	admin	admin@cinesfera.com	$2b$10$djFsMkGuXjkNtW14EqjHHeyVST/ArKE4.0miQp1uRum3YuPoWKiJu	Administrador de Cinesfera	ADMIN	\N	f	2026-05-18 11:38:16.973155	2026-05-18 11:38:16.973155
+\.
+
+
+--
+-- TOC entry 5100 (class 0 OID 0)
+-- Dependencies: 221
+-- Name: follows_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.follows_id_seq', 1, false);
+
+
+--
+-- TOC entry 5101 (class 0 OID 0)
+-- Dependencies: 223
+-- Name: list_items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.list_items_id_seq', 1, false);
+
+
+--
+-- TOC entry 5102 (class 0 OID 0)
+-- Dependencies: 225
+-- Name: lists_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.lists_id_seq', 1, true);
+
+
+--
+-- TOC entry 5103 (class 0 OID 0)
+-- Dependencies: 227
+-- Name: reviews_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.reviews_id_seq', 1, false);
+
+
+--
+-- TOC entry 5104 (class 0 OID 0)
+-- Dependencies: 229
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 1, true);
+
+
+--
+-- TOC entry 4904 (class 2606 OID 16484)
 -- Name: content_cache content_cache_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -350,7 +457,7 @@ ALTER TABLE ONLY public.content_cache
 
 
 --
--- TOC entry 4926 (class 2606 OID 16717)
+-- TOC entry 4906 (class 2606 OID 16486)
 -- Name: follows follows_follower_id_followed_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -359,7 +466,7 @@ ALTER TABLE ONLY public.follows
 
 
 --
--- TOC entry 4928 (class 2606 OID 16715)
+-- TOC entry 4908 (class 2606 OID 16488)
 -- Name: follows follows_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -368,7 +475,7 @@ ALTER TABLE ONLY public.follows
 
 
 --
--- TOC entry 4918 (class 2606 OID 16665)
+-- TOC entry 4910 (class 2606 OID 16490)
 -- Name: list_items list_items_list_id_tmdb_id_media_type_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -377,7 +484,7 @@ ALTER TABLE ONLY public.list_items
 
 
 --
--- TOC entry 4920 (class 2606 OID 16663)
+-- TOC entry 4912 (class 2606 OID 16492)
 -- Name: list_items list_items_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -386,7 +493,7 @@ ALTER TABLE ONLY public.list_items
 
 
 --
--- TOC entry 4916 (class 2606 OID 16645)
+-- TOC entry 4914 (class 2606 OID 16494)
 -- Name: lists lists_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -395,7 +502,7 @@ ALTER TABLE ONLY public.lists
 
 
 --
--- TOC entry 4922 (class 2606 OID 16691)
+-- TOC entry 4916 (class 2606 OID 16496)
 -- Name: reviews reviews_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -404,7 +511,7 @@ ALTER TABLE ONLY public.reviews
 
 
 --
--- TOC entry 4924 (class 2606 OID 16693)
+-- TOC entry 4918 (class 2606 OID 16498)
 -- Name: reviews reviews_user_id_tmdb_id_media_type_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -413,7 +520,7 @@ ALTER TABLE ONLY public.reviews
 
 
 --
--- TOC entry 4910 (class 2606 OID 16615)
+-- TOC entry 4920 (class 2606 OID 16500)
 -- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -422,7 +529,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 4912 (class 2606 OID 16613)
+-- TOC entry 4922 (class 2606 OID 16502)
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -431,7 +538,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 4934 (class 2606 OID 16723)
+-- TOC entry 4923 (class 2606 OID 16503)
 -- Name: follows follows_followed_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -440,7 +547,7 @@ ALTER TABLE ONLY public.follows
 
 
 --
--- TOC entry 4935 (class 2606 OID 16718)
+-- TOC entry 4924 (class 2606 OID 16508)
 -- Name: follows follows_follower_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -449,7 +556,7 @@ ALTER TABLE ONLY public.follows
 
 
 --
--- TOC entry 4930 (class 2606 OID 16666)
+-- TOC entry 4925 (class 2606 OID 16513)
 -- Name: list_items list_items_list_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -458,7 +565,7 @@ ALTER TABLE ONLY public.list_items
 
 
 --
--- TOC entry 4931 (class 2606 OID 16671)
+-- TOC entry 4926 (class 2606 OID 16518)
 -- Name: list_items list_items_tmdb_id_media_type_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -467,7 +574,7 @@ ALTER TABLE ONLY public.list_items
 
 
 --
--- TOC entry 4929 (class 2606 OID 16646)
+-- TOC entry 4927 (class 2606 OID 16523)
 -- Name: lists lists_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -476,7 +583,7 @@ ALTER TABLE ONLY public.lists
 
 
 --
--- TOC entry 4932 (class 2606 OID 16699)
+-- TOC entry 4928 (class 2606 OID 16528)
 -- Name: reviews reviews_tmdb_id_media_type_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -485,7 +592,7 @@ ALTER TABLE ONLY public.reviews
 
 
 --
--- TOC entry 4933 (class 2606 OID 16694)
+-- TOC entry 4929 (class 2606 OID 16533)
 -- Name: reviews reviews_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -494,7 +601,7 @@ ALTER TABLE ONLY public.reviews
 
 
 --
--- TOC entry 5089 (class 0 OID 0)
+-- TOC entry 5094 (class 0 OID 0)
 -- Dependencies: 5
 -- Name: SCHEMA public; Type: ACL; Schema: -; Owner: postgres
 --
@@ -502,11 +609,11 @@ ALTER TABLE ONLY public.reviews
 REVOKE USAGE ON SCHEMA public FROM PUBLIC;
 
 
--- Completed on 2026-05-18 07:29:25
+-- Completed on 2026-05-18 13:40:31
 
 --
 -- PostgreSQL database dump complete
 --
 
-\unrestrict uccESnOx5zJv4bifEBhJPdbyymqNKgyaidJ93DW4SWUS9HyHbtBSQgc0iMoWvJG
+\unrestrict Qmhq9laj1pgMdEIPVOsIB4wbbYYXsIwyfULSkIgzKLPudAaW2ik52eEKHzBOmmU
 
